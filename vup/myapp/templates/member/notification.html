@@ -24,7 +24,34 @@
     </div>
 
     <!-- Notification Section -->
-    <div class="notification-container">
+    <div class="notification-container"> 
+        <h1><i class="fas fa-bell"></i> Notification</h1>
+        <div class="notification-content">
+            <div class="noti-container">
+                <ul>
+                    {% for notification in user.notifications.all %}
+                        <li class="{% if not notification.is_read %}unread{% endif %}">
+                            <!-- <button onclick="markAsRead({{ notification.id }})">
+                                <i class="fas fa-bell"></i> 
+                            </button> -->
+                            <div class="icon-noti">
+                                <i class="fa-solid fa-circle"></i>
+                            </div>
+                            <p>{{ notification.message }}</p>
+                            {% if notification.related_request and notification.related_request.response_status == 'pending' %}
+                                <button onclick="handleAction({{ notification.related_request.id }}, 'accept')">อนุมัติ</button>
+                                <button onclick="handleAction({{ notification.related_request.id }}, 'reject')">ปฏิเสธ</button>
+                            {% endif %}
+
+                        </li>
+                    {% endfor %}
+                </ul>
+
+            </div>
+        </div>
+    </div>
+    
+    <!-- <div class="notification-container">
         <h1><i class="fas fa-bell"></i> Notification</h1>
         <div class="notification-content">
             <div class="noti-container">
@@ -38,7 +65,8 @@
                 </ul>
             </div>
         </div>
-    </div>
+    </div> -->
+
 </div>
 
 <!-- FullCalendar Script -->
@@ -73,4 +101,55 @@
 
  </script> 
 
+<!-- อ่านแล้ว -->
+ <script>
+    function markAsRead(notificationId) {
+    fetch(`/notifications/${notificationId}/mark-as-read/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': '{{ csrf_token }}',
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => {
+        if (response.ok) {
+            alert('Notification marked as read!');
+            location.reload();
+        } else {
+            alert('Failed to mark notification as read.');
+        }
+    });
+}
+
+ </script>
+
+
+<!-- ปุ่มตอบรับ -->
+<script>
+    function handleAction(requestId, action) {
+    fetch(`/requests/${requestId}/handle/`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}',
+        },
+        body: JSON.stringify({ action: action }),
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        alert(data.message);
+        location.reload(); // รีโหลดหน้าเพื่ออัปเดตสถานะ
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('เกิดข้อผิดพลาด');
+    });
+}
+
+</script>
 </html>

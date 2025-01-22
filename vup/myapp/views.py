@@ -619,7 +619,7 @@ def send_join_request(request, event_id):
 
     # ตรวจสอบว่ามีคำขอซ้ำหรือไม่
     if Event_Request.objects.filter(event=event, sender=sender).exists():
-        return JsonResponse({'message': 'You have already sent a request.'}, status=400)
+        return JsonResponse({'message': 'คุณเคยส่งคำขอเข้าร่วมกิจกรรมนี้แล้ว'}, status=400)
 
     # บันทึกคำขอใหม่
     Event_Request.objects.create(
@@ -630,7 +630,7 @@ def send_join_request(request, event_id):
     )
 
     # สร้างการแจ้งเตือน
-    message = f"{sender.username} ได้ส่งคำขอเข้าร่วมกิจกรรม {event.event_name} ของคุณ"
+    message = f"{sender.username} ต้องการเข้าร่วมกิจกรรม '{event.event_name}' ของคุณ"
     Notification.objects.create(
         user=receiver,
         message=message,
@@ -639,6 +639,40 @@ def send_join_request(request, event_id):
     )
 
     return JsonResponse({'message': 'ส่งคำขอสำเร็จ!'}, status=200)
+
+
+def action_request(request, request_id):
+    if request.method != 'POST':
+        return JsonResponse({'message': 'Invalid request method'}, status=400)
+
+    data = json.loads(request.body)
+    action = data.get('action')  # รับ action: 'accept' หรือ 'reject'
+
+    # ดึงคำขอ
+    event_request = get_object_or_404(Event_Request, id=request_id)
+
+    if action == 'accept':
+        event_request.response_status = 'accepted'
+        message = f"คำขอกิจกรรม '{event_request.event.event_name}' ได้รับการอนุมัติแล้ว"
+    elif action == 'reject':
+        event_request.response_status = 'rejected'
+        message = f"คำขอกิจกรรม '{event_request.event.event_name}' ถูกปฏิเสธ"
+    else:
+        return JsonResponse({'message': 'Invalid action'}, status=400)
+
+    # บันทึกสถานะ
+    event_request.save()
+
+    # สร้างการแจ้งเตือนตอบกลับไปยังผู้ส่งคำขอ
+    Notification.objects.create(
+        receiver=event_request.sender,
+        sender=request.user,
+        message=message,
+        related_event=event_request.event,
+        notification_type='response'
+    )
+
+    return JsonResponse({'message': f'Request has been {action}ed successfully.'}, status=200)
 
     # return JsonResponse({'message': 'Request sent successfully!'}, status=200)
 

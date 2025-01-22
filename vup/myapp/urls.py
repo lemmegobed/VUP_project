@@ -37,6 +37,7 @@ urlpatterns = [
     path('notifications/<int:notification_id>/mark-as-read/',mark_notification_as_read, name='mark_notification_as_read'),
     
     path('events/<int:event_id>/send-request/', send_join_request, name='send_join_request'),
+    path('requests/<int:request_id>/handle/', action_request, name='action_request'),
 
     
     path("chatroom/<int:event_id>/", chatroom_view, name="chatroom"),

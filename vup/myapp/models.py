@@ -146,9 +146,9 @@ class Event(models.Model):
 
 class Event_Request(models.Model):
     STATUS_CHOICES = [
-        ('pending', 'Pending'),
-        ('accepted', 'Accepted'),
-        ('rejected', 'Rejected'),
+        ('pending', 'รอการตอบกลับ'),
+        ('accepted', 'อนุมัติ'),
+        ('rejected', 'ปฏิเสธ'),
     ]
 
     event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name="requests")  
