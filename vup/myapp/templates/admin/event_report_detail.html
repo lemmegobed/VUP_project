@@ -1,0 +1,152 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Detail</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+
+
+    <link href="{% static 'css/css_admin/report_event_detail.css' %}" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@100..700&display=swap" rel="stylesheet">
+   
+</head>
+<body>
+    <div class="detail-post-report">
+        <h1>Report</h1>    
+    </div>
+
+    <div class="event-container">
+        <!-- รายการโพสต์อีเวนต์ -->
+        <div class="event-post">
+            <!-- ข้อมูลผู้โพสต์ -->
+            <div class="post-left">
+                <div class="post_member">
+                    <img src="{{ event.created_by.profile.url }}" alt="Profile Image" class="profile-image-post">
+                    <div class="member-info">
+                        <p class="username-post">{{ event.created_by.username }}</p>
+                        <p class="location">
+                            <strong>กำลังจะไปที่...</strong>
+                            <i class="fa-solid fa-location-dot location-icon"></i>
+                            <a href="https://www.google.com/maps/search/?api=1&query={{ event.location }}" target="_blank">{{ event.location }}</a>
+                        </p>
+                    </div>
+                </div>
+                <!-- รายละเอียดอีเวนต์ -->
+                <div class="detail-post">
+                    <h2 class="event-name">{{ event.event_name }}</h2>
+                    <p class="event-title">{{ event.event_title }}</p>
+                </div>
+                <!-- รายละเอียดเพิ่มเติม -->
+                <div class="filter-box-post">
+                    <div class="date"><i class="fa-solid fa-calendar-days"></i><p>: {{ event.event_datetime }}</p></div>
+                    <div class="participants"><i class="fa-solid fa-user"></i><p>: {{ event.max_participants }}</p></div>
+                    <div class="category"><i class="fa-solid fa-shapes"></i><p>: {{ event.category }}</p></div>
+                    <div class="province"><i class="fa-solid fa-location-dot"></i><p>: {{ event.province }}</p></div>
+                </div>
+            </div>
+    
+            <!-- ส่วนของปุ่ม Join -->
+            <div class="post-right">
+                <!-- <div class="dropdown">
+                    <a class="btn-report" href="#">
+                        <i class="fa-solid fa-circle-exclamation"></i>
+                    </a>
+                </div> -->
+                <div class="join-btn-container">
+                    <button class="join-btn" onclick="showJoinModal({{ event.id }}, '{{ event.name|escapejs }}')">
+                        <p>I want to</p>
+                        <h1>JOIN</h1>
+                        <p>{{ event.participants }}/{{ event.max_participants }}</p>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="btn-actions">
+            <div class="button-report">
+                <button onclick="openModal()" class="btn-warn">Report</button>   
+            </div>
+
+            <div class="button-reject">
+                <button onclick="openRejectModal()" class="btn-reject">ปฏิเสธการรายงาน</button>
+            </div>
+            
+
+
+
+
+            <!-- <form method="POST">
+                {% csrf_token %}
+                <button type="submit" name="action" value="warn" class="btn-warn">รายงานกิจกรรมนี้</button> 
+                <button type="submit" name="action" value="reject" class="btn-reject">ปฏิเสธการรายงาน</button>
+            </form> -->
+        
+            <a href="{% url 'report_admin' %}" class="btn-back">ย้อนกลับ</a>
+        </div>
+
+
+    <!-- Modal -->
+    <div id="confirmModal" class="modal">
+        <div class="modal-content">
+            <h3>Are you sure you want to report the event "<strong>{{ event.event_name }}</strong>"?</h3>
+            <form method="POST">
+                {% csrf_token %}
+                <button type="submit" name="action" value="warn" class="btn-confirm">Yes</button>
+                <button type="button" onclick="closeModal()" class="btn-cancel">No</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal ยืนยันการปฏิเสธ -->
+<div id="rejectModal" class="modal">
+    <div class="modal-content">
+        <h3>Are you sure you want to reject this report?</h3>
+        <form method="POST">
+            {% csrf_token %}
+            <button type="submit" name="action" value="reject" class="btn-confirm-reject">Yes, Reject</button>
+            <button type="button" onclick="closeRejectModal()" class="btn-cancel-reject">No, Cancel</button>
+        </form>
+    </div>
+</div>
+
+
+    </div>
+
+
+</body>
+
+<script>
+    function openModal() {
+        // เปิด modal
+        document.getElementById("confirmModal").style.display = "block";
+    }
+
+    function closeModal() {
+        // ปิด modal
+        document.getElementById("confirmModal").style.display = "none";
+    }
+</script>
+
+<script>
+    function openRejectModal() {
+        document.getElementById("rejectModal").style.display = "block";
+    }
+
+    function closeRejectModal() {
+        document.getElementById("rejectModal").style.display = "none";
+    }
+</script>
+
+
+</html>

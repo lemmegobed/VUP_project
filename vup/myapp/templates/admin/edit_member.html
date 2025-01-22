@@ -1,0 +1,7 @@
+<h2>แก้ไขข้อมูลสมาชิก: {{ member.username }}</h2>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">บันทึก</button>
+</form>
+<a href="{% url 'userdata' %}">ย้อนกลับ</a>

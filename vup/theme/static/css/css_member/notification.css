@@ -1,0 +1,138 @@
+.calendar-notification {
+    display: block;
+    width: 300px; 
+    /* height: 94vh; */
+    height: auto;
+    background-color: #2b3f65; 
+    color: white; 
+    /* padding: 20px; */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+    position: fixed; 
+    top: 0%; 
+    right: 10px; 
+    z-index: 1000; 
+    border-radius: 30px 0 0 30px;
+ /* กำหนดความสูงสูงสุดของ Notification */
+    max-height: 100vh;
+    
+    /* เพิ่ม Scroll Bar เมื่อเนื้อหาเกินความสูง */
+    overflow-y: auto;
+
+    /* ซ่อน Scroll Bar เริ่มต้น (ถ้าต้องการให้เลื่อนดูเฉพาะตอนเมาส์วาง) */
+    scrollbar-width: thin; /* สำหรับ Firefox */
+    scrollbar-color: #ccc #f7f7f7; /* สำหรับ Firefox */
+}
+
+@media screen and (max-width: 768px) {
+    .calendar-notification {
+        display: none; /* ซ่อนป๊อปอัพเมื่อหน้าจอเล็กกว่า 768px */
+    }
+}
+
+/* สำหรับ Scroll Bar ของ Chrome และอื่นๆ */
+.notification-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.notification-content::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 10px;
+}
+
+.notification-content::-webkit-scrollbar-track {
+    background-color: #f7f7f7;
+}
+.calendar-notification {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #1c2b4a;
+    padding: 20px;
+    border-radius: 15px;
+    width: 300px;
+}
+
+.calendar-container {
+    padding: 20px;
+    border-radius: 10px;
+    /* margin-bottom: 10px; */
+    width: 100%;
+}
+
+.calendar-container h1 {
+    font-size: 15px;
+    font-weight: bold;
+    color: white;
+    background-color: #1c2b4a;
+    display: flex;
+}
+
+.calendar-container h1 i {
+    margin-right: 10px;
+}
+
+.calendar-box{
+    background-color: #ffffff; 
+    color: #000; 
+    padding: 10px; 
+    border-radius: 10px; 
+}
+/* .calendar-content {
+        background-color: #ffffff; 
+        color: #000; 
+        padding: 15px; 
+        border-radius: 10px; 
+        height: 150px;
+} */
+
+#calendar {
+    width: 100%;
+    height: 15px; /* กำหนดความสูงปฏิทิน */
+    font-size: 8px;
+    gap: 0;
+    margin-bottom: 0;
+    font-weight: bold;
+}
+
+/* .fc {
+    width: 100%; 
+} */
+
+/* .fc .fc-toolbar {
+    justify-content: space-between; 
+} */
+
+.notification-container {
+    padding: 20px;
+    border-radius: 10px;
+    /* margin-bottom: 10px; */
+    width: 100%;
+}
+.notification-container h1 {
+    font-size: 15px;
+    color: #ffffff;
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.notification-container p {
+    font-size: 15px;
+    color: #a0a0a0;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.notification-content {
+    max-height: 100vh; /* ใช้ 100% ของความสูงหน้าจอ */
+    overflow-y: auto;
+    font-size: 16px;
+    color: #666; 
+    text-align: center; 
+    background-color: #ffffff;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+    height: 200px;
+    margin-top: 0;
+}

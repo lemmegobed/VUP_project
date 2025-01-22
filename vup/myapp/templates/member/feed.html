@@ -1,0 +1,590 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VUP!</title>
+    
+    <link href="{% static 'css/css_member/feed.css' %}" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@100..700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- เมนู -->
+    <div class="menu-container">
+        <div class="profile-section">
+            <img src="{{ member_data.profile.url }}" alt="Profile Image" class="profile-image">
+            <p class="username">{{ member_data.username }}</p>
+            <p class="userid">{{ member_data.userid }}</p>
+            <button id="openModal" class="new-event-btn">+ New Event</button>
+        </div>
+
+        <div class="menu-items">
+            <a class="menu-item home-btt active" href="{% url 'feed' %}">
+                <i class="fa-solid fa-earth-americas"></i>Feed
+            </a>
+            <a class="menu-item profile-btt" href="{% url 'profile' %}">
+                <i class="fas fa-user"></i> Profile
+            </a>
+            <a class="menu-item chat-btt" href="{% url 'chat' %}">
+                <i class="fas fa-comment"></i> Chat
+            </a>
+            <a class="menu-item activity-btt" href="{% url 'my_activity' %}">
+                <i class="fa-solid fa-bolt"></i></i>Activity
+            </a>
+            
+        </div>
+
+        <a href="{% url 'logout' %}" class="logout">
+            Logout
+        </a>
+    </div>
+
+
+    <div class="home_page" id="home_page">
+        <!-- ค้นหาแบบข้อความ -->
+        <div class="search-container">
+           
+            <div class="search-box">
+                <form method="get" action="{% url 'search_events' %}" class="search-form">
+                    <div class="input-icon">
+                        <i class="fas fa-search" id="search-icon"></i> 
+                        <input 
+                            type="text" 
+                            name="query" 
+                            value="{{ query }}" 
+                            placeholder="Search events..." 
+                            class="form-control" 
+                            id="search-input"
+                            oninput="toggleClearButton()"  
+                        >
+                        <!-- ปุ่มล้างคำค้นหาที่จะปรากฏเมื่อมีการกรอกคำค้น -->
+                        <button type="button" class="clear-button" id="clear-button" onclick="clearSearch()" style="display: none;">
+                            <i class="fa-solid fa-chevron-left"></i>
+                        </button>
+                    </div>
+                </form>
+                
+
+
+
+            </div>
+        </div>
+        
+    
+<!-- 
+        <div class="filter-box">
+             
+            <div class="filter-item">
+                <select name="province" class="filter-dropdown location-dropdown">
+                    <option value="" selected disabled>เลือกจังหวัด</option>
+                    {% for value, label in province_choices %}
+                        <option value="{{ value }}" {% if request.GET.province == value %}selected{% endif %}>
+                            {{ label }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+        
+            
+            <div class="filter-item">
+                <select name="max_participants" class="filter-dropdown people-dropdown">
+                    <option value="" selected disabled>จำนวนคน</option>
+                    {% for i in max_participants_range %}
+                        <option value="{{ i }}" {% if request.GET.max_participants == i|stringformat:"s" %}selected{% endif %}>
+                            {{ i }} คน
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+        
+            
+            <div class="filter-item">
+                <select name="category" class="filter-dropdown category-dropdown">
+                    <option value="" selected disabled>เลือกหมวด</option>
+                    {% for value, label in category_choices %}
+                        <option value="{{ value }}" {% if request.GET.category == value %}selected{% endif %}>
+                            {{ label }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+        
+            
+            <div class="search-btn-container">
+                <button type="submit" class="search-btn">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </div>
+         -->
+        
+        
+
+        <p class="feed">feed now</p>
+
+    <!-- post event -->
+        <div class="event-container">
+            {% for event in events %}
+            <div class="event-post">
+                
+                <!-- Profile and Event Details -->
+                <div class="post-left">
+
+                    <!-- รายละเอียดผู้โพสต์ -->
+                    <div class="post_member">
+                        <img src="{{ event.created_by.profile.url }}" alt="Profile Image" class="profile-image-post">
+                        <div class="member-info">
+                            <div class="username-container">
+                                <p class="username-post">{{event.created_by.username }}</p>
+                            </div>
+
+                            <p class="location">
+                                <strong>กำลังจะไปที่... </strong>
+                                <i class="fa-solid fa-location-dot location-icon"></i>
+                                <a href="https://www.google.com/maps/search/?api=1&query={{ event.location }}" target="_blank">{{ event.location }}</a>
+                            </p>
+                            
+                            
+                        </div>
+                    </div>
+                      
+                    <!-- รายละเอียดอีเวนต์ -->
+                    <div class="detail-post">
+                        <h2>{{ event.event_name }}</h2>
+                        <p>{{ event.event_title }}</p>
+                    </div>
+
+                    <!-- <div class="time-since-created">
+                        <i class="fa-solid fa-clock"></i>
+                        <p>โพสต์เมื่อ {{ event.created_at }} </p>
+                    </div> -->
+
+                    <!-- รายละเอียดเพิ่มเติม (วัน, หมวดหมู่, จังหวัด) -->
+                    <div class="filter-box-post">
+                        <div class="date">
+                            <i class="fa-solid fa-calendar-days"></i>
+                            <p>: {{ event.event_datetime }}</p>
+                        </div>
+                        <div class="participants">
+                            <i class="fa-solid fa-user"></i>
+                            <p>: {{ event.max_participants }}</p>
+                        </div>
+                        <div class="category">
+                            <i class="fa-solid fa-shapes"></i>
+                            <p>: {{ event.category }}</p>
+                        </div>
+                        <div class="province">
+                            <i class="fa-solid fa-location-dot"></i>
+                            <p>: {{ event.province }}</p>
+                        </div>
+                    </div>
+                </div>
+
+ 
+    <div class="post-right">
+        <div class="dropdown">
+            <a class="btn-report" href="{% url 'submit_report' event.id %}">
+                <i class="fa-solid fa-circle-exclamation"></i>
+            </a>
+            
+            
+
+            <!-- <i class="fa-solid fa-ellipsis-vertical" onclick="toggleDropdownMenu('{{ event.id }}')" style="cursor: pointer;"></i>
+            <div class="dropdown-menu" id="dropdownMenu-{{ event.id }}">
+                <button class="dropdown-item" onclick="openEditModal('{{ event.id }}', '{{ event.event_name }}', '{{ event.event_title }}', '{{ event.event_datetime|date:'Y-m-d\TH:i' }}', '{{ event.location }}', '{{ event.category }}', '{{ event.participants }}', '{{ event.province }}')">Edit</button> -->
+                <!-- <form id="editEventForm{{ event.id }}" method="POST" style="display:inline;">
+                    {% csrf_token %}
+                     <button type="button" class="dropdown-item" onclick="openeditEventModal('{{ event.id }}')">Edit</button> 
+                    {% if event.id %}
+                   <button class="edit-event-btn" data-event-id="{{ event.id }}">Edit</button> 
+                    
+                        <button class="dropdown-item" onclick="openEditModal('{{ event.id }}')">Edit</button>  
+                    {% else %}
+                        <p>No event id</p>
+                    {% endif %} 
+
+
+                </form>
+
+                <form id="deleteForm-{{ event.id }}" method="POST" action="{% url 'delete_event' event.id %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="button" class="dropdown-item" onclick="openConfirmDeleteModal('{{ event.id }}')">Delete</button>
+                </form>
+            </div> -->
+            
+
+        </div>
+    
+     
+        
+        <!-- Popup container -->
+        <div id="popup-container"></div>
+        
+        
+
+    <!-- ปุ่ม JOIN ด้านขวา -->
+        <!-- <div class="join-btn-container">
+            <button class="join-btn">
+                <p>i want to</p>
+                <h1>JOIN</h1>
+                <p>{{ event.participants }}/{{ event.max_participants }}</p>
+            </button>
+        </div>
+    </div>
+  -->
+    <!-- <div class="join-btn-container">
+        <button class="join-btn" onclick="showJoinModal({{ event.id }})">
+            <p>I want to</p>
+            <h1>JOIN</h1>
+            <p>{{ event.max_participants }}/{{ event.participants }}</p>
+        </button>
+    </div> -->
+
+    
+    <!-- <div class="join-btn-container">
+        <button class="join-btn" onclick="openJoinPopup({{ event.id }}, '{{ event.name|escapejs }}', {{ event.participants }}, {{ event.max_participants }})">
+            <p>I want to</p>
+            <h1>JOIN</h1>
+            <p>{{ event.participants }}/{{ event.max_participants }}</p>
+        </button>
+    </div> -->
+    
+
+
+    <!-- ปุ่ม Join -->
+<div class="join-btn-container">
+    <button class="join-btn" onclick="openJoinPopup({{ event.id }}, '{{ event.name|escapejs }}')">
+        I want to Join
+    </button>
+</div>
+
+<!-- ป๊อปอัป -->
+<div class="popup-container" id="join-popup" style="display: none;">
+    <div class="popup-content">
+        <h2>Confirm Joining</h2>
+        <p>Are you sure you want to join this event?</p>
+        <div class="popup-actions">
+            <button class="popup-btn confirm-btn" onclick="confirmJoin()">Yes</button>
+            <button class="popup-btn cancel-btn" onclick="closeJoinPopup()">Cancel</button>
+        </div>
+    </div>
+</div>
+
+
+    </div>
+</div>
+</div>
+        <!-- ถ้าไม่มีอีเว้น-->
+        <div>
+            {% empty %}
+            <p class="no_event"> - No events available - </p>
+            {% endfor %}
+        </div>
+
+        <div id="eventModal" class="modal">
+            {% include 'member/new_event.html' %}
+        </div>
+
+        <div>
+            {% include 'member/notification.html' %}
+        </div>
+
+   
+
+</div>
+
+<!-- <script>
+    const formData = new FormData(document.getElementById('EventForm'));
+
+// ตรวจสอบว่าฟอร์มเก็บค่าทั้งหมด
+for (let pair of formData.entries()) {
+    console.log(pair[0] + ': ' + pair[1]);
+}
+
+</script> -->
+
+<!-- แก้ไขอีเว้น -->
+<script>
+    // เปิด Modal
+function openJoinModal() {
+    document.getElementById('join-modal').classList.remove('hidden');
+}
+
+// ปิด Modal
+function closeJoinModal() {
+    document.getElementById('join-modal').classList.add('hidden');
+}
+
+// ฟังก์ชันส่งคำขอเข้าร่วมงาน
+function sendJoinRequest(eventId) {
+    alert("Sending join request for event ID: " + eventId);
+    closeJoinModal();
+}
+
+</script>
+
+<script>
+    function openEditEventModal() {
+    const modal = document.getElementById("editEventModal");
+    modal.style.display = "block";  // เปิด modal
+
+    const form = document.getElementById("updateEventForm");
+    form.addEventListener("submit", function(event) {
+        event.preventDefault();  // ป้องกันการส่งฟอร์มโดยอัตโนมัติ
+
+        const formData = new FormData(form);
+        fetch(form.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                modal.style.display = "none";  // ปิด modal
+                window.location.reload();  // รีเฟรชหน้าเว็บ
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    });
+}
+
+function closeEditEventModal() {
+    const modal = document.getElementById("editEventModal");
+    modal.style.display = "none";  // ปิด modal
+}
+
+</script>
+<!-- <script>
+// ฟังก์ชันเปิด modal
+function openEditEventModal() {
+    document.getElementById("editEventModal").style.display = "block";
+}
+
+// ฟังก์ชันปิด modal
+function closeEditEventModal() {
+    document.getElementById("editEventModal").style.display = "none";
+}
+
+// การปิด modal ด้วยการคลิกที่ปุ่มปิด (X)
+window.onclick = function(event) {
+    if (event.target === document.getElementById("editEventModal")) {
+        closeEditEventModal();
+    }
+}
+
+</script> -->
+
+
+<!-- เปลี่ยนไอคอนเป็นย้อนกลับ -->
+<script>
+    const searchInput = document.getElementById('search-input');
+    const searchIcon = document.getElementById('search-icon');
+    const clearButton = document.getElementById('clear-button');
+
+    // ฟังก์ชันตรวจสอบการกรอกคำค้นหา
+    function toggleClearButton() {
+        if (searchInput.value) {
+            // ถ้ามีคำค้นหาจะซ่อนไอคอนค้นหาและแสดงไอคอนล้าง
+            searchIcon.style.display = 'none';
+            clearButton.style.display = 'inline-block';
+        } else {
+            // ถ้าไม่มีคำค้นหาจะแสดงไอคอนค้นหากลับ
+            searchIcon.style.display = 'inline-block';
+            clearButton.style.display = 'none';
+        }
+    }
+
+    // ฟังก์ชันล้างคำค้น
+    function clearSearch() {
+        searchInput.value = '';  // เคลียร์คำค้นหา
+        searchInput.focus();  // ตั้งโฟกัสที่ช่อง input
+        searchIcon.style.display = 'inline-block';  // แสดงไอคอนค้นหา
+        clearButton.style.display = 'none';  // ซ่อนไอคอนล้าง
+        // รีเฟรชหน้าหลัก
+        document.querySelector('.search-form').submit();
+    }
+
+    // เรียกฟังก์ชันเพื่อให้มีการเปลี่ยนไอคอนตั้งแต่เริ่มต้น
+    toggleClearButton();
+</script>
+
+<!-- new_event -->
+<script>
+    const openModal = document.getElementById("openModal");
+    const modal = document.getElementById("eventModal");
+    const closeModal = document.querySelector(".close");
+    const eventForm = document.getElementById('eventForm');
+    const homePageDiv = document.getElementById('home_page');
+
+    openModal.onclick = function() {
+        modal.classList.add("active");
+    }
+
+    closeModal.onclick = function() {
+        modal.classList.remove("active");
+    }
+
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.classList.remove("active");
+        }
+    }
+
+    eventForm.addEventListener('submit', function(e) {
+        e.preventDefault();  // ป้องกันการส่งฟอร์มแบบปกติ
+
+        const formData = new FormData(eventForm);
+        fetch("{% url 'new_event' %}", {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                modal.classList.remove("active");  // ปิด pop-up
+                window.location.reload();  // รีเฟรชหน้าเว็บเพื่อแสดง Event ใหม่
+            }
+        })
+        .catch(error => console.log('Error:', error));
+    });
+</script>
+
+<!-- ส่งคำขอเข้าร่วม -->
+
+<script>
+function showJoinModal(eventId) {
+    document.getElementById("join-modal").style.display = "block";
+}
+
+function closeJoinModal() {
+    document.getElementById("join-modal").style.display = "none";
+}
+
+function sendJoinRequest(eventId) {
+    fetch(`/event/${eventId}/join/`, {
+        method: "POST",
+        headers: {
+            "X-CSRFToken": "{{ csrf_token }}",
+        },
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            alert(data.message);
+            closeJoinModal();
+        });
+}
+</script>
+<!-- <script>
+function openJoinModal() {
+    document.getElementById("join-modal").style.display = "flex";
+}
+
+function closeJoinModal() {
+    document.getElementById("join-modal").style.display = "none";
+}
+
+function confirmJoin(eventId) {
+    fetch(`/event/${eventId}/join/`, {
+        method: "POST",
+        headers: {
+            "X-CSRFToken": "{{ csrf_token }}",
+            "Content-Type": "application/json",
+        },
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            alert(data.message);
+            closeJoinModal();
+        })
+        .catch((error) => console.error("Error:", error));
+}
+
+</script> -->
+
+<!-- แก้ไขอีเว้น -->
+<script>
+
+function showJoinModal(eventId, eventName) {
+    // แสดงชื่ออีเวนต์ใน Modal
+    const modalText = document.getElementById("modal-text");
+    modalText.textContent = `Are you sure you want to join "${eventName}" this event?`;
+
+    // ตั้งค่า Event ID เพื่อส่งในฟังก์ชัน sendJoinRequest
+    const confirmButton = document.querySelector("#join-modal button:first-child");
+    confirmButton.setAttribute("onclick", `sendJoinRequest(${eventId})`);
+
+    // แสดง Modal
+    document.getElementById("join-modal").style.display = "block";
+}
+
+function closeJoinModal() {
+    document.getElementById("join-modal").style.display = "none";
+}
+
+function sendJoinRequest(eventId) {
+    fetch(`/event/${eventId}/join/`, {
+        method: "POST",
+        headers: {
+            "X-CSRFToken": "{{ csrf_token }}",
+        },
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            alert(data.message);
+            closeJoinModal(); // ปิด Modal หลังจากส่งคำขอสำเร็จ
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+        });
+}
+    
+    </script>
+
+
+<script>
+let selectedEventId = null;
+
+function openJoinPopup(eventId, eventName) {
+    selectedEventId = eventId;  // เก็บ Event ID สำหรับการส่งคำขอ
+    document.getElementById('join-popup').style.display = 'flex';
+}
+
+function closeJoinPopup() {
+    document.getElementById('join-popup').style.display = 'none';
+}
+
+function confirmJoin() {
+    if (!selectedEventId) return;
+
+    fetch(`/events/${selectedEventId}/send-request/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': '{{ csrf_token }}',  // ใช้สำหรับ CSRF Protection
+            'Content-Type': 'application/json',
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert(data.message);
+        closeJoinPopup();  // ปิดป๊อปอัปหลังจากบันทึกคำขอ
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+</script>
+
+</body>
+</html>

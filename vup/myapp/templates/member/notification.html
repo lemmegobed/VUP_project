@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendar and Notification</title>
+
+    {% load static %}
+    <link href="{% static 'css/css_member/notification.css' %}" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.9.0/main.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.9.0/main.min.js"></script>
+</head>
+
+<div class="calendar-notification">
+    <!-- Calendar Section -->
+    <div class="calendar-container">
+        <h1><i class="fas fa-calendar-alt"></i> Calendar</h1>
+        <div class="calendar-box">
+            <div id="calendar"></div>
+        </div>
+    </div>
+
+    <!-- Notification Section -->
+    <div class="notification-container">
+        <h1><i class="fas fa-bell"></i> Notification</h1>
+        <div class="notification-content">
+            <div class="noti-container">
+                <ul>
+                    {% for notification in user.notifications.all %}
+                        <li class="{% if not notification.is_read %}unread{% endif %}">
+                            {{ notification.message }}
+                            <button onclick="markAsRead({{ notification.id }})">Mark as Read</button>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- FullCalendar Script -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            height: 220,  // กำหนดความสูงให้พอดีใน div
+        });
+
+        calendar.render();
+    });
+</script>
+
+<script>
+   function markAsRead(notificationId) {
+    fetch(`/notifications/${notificationId}/mark-as-read/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': '{{ csrf_token }}',
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert(data.message);
+        location.reload();  // รีโหลดหน้าเพื่ออัปเดตการแจ้งเตือน
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+ </script> 
+
+</html>

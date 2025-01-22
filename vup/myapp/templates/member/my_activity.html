@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HOME</title>
+    
+    {% load static %}
+    <link href="{% static 'css/css_member/my_activity.css' %}" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Prompt:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Taviraj:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@100..700&display=swap" rel="stylesheet">
+   
+</head>
+
+<body>
+
+    <!-- เมนู -->
+    <div class="menu-container">
+        <div class="profile-section">
+            <img src="{{ member_data.profile.url }}" alt="Profile Image" class="profile-image">
+            <p class="username">{{ member_data.username }}</p>
+            <button id="openModal" class="new-event-btn">+ New Event</button>
+        </div>
+
+        <div class="menu-items">
+            <a class="menu-item home-btt " href="{% url 'feed' %}">
+                <i class="fa-solid fa-earth-americas"></i>Feed
+            </a>
+            <a class="menu-item profile-btt " href="{% url 'profile' %}">
+                <i class="fas fa-user"></i> Profile
+            </a>
+            <a class="menu-item chat-btt" href="{% url 'chat' %}">
+                <i class="fas fa-comment"></i> Chat
+            </a>
+            <a class="menu-item activity-btt active" href="{% url 'my_activity' %}">
+                <i class="fa-solid fa-bolt"></i></i>Activity
+            </a>
+        </div>
+
+
+        <a href="{% url 'logout' %}" class="logout">
+            Logout
+        </a>
+    </div>
+
+    <div class="outer-box-profile">
+        <div class="profile-header">
+            <i class="fa-solid fa-bolt"></i>
+            <p class="my_profile_head">My Activity</p>
+        </div>
+               
+        <div class="inner-box">
+            
+            <div class="menu-tabs">
+                <button id="my-activities-btn" class="tab-btn active" onclick="showActivities()">My Event</button>
+                <button id="personal-info-btn" class="tab-btn" onclick="showPersonalInfo()">Carlendar</button>
+            </div>
+
+            <div class="event-summary">
+                <h3>กิจกรรมทั้งหมด : {{ total_events }} กิจกรรม</h3>
+            </div>
+
+            <div class="event-container">
+                {% for event in user_events %}
+                <div class="event-box-post"> 
+                    <div class="post_member">
+                        
+                        <img src="{{ event.created_by.profile.url }}" alt="Profile Image" class="profile-image-post">
+                        <div class="member-info">
+                            <div class="username-container">
+                                <p class="username-post">{{ event.created_by.username }}</p>
+                            </div>
+                            <p class="location">
+                                <strong>กำลังจะไปที่... </strong>
+                                <i class="fa-solid fa-location-dot location-icon"></i>
+                                <a href="https://www.google.com/maps/search/?api=1&query={{ event.location }}" target="_blank">{{ event.location }}</a>
+                            </p>  
+                        </div>
+                        
+                    </div>
+
+                    
+            
+                    <div class="detail-post">
+                        <h2>{{ event.event_name }}</h2>
+                        <p>{{ event.event_title }}</p>
+                    </div>
+            
+                    <div class="filter-box-post">
+                        <div class="date">
+                            <i class="fa-solid fa-calendar-days"></i>
+                            <p>: {{ event.event_datetime }}</p>
+                        </div>
+                        <div class="participants">
+                            <i class="fa-solid fa-user"></i>
+                            <p>: {{ event.max_participants }}</p>
+                        </div>
+                        <div class="category">
+                            <i class="fa-solid fa-shapes"></i>
+                            <p>: {{ event.category }}</p>
+                        </div>
+                        <div class="province">
+                            <i class="fa-solid fa-location-dot"></i>
+                            <p>: {{ event.province }}</p>
+                        </div>
+                    </div>
+            
+                    <!-- ปุ่มแก้ไขและลบ -->
+                    <div class="post-actions">
+                        <button class="btn-edit" onclick="openEditPopup('{{ event.id }}')">แก้ไข</button>
+                        <button class="btn-delete" onclick="openConfirmDeleteModal('{{ event.id }}')">ลบ</button>
+                        
+                        <form id="deleteForm-{{ event.id }}" method="POST" action="{% url 'delete_event' event.id %}">
+                            {% csrf_token %}
+                        </form>
+                        
+                        <!-- Modal ยืนยันการลบ -->
+                        <div id="confirmDeleteModal" class="modal-overlay">
+                            <div class="modal-box">
+                                <!-- <i class="fa-solid fa-trash-can"></i>  -->
+                                <h3>Are you sure to delete?</h3>
+                                <!-- <p>คุณแน่ใจหรือไม่ว่าต้องการลบโพสต์นี้?</p> -->
+                                  <p>You are deleting the event <strong>{{ event.event_name }}</strong></p>
+                                <div class="modal-buttons">
+                                    <button class="btn-confirm" id="confirmDeleteBtn">YES</button>
+                                    <button class="btn-cancel" onclick="closeConfirmDeleteModal()">NO</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+
+                      
+                        
+
+                        <!-- Modal ฟอร์มแก้ไข -->
+                        <div id="edit-popup-{{ event.id }}" class="popup hidden">
+                            
+                            <div class="popup-edit-event">
+                                <span class="popup-close-btn" onclick="closeEditPopup('{{ event.id }}')">&times;</span>
+                                <h2 class="popup-title">แก้ไขโพสต์</h2>
+                                <form class="edit-event-form" method="POST" action="">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="event_id" value="{{ event.id }}">
+                            
+                                    <label class="edit-event-label">Event Name</label>
+                                    <input class="edit-event-input" type="text" name="event_name" value="{{ event.event_name }}" required>
+                            
+                                    <label class="edit-event-label">Event Title</label>
+                                    <input class="edit-event-input" type="text" name="event_title" value="{{ event.event_title }}" required>
+                            
+                                    <label class="edit-event-label">Event Datetime</label>
+                                    <input class="edit-event-input" type="datetime-local" name="event_datetime" value="{{ event.event_datetime|date:'Y-m-d\TH:i' }}" required>
+                            
+                                    <label class="edit-event-label">Location</label>
+                                    <input class="edit-event-input" type="text" name="location" value="{{ event.location }}" required>
+                            
+                                    <label class="edit-event-label">Category</label>
+                                    <select class="edit-event-select" name="category" required>
+                                        <option value="food" {% if event.category == "food" %}selected{% endif %}>Food</option>
+                                        <option value="travel" {% if event.category == "travel" %}selected{% endif %}>Travel</option>
+                                        <option value="game" {% if event.category == "game" %}selected{% endif %}>Game</option>
+                                        <option value="sport" {% if event.category == "sport" %}selected{% endif %}>Sport</option>
+                                        <option value="music" {% if event.category == "music" %}selected{% endif %}>Music</option>
+                                        <option value="art" {% if event.category == "art" %}selected{% endif %}>Art</option>
+                                        <option value="education" {% if event.category == "education" %}selected{% endif %}>Education</option>
+                                    </select>
+                            
+                                    <label class="edit-event-label">Max Participants</label>
+                                    <input class="edit-event-input" type="number" name="max_participants" value="{{ event.max_participants }}" required>
+                            
+                                    <label class="edit-event-label">Province</label>
+                                    <input class="edit-event-input" type="text" name="province" value="{{ event.province }}" required>
+                            
+                                    <button type="submit" name="event_submit" class="btn-save-event">บันทึก</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <p>คุณยังไม่มีโพสต์</p>
+                {% endfor %}
+            </div>
+</div> 
+                  
+
+            
+
+        <div>
+            {% include 'member/notification.html' %}
+        </div>
+
+
+
+<!-- แก้ไขโพส -->
+<script>
+function openEditPopup(eventId) {
+    console.log("เปิดป๊อปอัป:", eventId);
+    const popup = document.getElementById(`edit-popup-${eventId}`);
+    if (popup) {
+        popup.classList.remove('hidden');
+        console.log("ป๊อปอัปแสดงแล้ว");
+    } else {
+        console.log("ไม่พบป๊อปอัป ID:", `edit-popup-${eventId}`);
+    }
+}
+
+function closeEditPopup(eventId) {
+    const popup = document.getElementById(`edit-popup-${eventId}`);
+    if (popup) {
+        popup.classList.add('hidden');
+    }
+}
+</script> 
+
+<!-- ลบโพส -->
+<script>
+    let deleteEventId = null;
+
+function openConfirmDeleteModal(eventId) {
+    deleteEventId = eventId;
+    document.getElementById('confirmDeleteModal').classList.add('active');
+}
+
+function closeConfirmDeleteModal() {
+    deleteEventId = null;
+    document.getElementById('confirmDeleteModal').classList.remove('active');
+}
+
+document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
+    if (deleteEventId) {
+        const deleteForm = document.getElementById('deleteForm-' + deleteEventId);
+        if (deleteForm) {
+            deleteForm.submit(); // ส่งคำขอลบ
+        }
+    }
+});
+
+</script>
+
+<script>
+        function openEditModal(eventId, eventName, eventTitle) {
+            console.log("Opening Modal with ID:", eventId);
+            console.log("Event Name:", eventName);
+            console.log("Event Title:", eventTitle);
+
+            document.getElementById("edit-event-id").value = eventId;
+            document.getElementById("id_event_name").value = eventName;
+            document.getElementById("id_event_title").value = eventTitle;
+
+            const modal = document.getElementById("edit-modal");
+            console.log("Modal Element:", modal);
+
+            modal.style.display = "flex"; // แสดง Modal
+        }
+</script>
+
+</body>
+</html>

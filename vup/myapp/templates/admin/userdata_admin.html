@@ -1,0 +1,450 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+
+
+    <link href="{% static 'css/css_admin/userdata.css' %}" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@100..700&display=swap" rel="stylesheet">
+   
+</head>
+<body>
+
+    <div class="menu-container">
+        <div class="profile-section">
+            <img src="{{ member_data.profile.url }}" alt="Profile Image" class="profile-image">
+            <p class="username">{{ member_data.username }}</p>
+        </div>
+
+        <div class="menu-items">
+            <a class="menu-item home-btt  " href="{% url 'dashboard' %}">
+                <i class="fa-solid fa-chart-line"></i>Dashboard
+            </a>
+            <a class="menu-item profile-btt active" href="{% url 'userdata' %}">
+                <i class="fa-regular fa-address-card"></i> Userdata
+            </a>
+            <a class="menu-item chat-btt " href="{% url 'report_admin' %}">
+                <i class="fa-solid fa-circle-exclamation"></i> Report
+            </a>
+        </div>
+
+
+        <a href="{% url 'logout' %}" class="logout">
+            Logout
+        </a>
+    </div>
+
+    <div class="outer-box">
+        <div class="profile-header" style="display: inline-flex; align-items: center; gap: 8px;">
+            <i class="fa-regular fa-address-card"></i>
+            <p class="my_profile_head" style="margin: 0;">Userdata</p>
+        </div>
+
+        <div class="content-box">
+
+            <div class="total-members">
+                <div class="icon-total-member">
+                   <i class="fa-solid fa-users"></i> 
+                </div>
+                <h1>{{ total_users }}</h1>
+                <p>Total Members</p>
+
+                <!-- <div class="total-member-bysex">
+                    <p>
+                        <i class="fa-solid fa-mars"></i> Male : {{ male_members }}
+                    </p>
+                    <p>
+                        <i class="fa-solid fa-venus"></i> Female : {{ female_members }}
+                    </p>
+                </div>
+                 -->
+            </div>
+
+            <div class="total-members">
+                <div class="icon-total-member">
+                   <i class="fa-solid fa-users"></i> 
+                </div>
+                <h1>{{ total_members }}</h1>
+                <p>Members</p>
+
+                <div class="total-member-bysex">
+                    <p>
+                        <i class="fa-solid fa-mars"></i> Male : {{ male_members }}
+                    </p>
+                    <p>
+                        <i class="fa-solid fa-venus"></i> Female : {{ female_members }}
+                    </p>
+                </div>
+
+                <!-- <div>
+                    <p>ผู้ใช้ที่เพิ่มในวันนี้: {{ users_added_today }}</p>
+                    <p>สมาชิกที่เพิ่มในวันนี้: {{ members_added_today }}</p>
+                </div> -->
+                
+            </div>
+
+            <div class="total-members">
+                <div class="icon-total-member">
+                    <i class="fa-solid fa-trash-can"></i>
+                </div>
+                <h1>{{ total_delete_member }}</h1>
+                <p>Delete</p>
+            </div>
+
+
+
+            <!-- <div class="total-events">
+                <div class="icon-total-events">
+                    <i class="fa-solid fa-chart-pie"></i>
+                </div>
+                <h1>{{ total_events }}</h1>
+                <p>Total Events</p>
+
+            </div>
+
+            <div class="member-stats">
+                <p>Total Members: {{ total_members }}</p>
+                <p>Male Members: {{ male_members }}</p>
+                <p>Female Members: {{ female_members }}</p>
+            </div> -->
+
+
+            
+            <!-- <div class="genderPie">
+                <p>Gender Distribution</p>
+                <canvas id="genderPieChart"></canvas>
+            </div>
+
+            <div class="genderBar">
+                <p>Bar Chart</p>
+                <canvas id="genderBarChart"></canvas>
+            </div>
+             -->
+
+             
+
+        </div>
+
+        <div id="successMessage">
+            <i class="fa fa-check-circle"></i> ลบสำเร็จแล้ว!
+        </div>
+        
+        
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>first_name</th>
+                        <th>last_name</th>
+                        <th>Sex</th>
+                        <th>Age</th>
+                        <th>Date Joined</th>
+                        <th>Created Event</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for member in members %}
+                    <tr>
+                        <td>{{ member.id }}</td>
+                        <td>{{ member.username }}</td>
+                        <td>{{ member.email }}</td>
+                        <td>{{ member.first_name }}</td>
+                        <td>{{ member.last_name }}</td>
+                        <!-- <td>{{ member.username }}</td> -->
+                        <td>{{ member.sex }}</td>
+                        <td>{{ member.age }}</td>
+                        <td>{{ member.date_joined|date:"Y-m-d H:i" }}</td>
+                        <td>{{ member.activity_count }}</td>
+                        <td>
+
+
+                        <div class="btn-actions">
+
+                            <div class="button-edit"> 
+                                <a href="{% url 'edit_member' member.id %}" class="edit-btn">
+                                    <i class="fa-solid fa-pen"></i>
+                                </a>
+                            </div>
+
+                            <div class="button-delete">
+                                <a href="#" class="delete-btn" onclick="openDeleteUserModal({{ member.id }}, '{{ member.username }}'); return false;">
+                                    <i class="fa-solid fa-trash"></i>
+                                </a>
+                            </div> 
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    
+
+       
+    </div>
+  
+
+        <!-- Modal -->
+            <div id="deleteUserModal" style="display: none;">
+                <div class="modal-content">
+                    <p>ต้องการลบ <strong id="modalUsername"></strong> ใช่หรือไม่?</p>
+                    <button onclick="confirmDelete()">Yes</button>
+                    <button onclick="closeModal()">No</button>
+                </div>
+            </div> 
+
+
+
+
+        
+        
+
+       
+ 
+    
+    
+
+</body>
+
+<!-- pie เพศ -->
+<script>
+    const maleMembers = {{ male_members|safe }};
+    const femaleMembers = {{ female_members|safe }};
+
+    console.log("Male Members:", maleMembers);
+    console.log("Female Members:", femaleMembers);
+
+    const ctx = document.getElementById('genderPieChart').getContext('2d');
+    const genderPieChart = new Chart(ctx, {
+        type: 'pie', // ประเภทของกราฟ
+        data: {
+            labels: ['Male', 'Female'], // ชื่อกลุ่ม
+            datasets: [{
+                data: [maleMembers, femaleMembers], // ข้อมูล
+                backgroundColor: ['#36A2EB', '#FF6384'], // สีของแต่ละกลุ่ม
+                borderColor: ['#ffffff', '#ffffff'],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                datalabels: {
+                    color: '#fff',
+                    formatter: (value, context) => {
+                        const total = context.chart.data.datasets[0].data.reduce((acc, cur) => acc + cur, 0);
+                        const percentage = ((value / total) * 100).toFixed(1) + '%';
+                        return percentage;
+                    },
+                    font: {
+                        weight: 'normal',
+                        size: 18
+                    }
+                }
+            }
+        },
+        plugins: [ChartDataLabels] // เพิ่ม Plugin
+    });
+
+    
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+    // รับค่าจาก input hidden (หรือ Context ของ Django)
+    const maleMembers = {{ male_members|safe }};
+    const femaleMembers = {{ female_members|safe }};
+
+    console.log("Male Members:", maleMembers);
+    console.log("Female Members:", femaleMembers);
+
+    // ข้อมูลที่ใช้ร่วมกัน
+    const labels = ['Male', 'Female'];
+    const data = [maleMembers, femaleMembers];
+    const backgroundColors = ['#36A2EB', '#FF6384'];
+
+    // สร้าง Bar Chart
+    const barCtx = document.getElementById('genderBarChart').getContext('2d');
+    const genderBarChart = new Chart(barCtx, {
+        type: 'bar', // ประเภทของกราฟ
+        data: {
+            labels: labels, // ชื่อแกน X
+            datasets: [{
+                label: 'Number of Members', // ชื่อข้อมูล
+                data: data, // ข้อมูล
+                backgroundColor: backgroundColors, // สีของแท่ง
+                borderColor: ['#ffffff', '#ffffff'], // สีขอบของแท่ง
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true, // กราฟปรับขนาดอัตโนมัติ
+            maintainAspectRatio: false, // ให้ปรับขนาดตาม container
+            scales: {
+                y: {
+                    beginAtZero: true, // ให้แกน Y เริ่มที่ 0
+                    title: {
+                        display: true,
+                        // text: 'Number of Members'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Gender' // ชื่อแกน X
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: true, // แสดง Legend
+                    position: 'top', // ตำแหน่ง Legend
+                },
+                datalabels: {
+                    anchor: 'end', // จัดตำแหน่งตัวเลขด้านบนแท่ง
+                    align: 'top', // จัดให้อยู่ด้านบนแท่ง
+                    color: '#333', // สีตัวอักษร
+                    formatter: (value) => value, // แสดงค่าจริง
+                    font: {
+                        size: 14 // ขนาดฟอนต์
+                    }
+                }
+            }
+        },
+        plugins: [ChartDataLabels] // ใช้ Plugin สำหรับแสดงข้อมูลบนแท่ง
+    });
+});
+
+</script>
+        
+
+<script>
+    let deleteUrl = '';
+
+function openConfirmDeleteModal(url) {
+    deleteUrl = url; // เก็บ URL ที่จะลบ
+    document.getElementById('confirmDeleteModal').style.display = 'block';
+}
+
+function closeConfirmDeleteModal() {
+    document.getElementById('confirmDeleteModal').style.display = 'none';
+}
+
+document.getElementById('confirmDeleteBtn').addEventListener('click', function () {
+    if (deleteUrl) {
+        window.location.href = deleteUrl; // ไปยัง URL สำหรับลบ
+    }
+});
+
+</script>
+
+<script>
+ let memberIdToDelete = null;
+
+function openDeleteUserModal(memberId, username) {
+    memberIdToDelete = memberId;
+    document.getElementById('modalUsername').innerText = username;
+    document.getElementById('deleteUserModal').style.display = 'block';
+}
+
+function closeModal() {
+    memberIdToDelete = null;
+    document.getElementById('deleteUserModal').style.display = 'none';
+}
+
+function confirmDelete() {
+    if (memberIdToDelete) {
+        fetch(`/delete-member/${memberIdToDelete}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                localStorage.setItem('deleteSuccess', 'true'); // เก็บสถานะ
+                window.location.reload(); // รีหน้า
+            } else {
+                alert('เกิดข้อผิดพลาดในการลบ');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('เกิดข้อผิดพลาด');
+        });
+    }
+    closeModal(); // ปิด Modal
+}
+
+// ตรวจสอบสถานะใน Local Storage
+const deleteSuccess = localStorage.getItem('deleteSuccess');
+if (deleteSuccess === 'true') {
+    const successMessage = document.getElementById('successMessage');
+    successMessage.style.display = 'block';
+
+    // ลบสถานะออกจาก Local Storage
+    localStorage.removeItem('deleteSuccess');
+
+    // ซ่อนข้อความหลัง 3 วินาที
+    setTimeout(() => {
+        successMessage.style.display = 'none';
+    }, 3000);
+}
+</script> 
+
+<script>
+    // ตรวจสอบสถานะใน Local Storage
+    const deleteSuccess = localStorage.getItem('deleteSuccess');
+    if (deleteSuccess === 'true') {
+        // แสดงข้อความ
+        const successMessage = document.getElementById('successMessage');
+        successMessage.style.display = 'block';
+
+        // ลบสถานะออกจาก Local Storage
+        localStorage.removeItem('deleteSuccess');
+
+        // ซ่อนข้อความหลัง 3 วินาที (ถ้าต้องการ)
+        setTimeout(() => {
+            successMessage.style.display = 'none';
+        }, 3000);
+    }
+</script>
+
+<script>
+    function updateUserCount() {
+        fetch('/user-update-count/')
+            .then(response => response.json())
+            .then(data => {
+                // อัปเดตยอดเพิ่ม/ลบผู้ใช้ใน HTML
+                document.getElementById('usersAddedToday').innerText = data.users_added_today;
+                document.getElementById('usersDeletedToday').innerText = data.users_deleted_today;
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    // ดึงข้อมูลทุก ๆ 5 วินาที
+    setInterval(updateUserCount, 5000);
+
+    // เรียกใช้ครั้งแรกเมื่อหน้าโหลด
+    updateUserCount();
+</script>
+
+</html>

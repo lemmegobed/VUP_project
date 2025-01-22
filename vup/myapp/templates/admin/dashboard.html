@@ -1,0 +1,312 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+
+
+    <link href="{% static 'css/css_admin/dash_admin.css' %}" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- <link rel="preconnect" href="https://fonts.googleapis.com"> -->
+    <!-- <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> -->
+    <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@100..700&display=swap" rel="stylesheet">
+   
+</head>
+<body>
+
+    <div class="menu-container">
+        <div class="profile-section">
+            <img src="{{ member_data.profile.url }}" alt="Profile Image" class="profile-image">
+            <p class="username">{{ member_data.username }}</p>
+        </div>
+
+        <div class="menu-items">
+            <a class="menu-item home-btt active " href="{% url 'dashboard' %}">
+                <i class="fa-solid fa-chart-line"></i>Dashboard
+            </a>
+            <a class="menu-item profile-btt " href="{% url 'userdata' %}">
+                <i class="fa-regular fa-address-card"></i> Userdata
+            </a>
+            <a class="menu-item chat-btt " href="{% url 'report_admin' %}" >
+                <i class="fa-solid fa-circle-exclamation"></i> Report
+            </a>
+        </div>
+
+
+        <a href="{% url 'logout' %}" class="logout">
+            Logout
+        </a>
+    </div>
+
+    <div class="outer-box">
+        <div class="profile-header" style="display: inline-flex; align-items: center; gap: 8px;">
+            <i class="fa-solid fa-chart-line"></i>
+            <p class="my_profile_head" style="margin: 0;">Dashboard</p>
+        </div>
+
+        <div class="content-box">
+            <div class="total-members">
+                <div class="icon-total-member">
+                   <i class="fa-solid fa-users"></i> 
+                </div>
+                <h1>{{ total_users }}
+                <p>Total Members</p>
+            </div>
+
+            <div class="total-members">
+                <div class="icon-total-member">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+                <h1>{{ total_members }}</h1>
+                <p>Members</p>
+            </div>
+
+
+            <div class="total-members">
+                <div class="icon-total-events">
+                    <i class="fa-solid fa-trash-can"></i>
+                </div>
+                <h1>{{ total_delete_member }}
+                <p>Delete</p>
+            </div>
+
+            <div class="total-events">
+                <div class="icon-total-events">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                </div>
+                <h1>{{ total_events }}</h1>
+                <p>Warned</p>
+            </div>
+
+            <div class="total-events">
+                <div class="icon-total-events">
+                    <i class="fa-solid fa-chart-pie"></i>
+                </div>
+                <h1>{{ total_events }}</h1>
+                <p>Total Events</p>
+
+                <ul>
+                    {% for category in events_by_category %}
+                        <li>{{ category.category }}: {{ category.event_count }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="total-events">
+                <div class="icon-total-events">
+                    <i class="fa-solid fa-circle-exclamation"></i>
+                </div>
+                <h1>{{ total_events }}</h1>
+                <p>Total Report</p>
+
+                <ul>
+                    {% for category in events_by_category %}
+                        <li>{{ category.category }}: {{ category.event_count }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <!-- <div class="member-stats">
+                <p>Total Members: {{ total_members }}</p>
+                <p>Male Members: {{ male_members }}</p>
+                <p>Female Members: {{ female_members }}</p>
+            </div>
+
+            <div class="event-category-stats">
+                <h3>Events by Category:</h3>
+                <ul>
+                    {% for category in events_by_category %}
+                        <li>{{ category.category }}: {{ category.event_count }}</li>
+                    {% endfor %}
+                </ul>
+            </div> -->
+
+
+
+            
+            <!-- <div class="genderPie">
+                <p>Gender Distribution</p>
+                <canvas id="genderPieChart"></canvas>
+            </div>
+
+            <div class="genderBar">
+                <p>Bar Chart</p>
+                <canvas id="genderBarChart"></canvas>
+            </div>
+
+            <div class="genderBar">
+                <p>Bar Chart</p>
+                <canvas id="genderBarChart"></canvas>
+            </div>
+
+            <div class="genderBar">
+                <p>Bar Chart</p>
+                <canvas id="genderBarChart"></canvas>
+            </div> -->
+            
+
+            
+
+        </div>
+
+        <div class="genderPie">
+            <p>Gender Distribution</p>
+            <canvas id="genderPieChart"></canvas>
+        </div>
+
+        <div class="genderBar">
+            <p>Bar Chart</p>
+            <canvas id="genderBarChart"></canvas>
+        </div>
+
+        <div class="genderBar">
+            <p>Bar Chart</p>
+            <canvas id="genderBarChart"></canvas>
+        </div>
+
+        <div class="genderBar">
+            <p>Bar Chart</p>
+            <canvas id="genderBarChart"></canvas>
+        </div>
+
+        
+             
+            <!-- ตัวอย่างการแสดงข้อมูลจากโมเดลต่างๆ -->
+            <h3>Recent Events:</h3>
+            <ul>
+                {% for event in recent_events %}
+                    <li>{{ event.event_name }} - {{ event.event_datetime }}</li>
+                {% endfor %}
+            </ul>
+
+       
+    </div>
+  
+
+
+ 
+    
+    
+
+</body>
+
+<!-- pie เพศ -->
+<script>
+    const maleMembers = {{ male_members|safe }};
+    const femaleMembers = {{ female_members|safe }};
+
+    console.log("Male Members:", maleMembers);
+    console.log("Female Members:", femaleMembers);
+
+    const ctx = document.getElementById('genderPieChart').getContext('2d');
+    const genderPieChart = new Chart(ctx, {
+        type: 'pie', // ประเภทของกราฟ
+        data: {
+            labels: ['Male', 'Female'], // ชื่อกลุ่ม
+            datasets: [{
+                data: [maleMembers, femaleMembers], // ข้อมูล
+                backgroundColor: ['#36A2EB', '#FF6384'], // สีของแต่ละกลุ่ม
+                borderColor: ['#ffffff', '#ffffff'],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                datalabels: {
+                    color: '#fff',
+                    formatter: (value, context) => {
+                        const total = context.chart.data.datasets[0].data.reduce((acc, cur) => acc + cur, 0);
+                        const percentage = ((value / total) * 100).toFixed(1) + '%';
+                        return percentage;
+                    },
+                    font: {
+                        weight: 'normal',
+                        size: 18
+                    }
+                }
+            }
+        },
+        plugins: [ChartDataLabels] // เพิ่ม Plugin
+    });
+
+    
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+    // รับค่าจาก input hidden (หรือ Context ของ Django)
+    const maleMembers = {{ male_members|safe }};
+    const femaleMembers = {{ female_members|safe }};
+
+    console.log("Male Members:", maleMembers);
+    console.log("Female Members:", femaleMembers);
+
+    // ข้อมูลที่ใช้ร่วมกัน
+    const labels = ['Male', 'Female'];
+    const data = [maleMembers, femaleMembers];
+    const backgroundColors = ['#36A2EB', '#FF6384'];
+
+    // สร้าง Bar Chart
+    const barCtx = document.getElementById('genderBarChart').getContext('2d');
+    const genderBarChart = new Chart(barCtx, {
+        type: 'bar', // ประเภทของกราฟ
+        data: {
+            labels: labels, // ชื่อแกน X
+            datasets: [{
+                label: 'Number of Members', // ชื่อข้อมูล
+                data: data, // ข้อมูล
+                backgroundColor: backgroundColors, // สีของแท่ง
+                borderColor: ['#ffffff', '#ffffff'], // สีขอบของแท่ง
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true, // กราฟปรับขนาดอัตโนมัติ
+            maintainAspectRatio: false, // ให้ปรับขนาดตาม container
+            scales: {
+                y: {
+                    beginAtZero: true, // ให้แกน Y เริ่มที่ 0
+                    title: {
+                        display: true,
+                        // text: 'Number of Members'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Gender' // ชื่อแกน X
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: true, // แสดง Legend
+                    position: 'top', // ตำแหน่ง Legend
+                },
+                datalabels: {
+                    anchor: 'end', // จัดตำแหน่งตัวเลขด้านบนแท่ง
+                    align: 'top', // จัดให้อยู่ด้านบนแท่ง
+                    color: '#333', // สีตัวอักษร
+                    formatter: (value) => value, // แสดงค่าจริง
+                    font: {
+                        size: 14 // ขนาดฟอนต์
+                    }
+                }
+            }
+        },
+        plugins: [ChartDataLabels] // ใช้ Plugin สำหรับแสดงข้อมูลบนแท่ง
+    });
+});
+
+</script>
+        
+
+</html>
