@@ -14,10 +14,12 @@ from django.utils import timezone
 
 
 class Member(AbstractUser):
+    is_banned = models.BooleanField(default=False)
     profile = models.ImageField(upload_to='profiles/', blank=True, null=True, default='profiles/default_profile_image.png')
     sex = models.CharField(max_length=10)
     birthdate = models.DateField(blank=True, null=True) 
     description = models.CharField(max_length=30, blank=True, null=True,default='เพิ่มคำอธิบายของคุณ')
+    
 
     @property
     def age(self):
@@ -25,7 +27,14 @@ class Member(AbstractUser):
             today = date.today()
             return today.year - self.birthdate.year - ((today.month, today.day) < (self.birthdate.month, self.birthdate.day))
         return None 
+    
+    def ban(self):
+        self.is_banned = True
+        self.save()
 
+    def unban(self):
+        self.is_banned = False
+        self.save()
     def __str__(self):
         return self.username
 
@@ -188,28 +197,6 @@ class Notification(models.Model):
         self.is_read = True
         self.save()
 
-# class Notification(models.Model):
-#     sender = models.ForeignKey(Member, on_delete=models.CASCADE, related_name="sent_notifications")
-#     receiver = models.ForeignKey(Member, on_delete=models.CASCADE, related_name="received_notifications")
-#     event = models.ForeignKey(Event, on_delete=models.CASCADE)
-#     message = models.TextField()
-#     is_approved = models.BooleanField(null=True, blank=True)  # None = Pending, True = Approved, False = Rejected
-#     created_at = models.DateTimeField(auto_now_add=True)
-    
-#     def __str__(self):
-#         return f"Notification from {self.sender} to {self.receiver} about {self.event.name}"
-#     class Meta:
-#         ordering = ['-created_at']
-
-
-
-    # user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="notifications")
-    # message = models.TextField()
-    # is_read = models.BooleanField(default=False)
-    # created_at = models.DateTimeField(auto_now_add=True)
-
-    # def __str__(self):
-    #     return f"Notification for {self.user.username}: {self.message}"
     
 class ChatRoom(models.Model):
     event = models.OneToOneField(Event, on_delete=models.CASCADE)
@@ -229,11 +216,7 @@ class Message(models.Model):
         return f"Message from {self.sender.username} in {self.chatroom.event.name}"
 
 
-STATUS_CHOICES = [
-    ('รอดำเนินการ', 'รอดำเนินการ'),
-    ('เตือน', 'เตือน'),
-    ('ปฏิเสธการรายงาน', 'ปฏิเสธการรายงาน'),
-]
+
 
 class Report(models.Model):
     REPORT_TYPE_CHOICES = [
@@ -242,34 +225,36 @@ class Report(models.Model):
         ('Other', 'อื่นๆ'),
     ]
 
-    reporter = models.ForeignKey(
-        settings.AUTH_USER_MODEL, 
-        on_delete=models.CASCADE, 
-        related_name='reports_made',
-        verbose_name="ผู้รายงาน"
-    )
-    event_owner = models.ForeignKey(
-        settings.AUTH_USER_MODEL, 
-        on_delete=models.CASCADE, 
-        related_name='events_owned',
-        verbose_name="เจ้าของอีเว้น"
-    )
-    event = models.ForeignKey(
-        'Event', 
-        on_delete=models.CASCADE, 
-        related_name='reported_events',
-        verbose_name="อีเว้นที่ถูกรายงาน"
-    )
-    report_type = models.CharField(
-        max_length=50, 
-        choices=REPORT_TYPE_CHOICES,
-        verbose_name="ประเภทการรายงาน"
-    )
+    STATUS_CHOICES = [
+        ('รอดำเนินการ', 'รอดำเนินการ'),
+        ('เตือนผู้ใช้งาน', 'เตือนผู้ใช้งาน'),
+        ('ปฏิเสธการรายงาน', 'ปฏิเสธการรายงาน'),
+    ]
+
+    reporter = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='reports_made',verbose_name="ผู้รายงาน")
+    event_owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='events_owned',verbose_name="เจ้าของอีเวนต์",null=True,blank=True)   
+    event = models.ForeignKey('Event', on_delete=models.CASCADE, related_name='reported_events',verbose_name="อีเว้นที่ถูกรายงาน")
+    report_type = models.CharField(max_length=50, choices=REPORT_TYPE_CHOICES,null=True, verbose_name="ประเภทการรายงาน")
     description = models.TextField(blank=True, null=True, verbose_name="คำอธิบาย")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="เวลาที่รายงาน")
     # warning_count = models.PositiveIntegerField(default=0, verbose_name="จำนวนการแจ้งเตือน")
     is_warned = models.CharField(max_length=15,choices=STATUS_CHOICES,default='รอดำเนินการ',verbose_name="สถานะการแจ้งเตือน")
 
     def __str__(self):
-        return f"Report by {self.reporter.username} on {self.event.event_name}"
+        return f"{self.reporter.username} รายงานกิจกรรม {self.event.event_name}"
+
+    @classmethod
+    def count_reports_by_event(cls, event):
+        return cls.objects.filter(event=event).count()
+
+    @classmethod
+    def count_warnings_by_event(cls, event):
+        return cls.objects.filter(event=event, is_warned='เตือน').count()
+
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = "รายงาน"
+        verbose_name_plural = "รายงานทั้งหมด"
+
+
 

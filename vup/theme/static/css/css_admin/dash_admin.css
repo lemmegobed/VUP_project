@@ -253,7 +253,7 @@
         flex-direction: column; 
         align-items: center; 
         justify-content: center;  
-        background-color: #418f99; /* พื้นหลังของกราฟ */
+        background-color: #ffffff; /* พื้นหลังของกราฟ */
         border-radius: 12px; /* มุมโค้งมน */
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* เงา */
         padding: 20px; /* เพิ่มระยะห่างด้านใน */
@@ -273,7 +273,7 @@
         flex-direction: column; 
         align-items: center; 
         justify-content: center;  
-        background-color: #418f99; /* พื้นหลังของกราฟ */
+        background-color: #ffffff; /* พื้นหลังของกราฟ */
         border-radius: 12px; /* มุมโค้งมน */
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* เงา */
         padding: 20px; /* เพิ่มระยะห่างด้านใน */

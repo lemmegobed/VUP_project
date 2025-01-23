@@ -303,16 +303,21 @@ def event_detail_report(request, event_id):
 #     return render(request, 'admin/event_report_detail.html', {'event': event, 'report': report})
 
 def submit_report(request, event_id):
-    event = get_object_or_404(Event, id=event_id) 
+    event = get_object_or_404(Event, id=event_id)
+    if not hasattr(event, 'created_by') or event.created_by is None:
+        messages.error(request, "Event does not have an owner. Cannot submit report.")
+        return redirect('feed')
+
     if request.method == 'POST':
         form = ReportForm(request.POST)
         if form.is_valid():
             report = form.save(commit=False)
-            report.reporter = request.user  
-            report.event = event  
-            report.event_owner = event.created_by  
+            report.reporter = request.user
+            report.event = event
+            report.event_owner = event.created_by  # ใช้ event.created_by อย่างปลอดภัย
             report.save()
-            return redirect('feed')  
+            messages.success(request, "Your report has been submitted successfully.")
+            return redirect('feed')
     else:
         form = ReportForm()
 
@@ -321,6 +326,27 @@ def submit_report(request, event_id):
         'event': event,
     }
     return render(request, 'member/submit_report.html', context)
+
+
+# def submit_report(request, event_id):
+#     event = get_object_or_404(Event, id=event_id) 
+#     if request.method == 'POST':
+#         form = ReportForm(request.POST)
+#         if form.is_valid():
+#             report = form.save(commit=False)
+#             report.reporter = request.user  
+#             report.event = event  
+#             report.event_owner = event.created_by  
+#             report.save()
+#             return redirect('feed')  
+#     else:
+#         form = ReportForm()
+
+#     context = {
+#         'form': form,
+#         'event': event,
+#     }
+#     return render(request, 'member/submit_report.html', context)
 
 @login_required
 def home_view(request):

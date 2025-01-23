@@ -1,8 +1,8 @@
 .calendar-notification {
     display: block;
-    width: 300px; 
-    /* height: 94vh; */
-    height: auto;
+    width: 350px; 
+    /* height: 100vh;
+    height: auto; */
     background-color: #2b3f65; 
     color: white; 
     /* padding: 20px; */
@@ -13,7 +13,7 @@
     z-index: 1000; 
     border-radius: 30px 0 0 30px;
  /* กำหนดความสูงสูงสุดของ Notification */
-    max-height: 100vh;
+    /* max-height: 100vh; */
     
     /* เพิ่ม Scroll Bar เมื่อเนื้อหาเกินความสูง */
     overflow-y: auto;
@@ -31,12 +31,12 @@
 
 /* สำหรับ Scroll Bar ของ Chrome และอื่นๆ */
 .notification-content::-webkit-scrollbar {
-    width: 8px;
+    width: 1px;
 }
 
 .notification-content::-webkit-scrollbar-thumb {
     background-color: #ccc;
-    border-radius: 10px;
+    border-radius: 5px;
 }
 
 .notification-content::-webkit-scrollbar-track {
@@ -102,10 +102,11 @@
     justify-content: space-between; 
 } */
 .icon-noti{
-    font-size: 10px;
-    color: #8d2424;
+    font-size: 8px;
+    color: #28b328;
     /* align-items: center; */
     text-align: center;
+    margin-left: 5px;
 }
 
 .notification-container {
@@ -130,24 +131,24 @@
 } */
 
 .notification-content {
-    max-height: 100vh; 
+    /* max-height: 100vh;  */
     overflow-y: auto;
     /* font-size: 12px; */
     /* color: #000000;   */
     /* text-align: center;  */
     background-color: #ffffff;
-    border-radius: 15px;
-    padding: 10px;
+    border-radius: 10px;
+    padding: 5px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-bottom: 10px;
-    height: 200px;
-    margin-top: 0;
+    /* margin-bottom: 10px; */
+    height: 250px;
+    /* margin-top: 0; */
 }
 
 .notification-content p{
     font-size: 12px;
     font-weight: normal;
-    color: #1c2b4a;
+    color: #000000;
     
 }
 
@@ -163,7 +164,7 @@
     padding: 5px;
     margin-bottom: 5px;
     border-radius: 5px;
-    background: #e4e4e4;
+    background: #a53535;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -171,19 +172,20 @@
 }
 
 .notification-content ul li.unread {
-    background: #cccccc;
-    font-weight: bold;
+    background: #c4c3c3;
+    bo
+    /* font-weight: bold; */
 }
 
 /* .notification-content ul li:hover {
     background: #f1f1f1;
 } */
 
-.notification-content ul li button {
+/* .notification-content ul li button {
     padding: 5px 10px;
     font-size: 12px;
     color: #000000;
-    background: #6d6d6d;
+    background: #6d2323;
     border: none;
     border-radius: 4px;
     cursor: pointer;
@@ -192,4 +194,4 @@
 
 .notification-content ul li button:hover {
     background: #787b7e;
-}
+} */
