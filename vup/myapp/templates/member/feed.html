@@ -224,59 +224,33 @@
     
      
         
-        <!-- Popup container -->
         <div id="popup-container"></div>
-        
-        
 
-    <!-- ปุ่ม JOIN ด้านขวา -->
-        <!-- <div class="join-btn-container">
-            <button class="join-btn">
-                <p>i want to</p>
-                <h1>JOIN</h1>
-                <p>{{ event.participants }}/{{ event.max_participants }}</p>
-            </button>
-        </div>
-    </div>
-  -->
-    <!-- <div class="join-btn-container">
-        <button class="join-btn" onclick="showJoinModal({{ event.id }})">
-            <p>I want to</p>
-            <h1>JOIN</h1>
-            <p>{{ event.max_participants }}/{{ event.participants }}</p>
-        </button>
-    </div> -->
+            <div class="join-btn-container">
+                <button class="join-btn" onclick="openJoinPopup({{ event.id }}, '{{ event.name|escapejs }}')">
+                    I want to Join
+                
+                </button>
+            </div>
 
-    
-    <!-- <div class="join-btn-container">
-        <button class="join-btn" onclick="openJoinPopup({{ event.id }}, '{{ event.name|escapejs }}', {{ event.participants }}, {{ event.max_participants }})">
-            <p>I want to</p>
-            <h1>JOIN</h1>
-            <p>{{ event.participants }}/{{ event.max_participants }}</p>
-        </button>
-    </div> -->
-    
-
-
-    <!-- ปุ่ม Join -->
-<div class="join-btn-container">
-    <button class="join-btn" onclick="openJoinPopup({{ event.id }}, '{{ event.name|escapejs }}')">
-        I want to Join
-        
-    </button>
-</div>
-
-<!-- ป๊อปอัป -->
-<div class="popup-container" id="join-popup" style="display: none;">
-    <div class="popup-content">
-        <h2>Confirm Joining</h2>
-        <p>Are you sure you want to join this event?</p>
-        <div class="popup-actions">
-            <button class="popup-btn confirm-btn" onclick="confirmJoin()">Yes</button>
-            <button class="popup-btn cancel-btn" onclick="closeJoinPopup()">Cancel</button>
-        </div>
-    </div>
-</div>
+            <!-- ป๊อปอัป -->
+            <div class="popup-container" id="join-popup" style="display: none;">
+                <div class="popup-content">
+                    <!-- <h2>Confirm Joining</h2> -->
+                    <div class="modal-icon">
+                        <i class="fa-solid fa-exclamation-circle"></i>
+                    </div>
+                    <p>คุณต้องการส่งคำขอคำเข้ารวมกิจกรรมนี้ใช่ไหม?</p>
+                    <div class="popup-actions">
+                        <button class="popup-btn confirm-btn" onclick="confirmJoin()">
+                            <i class="fa-solid fa-check"></i>ใช่
+                        </button>
+                        <button class="popup-btn cancel-btn" onclick="closeJoinPopup()">
+                            <i class="fa-solid fa-times"></i>ไม่
+                        </button>
+                    </div>
+                </div>
+            </div>
 
 
     </div>

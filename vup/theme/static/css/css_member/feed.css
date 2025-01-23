@@ -839,6 +839,12 @@
     cursor: pointer;
 }
 
+.modal-icon {
+    font-size: 50px;
+    color: #969696; /* สีส้ม */
+    margin-bottom: 10px;
+}
+
 .popup-container {
     position: fixed;
     top: 0;
@@ -873,9 +879,10 @@
 }
 
 .popup-actions {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
+    display: flex; /* ใช้ flexbox */
+    justify-content: center; /* จัดให้อยู่ตรงกลางในแนวนอน */
+    gap: 10px; /* ระยะห่างระหว่างปุ่ม */
+    margin-top: 20px;
 }
 
 .popup-btn {
@@ -893,4 +900,13 @@
 .cancel-btn {
     background-color: #f44336;
     color: white;
+}
+
+a.dropdown {
+    text-decoration: none; /* ลบเส้นใต้ */
+    color: inherit; /* ให้สีเหมือนกับข้อความเดิม */
+}
+
+a.dropdown:hover {
+    text-decoration: none; /* ลบเส้นใต้เมื่อ hover ด้วย */
 }

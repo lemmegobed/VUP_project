@@ -27,19 +27,19 @@ def login_view(request):
             user = authenticate(username=username, password=password)
             
             if user is not None:
-                login(request, user)  # เข้าสู่ระบบสำเร็จ
-
-                if user.is_superuser:  # ตรวจสอบว่าเป็น superuser หรือไม่
-                    return redirect('admin_dashboard')  # เปลี่ยนเส้นทางไปยังหน้า admin
+                if user.is_banned:  
+                    # เพิ่มข้อความเพียงครั้งเดียว
+                    form.add_error(None, 'บัญชีของคุณถูกระงับ โปรดติดต่อผู้ดูแลระบบ')
                 else:
-                    return redirect('feed')  # เปลี่ยนเส้นทางไปยังหน้าหลักหรือหน้าที่ต้องการ
+                    login(request, user)
+                    return redirect('dashboard' if user.is_superuser else 'feed')
             else:
-                form.add_error(None, 'Invalid login credentials')
-
+                form.add_error(None, 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง')
     else:
         form = AuthenticationForm()
 
     return render(request, 'registration/login.html', {'form': form})
+
 
 def register_view(request):
     if request.method == "POST":
@@ -113,49 +113,48 @@ def admin_dashboard(request):
     return render(request, 'admin/dashboard.html',context)
 
 def userdata_admin(request):
-
-    members = Member.objects.all()
-    members = Member.objects.annotate(activity_count=Count('events'))
-    total_members = Member.objects.count()
-
-    # today = now().date()
+    members = Member.objects.filter(is_banned=False)
+    members = members.annotate(activity_count=Count('events'))  
+    total_members = members.count()  
 
     users = User.objects.all()
-    total_users = User.objects.count()
-    # users_added_today = User.objects.filter(date_joined__date=today).count()
+    total_users = users.count()
 
-    total_delete_member = total_users - total_members
-    # users_deleted_today = User.objects.filter(is_active=False, last_login__date=today).count()
-    
-    male_members = Member.objects.filter(sex='M').count() 
-    female_members = Member.objects.filter(sex='F').count()  
+    total_banned_member = total_users - total_members
 
+    male_members = members.filter(sex='M').count() 
+    female_members = members.filter(sex='F').count()
 
     total_events = Event.objects.count()
     events_by_category = Event.objects.values('category').annotate(event_count=Count('id'))
 
     context = {
-        'total_members': total_members,      
-        'male_members': male_members,      
-        'female_members': female_members,   
-        'total_users': total_users,       
-        'total_events': total_events,       
-        'events_by_category': events_by_category, 
-        'total_delete_member':total_delete_member,
-        # 'users_added_today': users_added_today,
-        # 'users_deleted_today': users_deleted_today,
-        'members': members,                  
-        'users': users,                     
+        'total_members': total_members,       
+        'male_members': male_members,         
+        'female_members': female_members,     
+        'total_users': total_users,          
+        'total_events': total_events,         
+        'events_by_category': events_by_category,  
+        'total_banned_member': total_banned_member, 
+        'members': members,                   
+        'users': users,                       
     }
     return render(request, 'admin/userdata_admin.html', context)
 
-def delete_member(request, id):
-    if request.method == 'POST':
-        member = get_object_or_404(Member, id=id)
-        member.delete()
-        return JsonResponse({'success': True})
-    return JsonResponse({'error': 'Invalid request'}, status=400)
 
+def block_user(request, id):
+    if request.method == 'POST':
+        try:
+            # ตรวจสอบว่ามีผู้ใช้ในระบบหรือไม่
+            member = get_object_or_404(Member, id=id)
+            member.is_banned = True  # เปลี่ยนสถานะผู้ใช้เป็น "ถูกแบน"
+            member.save()
+            return JsonResponse({'status': 'success', 'message': f'{member.username} ถูกแบนแล้ว'})
+        except Exception as e:
+            # จับข้อผิดพลาดและส่งข้อความกลับ
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Method not allowed'}, status=405)
 
 # def warn_member(request, member_id):
 #     # ดึงข้อมูลของ Member ที่เป็นเจ้าของอีเว้น

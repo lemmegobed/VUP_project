@@ -11,7 +11,8 @@ urlpatterns = [
     path('custom-admin/dashboard/', admin_dashboard, name='dashboard'),
     path('custom-admin/userdata/', userdata_admin, name='userdata'),
     path('custom-admin/report/', report_admin, name='report_admin'),
-    path('delete-member/<int:id>/', delete_member, name='delete_member'),
+    # path('delete-member/<int:id>/', delete_member, name='delete_member'),
+    path('block/<int:id>/', block_user, name='block_user'),
     path('edit-member/<int:member_id>/', edit_member, name='edit_member'),
 
     # path('warn_member/<int:id>/', warn_member, name='warn_member'),
