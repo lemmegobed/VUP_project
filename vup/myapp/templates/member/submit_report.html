@@ -6,25 +6,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Submit Report</title>
 
-    <link href="{% static 'css/submit_report.css' %}" rel="stylesheet">
+    <link href="{% static 'css/css_member/report_event.css' %}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@100..700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h1>Submit a Report</h1>
+    <h1>รายงานปัญหา</h1>
+
+    <a href="javascript:history.back()" class="btn-back">ย้อนกลับ</a>
 
     <!-- ข้อมูลอีเวนต์ -->
     <div class="event-info">
-        <p><strong>Event Name:</strong> {{ event.event_name }}</p>
-        <p><strong>Event Owner:</strong> {{ event.created_by.username }}</p>
-        
+        <p><strong>ชื่อกิจกรรม :</strong> {{ event.event_name }}</p>
+        <p><strong>เจ้าของกิจกรรม :</strong> {{ event.created_by.username }}</p>
+        <p><strong>ผู้รายงาน :</strong> {{ request.user.username }}</p>
     </div>
 
     <!-- ฟอร์มรายงาน -->
     <form method="POST" action="">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit" class="btn-submit">Submit</button>
+        <button type="submit" class="btn-submit">รายงาน</button>
     </form>
+
 </body>
+
 </html>

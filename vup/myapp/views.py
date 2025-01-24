@@ -148,6 +148,7 @@ def block_user(request, id):
             # ตรวจสอบว่ามีผู้ใช้ในระบบหรือไม่
             member = get_object_or_404(Member, id=id)
             member.is_banned = True  # เปลี่ยนสถานะผู้ใช้เป็น "ถูกแบน"
+            member.is_active = False 
             member.save()
             return JsonResponse({'status': 'success', 'message': f'{member.username} ถูกแบนแล้ว'})
         except Exception as e:
@@ -349,19 +350,24 @@ def submit_report(request, event_id):
 
 @login_required
 def home_view(request):
-    events = Event.objects.all()
+    # กรองกิจกรรมเฉพาะที่สร้างโดยผู้ใช้ที่ไม่ถูกแบนและยัง active
+    events = Event.objects.filter(
+        created_by__is_banned=False,
+        created_by__is_active=True
+    )  # เพิ่ม select_related เพื่อปรับปรุงประสิทธิภาพ
+
+    # ดึงข้อมูลผู้ใช้ปัจจุบัน
     form = EventForm()
     current_user = request.user
     member_data = Member.objects.get(username=current_user.username)
-    events = Event.objects.select_related('created_by').all()
 
-    # context = {
-    #     'member_data': member_data,
-    #     'form': form,
-    #     'events': events,  
-    # }
+    # ส่งข้อมูลไปยัง Template
+    return render(request, 'member/feed.html', {
+        'member_data': member_data,
+        'form': form,
+        'events': events
+    })
 
-    return render(request, 'member/feed.html', {'member_data': member_data,'form': form,'events': events})
 
 
 @login_required
@@ -635,26 +641,20 @@ def send_join_request(request, event_id):
     if request.method != 'POST':
         return JsonResponse({'message': 'Invalid request method'}, status=400)
 
-    # ดึงข้อมูลอีเวนต์
     event = get_object_or_404(Event, id=event_id)
+    sender = request.user
+    receiver = get_object_or_404(Member, id=event.created_by_id)
 
-    # ดึงข้อมูลผู้ส่ง (sender) และเจ้าของอีเวนต์ (receiver)
-    sender = request.user  # ผู้ใช้ที่ล็อกอิน
-    receiver = get_object_or_404(Member, id=event.created_by_id)  # ดึง Member instance
-
-    # ตรวจสอบว่ามีคำขอซ้ำหรือไม่
     if Event_Request.objects.filter(event=event, sender=sender).exists():
         return JsonResponse({'message': 'คุณเคยส่งคำขอเข้าร่วมกิจกรรมนี้แล้ว'}, status=400)
 
-    # บันทึกคำขอใหม่
     Event_Request.objects.create(
         event=event,
         sender=sender,
-        receiver=receiver,  # ต้องเป็น Member instance
+        receiver=receiver,
         response_status='pending'
     )
 
-    # สร้างการแจ้งเตือน
     message = f"{sender.username} ต้องการเข้าร่วมกิจกรรม '{event.event_name}' ของคุณ"
     Notification.objects.create(
         user=receiver,
@@ -664,6 +664,7 @@ def send_join_request(request, event_id):
     )
 
     return JsonResponse({'message': 'ส่งคำขอสำเร็จ!'}, status=200)
+
 
 
 def action_request(request, request_id):

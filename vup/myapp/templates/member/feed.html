@@ -14,7 +14,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@100..700&display=swap" rel="stylesheet">
 </head>
 
-<body>
+<body>   
 
     <!-- เมนู -->
     <div class="menu-container">
@@ -46,6 +46,9 @@
         </a>
     </div>
 
+    <!-- <div id="notificationBar" class="notification-bar" style="display: none;">
+        <span id="notificationMessage"></span>
+    </div> -->
 
     <div class="home_page" id="home_page">
         <!-- ค้นหาแบบข้อความ -->
@@ -189,40 +192,14 @@
 
  
     <div class="post-right">
-        <div class="dropdown">
+
+        <div class="report-event">
             <a class="btn-report" href="{% url 'submit_report' event.id %}">
                 <i class="fa-solid fa-circle-exclamation"></i>
+                <span class="tooltip-text">รายงานกิจกรรมนี้</span>
             </a>
-            
-            
-
-            <!-- <i class="fa-solid fa-ellipsis-vertical" onclick="toggleDropdownMenu('{{ event.id }}')" style="cursor: pointer;"></i>
-            <div class="dropdown-menu" id="dropdownMenu-{{ event.id }}">
-                <button class="dropdown-item" onclick="openEditModal('{{ event.id }}', '{{ event.event_name }}', '{{ event.event_title }}', '{{ event.event_datetime|date:'Y-m-d\TH:i' }}', '{{ event.location }}', '{{ event.category }}', '{{ event.participants }}', '{{ event.province }}')">Edit</button> -->
-                <!-- <form id="editEventForm{{ event.id }}" method="POST" style="display:inline;">
-                    {% csrf_token %}
-                     <button type="button" class="dropdown-item" onclick="openeditEventModal('{{ event.id }}')">Edit</button> 
-                    {% if event.id %}
-                   <button class="edit-event-btn" data-event-id="{{ event.id }}">Edit</button> 
-                    
-                        <button class="dropdown-item" onclick="openEditModal('{{ event.id }}')">Edit</button>  
-                    {% else %}
-                        <p>No event id</p>
-                    {% endif %} 
-
-
-                </form>
-
-                <form id="deleteForm-{{ event.id }}" method="POST" action="{% url 'delete_event' event.id %}" style="display:inline;">
-                    {% csrf_token %}
-                    <button type="button" class="dropdown-item" onclick="openConfirmDeleteModal('{{ event.id }}')">Delete</button>
-                </form>
-            </div> -->
-            
-
         </div>
-    
-     
+
         
         <div id="popup-container"></div>
 
@@ -561,5 +538,74 @@ function confirmJoin() {
 
 </script>
 
+<!-- <script>
+    function showNotification(message, type = 'success') {
+    const notificationBar = document.getElementById('notificationBar');
+    const notificationMessage = document.getElementById('notificationMessage');
+
+    // ตั้งค่าข้อความแจ้งเตือน
+    notificationMessage.textContent = message;
+
+    // ตั้งสีพื้นหลังตามประเภท
+    if (type === 'success') {
+        notificationBar.style.backgroundColor = '#4caf50'; // สีเขียว
+    } else if (type === 'error') {
+        notificationBar.style.backgroundColor = '#f44336'; // สีแดง
+    }
+
+    // แสดงแจ้งเตือน
+    notificationBar.classList.add('show');
+    notificationBar.style.display = 'block';
+
+    // ซ่อนแจ้งเตือนหลังจาก 3 วินาที
+    setTimeout(() => {
+        notificationBar.classList.remove('show');
+        notificationBar.classList.add('hide');
+
+        // ลบแจ้งเตือนออกหลังจาก Animation ซ่อนเสร็จ
+        setTimeout(() => {
+            notificationBar.style.display = 'none';
+            notificationBar.classList.remove('hide');
+        }, 500); // เวลาเดียวกับ transition
+    }, 3000); // 3 วินาที
+}
+
+</script> -->
+
+<!-- <script>
+    // ตัวอย่างการส่งคำขอไปยัง Backend
+fetch(`/send-join-request/${eventId}/`, {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': getCSRFToken(),
+    },
+})
+    .then(response => response.json())
+    .then(data => {
+        if (response.ok) {
+            showNotification(data.message, 'success'); // แสดงข้อความสำเร็จ
+        } else {
+            showNotification(data.message, 'error'); // แสดงข้อความข้อผิดพลาด
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showNotification('เกิดข้อผิดพลาดบางอย่าง', 'error');
+    });
+
+// ฟังก์ชันสำหรับดึง CSRF Token
+function getCSRFToken() {
+    const cookies = document.cookie.split(';');
+    for (let cookie of cookies) {
+        const [name, value] = cookie.trim().split('=');
+        if (name === 'csrftoken') {
+            return value;
+        }
+    }
+    return null;
+}
+
+</script> -->
 </body>
 </html>
