@@ -6,9 +6,9 @@ from .models import *
 class MemberRegistrationForm(UserCreationForm):
 
     SEX_CHOICES = [
-        ('', 'Select'),
-        ('M', 'Male'),
-        ('F', 'Female'),
+        ('', 'เลือก'),
+        ('ชาย', 'ชาย'),
+        ('หญิง', 'หญิง'),
     ]
 
     sex = forms.ChoiceField(choices=SEX_CHOICES, widget=forms.Select, required=True)
@@ -19,10 +19,11 @@ class MemberRegistrationForm(UserCreationForm):
         fields = ('profile', 'username', 'email', 'first_name', 'last_name', 'sex', 'birthdate', 'password1', 'password2')
 
 class MemberUpdateForm(forms.ModelForm):
+    
     SEX_CHOICES = [
-        ('', 'Select'),
-        ('Male', 'Male'),
-        ('Female', 'Female'),
+        ('', 'เลือก'),
+        ('ชาย', 'ชาย'),
+        ('หญิง', 'หญิง'),
     ]
 
     sex = forms.ChoiceField(choices=SEX_CHOICES, widget=forms.Select, required=True)

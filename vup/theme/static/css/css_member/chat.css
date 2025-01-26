@@ -148,24 +148,115 @@ align-items: center;
 padding: 20px;
 background-color: #ffffff; 
 width: 50%; 
+height: 550px;
 margin: 0 auto; 
 border-radius: 20px; 
 box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
 margin-right: 29%;
 margin-top: 30px;
 margin-bottom: 30px;
+
 }
 
 
 
 .content-box {
 /* border: 4px solid #f65c5c;  */
-padding: 15px;
-border-radius: 8px; 
-background-color: #ede9fe; 
-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+/* padding: 10px; */
+/* border-radius: 8px;  */
+/* background-color: #3b259c;  */
+/* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  */
 margin-top: 20px;
 }
 
 
+.chat-room {
+    display: flex; /* ใช้ Flexbox เพื่อจัดวางรูปและข้อความ */
+    align-items: center; /* จัดกึ่งกลางแนวตั้ง */
+    padding: 5px;
+    border: 1px solid #aaa9a9;
+    /* background-color: #dbdbdb; */
+    border-radius: 10px;
+    margin-bottom: 10px;
+    transition: background-color 0.3s;
+    cursor: pointer;
+    font-size: 13px;
+}
 
+.chat-room:hover {
+    background-color: #c4c4c4;
+}
+
+.chat-room-icon {
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    width: 45px; 
+    height: 45px; 
+    border-radius: 50%; 
+    background-color: #f8a0af;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); 
+    margin-right: 15px; 
+    margin-left: 15px;
+}
+
+.chat-room-icon i {
+    font-size: 20px; /* ขนาดของไอคอน */
+    color: #000000; 
+    margin-left: 7px;
+}
+
+.chat-room-name {
+    font-size: 14px;
+    font-weight: bold; /* ทำให้ตัวหนา */
+    color: #000000; /* สีเข้ม */
+}
+
+.chat-room-count {
+    font-size: 12px;
+    font-weight: normal;
+    color: #3d3d3d; 
+}
+
+.chat-room-details-tag {
+    display: flex; 
+    gap: 5px;
+    justify-content: flex-start; 
+    align-items: center; 
+    /* margin-top: -5px;  */
+}
+
+/* เพิ่มกรอบวงกลมให้แต่ละ div */
+
+.chat-room-details-tag-div {
+    background-color: #f9f9f9; 
+    padding: 3px;
+    border: 1px solid #ddd; /* ขอบ */
+    border-radius: 20px; /* ทำให้เป็นวงกลม */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* เพิ่มเงา */
+    /* min-width: 100px;  */
+    /* min-height: 100px; */
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+/* เพิ่มสไตล์สำหรับข้อความ */
+.chat-room-location {
+    color: #333;
+    font-weight: bold;
+}
+
+.chat-room-province {
+    color: #555;
+    font-weight: normal;
+}
+
+.chat-room-details-tag-div p {
+    margin: 0;
+    font-size: 8px;
+    margin-left: 2px;
+    margin-right: 2px;
+}

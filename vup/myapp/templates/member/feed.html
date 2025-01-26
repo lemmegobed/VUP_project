@@ -132,20 +132,18 @@
 
         <p class="feed">feed now</p>
 
-    <!-- post event -->
+        <!-- post event -->
         <div class="event-container">
             {% for event in events %}
             <div class="event-post">
-                
                 <!-- Profile and Event Details -->
                 <div class="post-left">
-
                     <!-- รายละเอียดผู้โพสต์ -->
                     <div class="post_member">
                         <img src="{{ event.created_by.profile.url }}" alt="Profile Image" class="profile-image-post">
                         <div class="member-info">
                             <div class="username-container">
-                                <p class="username-post">{{event.created_by.username }}</p>
+                                <p class="username-post">{{ event.created_by.username }}</p>
                             </div>
 
                             <p class="location">
@@ -153,21 +151,14 @@
                                 <i class="fa-solid fa-location-dot location-icon"></i>
                                 <a href="https://www.google.com/maps/search/?api=1&query={{ event.location }}" target="_blank">{{ event.location }}</a>
                             </p>
-                            
-                            
                         </div>
                     </div>
-                      
+                    
                     <!-- รายละเอียดอีเวนต์ -->
                     <div class="detail-post">
                         <h2>{{ event.event_name }}</h2>
                         <p>{{ event.event_title }}</p>
                     </div>
-
-                    <!-- <div class="time-since-created">
-                        <i class="fa-solid fa-clock"></i>
-                        <p>โพสต์เมื่อ {{ event.created_at }} </p>
-                    </div> -->
 
                     <!-- รายละเอียดเพิ่มเติม (วัน, หมวดหมู่, จังหวัด) -->
                     <div class="filter-box-post">
@@ -190,59 +181,60 @@
                     </div>
                 </div>
 
- 
-    <div class="post-right">
-
-        <div class="report-event">
-            <a class="btn-report" href="{% url 'submit_report' event.id %}">
-                <i class="fa-solid fa-circle-exclamation"></i>
-                <span class="tooltip-text">รายงานกิจกรรมนี้</span>
-            </a>
-        </div>
-
-        
-        <div id="popup-container"></div>
-
-            <div class="join-btn-container">
-                <button class="join-btn" onclick="openJoinPopup({{ event.id }}, '{{ event.name|escapejs }}')">
-                    I want to Join
-                
-                </button>
-            </div>
-
-            <!-- ป๊อปอัป -->
-            <div class="popup-container" id="join-popup" style="display: none;">
-                <div class="popup-content">
-                    <!-- <h2>Confirm Joining</h2> -->
-                    <div class="modal-icon">
-                        <i class="fa-solid fa-exclamation-circle"></i>
+                <!-- post-right -->
+                <div class="post-right">
+                    <div class="time-since-created">
+                        <!-- <i class="fa-solid fa-clock"></i> -->
+                        <span class="time-text">{{ event.time_since }}ที่แล้ว</span>
                     </div>
-                    <p>คุณต้องการส่งคำขอคำเข้ารวมกิจกรรมนี้ใช่ไหม?</p>
-                    <div class="popup-actions">
-                        <button class="popup-btn confirm-btn" onclick="confirmJoin()">
-                            <i class="fa-solid fa-check"></i>ใช่
-                        </button>
-                        <button class="popup-btn cancel-btn" onclick="closeJoinPopup()">
-                            <i class="fa-solid fa-times"></i>ไม่
+                    
+
+                    <!-- ซ่อนเฉพาะ report-event และ join-btn-container สำหรับเจ้าของ -->
+                    {% if request.user.id != event.created_by.id %}
+                    <div class="report-event">
+                        <a class="btn-report" href="{% url 'submit_report' event.id %}">
+                            <i class="fa-solid fa-circle-exclamation"></i>
+                            <span class="tooltip-text">รายงานกิจกรรมนี้</span>
+                        </a>
+                    </div>
+                    
+                    <div class="join-btn-container">
+                        <button class="join-btn" onclick="openJoinPopup({{ event.id }}, '{{ event.name|escapejs }}')">
+                            I want to Join
                         </button>
                     </div>
+                    {% endif %}
+                    <!-- ป๊อปอัป -->
+                    <div class="popup-container" id="join-popup" style="display: none;">
+                        <div class="popup-content">
+                            <!-- <h2>Confirm Joining</h2> -->
+                            <div class="modal-icon">
+                                <i class="fa-solid fa-exclamation-circle"></i>
+                            </div>
+                            <p>คุณต้องการส่งคำขอคำเข้ารวมกิจกรรมนี้ใช่ไหม?</p>
+                            <div class="popup-actions">
+                                <button class="popup-btn confirm-btn" onclick="confirmJoin()">
+                                    <i class="fa-solid fa-check"></i>ใช่
+                                </button>
+                                <button class="popup-btn cancel-btn" onclick="closeJoinPopup()">
+                                    <i class="fa-solid fa-times"></i>ไม่
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
                 </div>
             </div>
-
-
-    </div>
-</div>
-</div>
-        <!-- ถ้าไม่มีอีเว้น-->
-        <div>
             {% empty %}
-            <p class="no_event"> - No events available - </p>
+            <p class="no_event">- No events available -</p>
             {% endfor %}
         </div>
 
         <div id="eventModal" class="modal">
             {% include 'member/new_event.html' %}
         </div>
+
 
         <div>
             {% include 'member/notification.html' %}

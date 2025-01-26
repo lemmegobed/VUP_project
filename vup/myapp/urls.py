@@ -28,20 +28,28 @@ urlpatterns = [
     path('profile/', profile_view, name='profile'),
     path('profile/<int:member_id>/edit', profile_edit, name='edit_profile'),
     path('my-activity/', my_activity, name='my_activity'),
-    path('chat/', chat_view, name='chat'),
+    path('chat/', chat_rooms_list, name='chat'),
+    path('chat-room/<int:room_id>/', chat_room_detail, name='chat_room_detail'),
+
 
     path('new_event/', new_event_view, name='new_event'),
     # path('update_event/<int:event_id>/', update_event_view, name='update_event'),
-    path('edit-event/<int:event_id>/', edit_event, name='edit_event'),
+    # path('edit-event/<int:event_id>/', edit_event, name='edit_event'),
     # path("event/<int:event_id>/join/",request_to_join, name="request_to_join"),
     # path("notification/<int:notification_id>/<str:action>/", respond_to_request, name="respond_to_request"),
     path('notifications/<int:notification_id>/mark-as-read/',mark_notification_as_read, name='mark_notification_as_read'),
     
     path('events/<int:event_id>/send-request/', send_join_request, name='send_join_request'),
-    path('requests/<int:request_id>/handle/', action_request, name='action_request'),
-
+    # path('requests/<int:request_id>/handle/', action_request, name='action_request'),
+    # path('requests/<int:request_id>/handle/', handle_request_action, name='handle_request_action'),
+    # path('requests/<int:request_id>/handle/', handle_request_action, name='handle_request_action'),
+    # path('events/<int:event_id>/handle-request/', handle_event_request, name='handle_event_request'),
+    # path('events/<int:event_id>/handle-request/', handle_event_request, name='handle_event_request'),
+    path('events/requests/<int:event_request_id>/handle-request/', handle_event_request, name='handle_event_request'),
+    # path('notifications/', notifications_view, name='notifications'),  
     
-    path("chatroom/<int:event_id>/", chatroom_view, name="chatroom"),
+    # path("chatroom/<int:event_id>/", chat_list, name="chatroom"),
+    # path('chat/', chat_list, name='chat_list'),
     
     path('delete-event/<int:event_id>/', delete_event, name='delete_event'),
     path('search/', search_events, name='search_events'),

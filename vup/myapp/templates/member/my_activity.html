@@ -68,7 +68,7 @@
             </div>
 
             <div class="event-container">
-                {% for event in user_events %}
+                {% for event in events %}
                 <div class="event-box-post"> 
                     <div class="post_member">
                         
@@ -163,13 +163,14 @@
                             
                                     <label class="edit-event-label">Category</label>
                                     <select class="edit-event-select" name="category" required>
-                                        <option value="food" {% if event.category == "food" %}selected{% endif %}>Food</option>
-                                        <option value="travel" {% if event.category == "travel" %}selected{% endif %}>Travel</option>
-                                        <option value="game" {% if event.category == "game" %}selected{% endif %}>Game</option>
-                                        <option value="sport" {% if event.category == "sport" %}selected{% endif %}>Sport</option>
-                                        <option value="music" {% if event.category == "music" %}selected{% endif %}>Music</option>
-                                        <option value="art" {% if event.category == "art" %}selected{% endif %}>Art</option>
-                                        <option value="education" {% if event.category == "education" %}selected{% endif %}>Education</option>
+                                        <option value="เลือกหมวด" {% if event.category == "เลือกหมวด" %}selected{% endif %}>เลือกหมวด</option>
+                                        <option value="การศึกษา" {% if event.category == "การศึกษา" %}selected{% endif %}>การศึกษา</option>
+                                        <option value="กีฬา" {% if event.category == "กีฬา" %}selected{% endif %}>กีฬา</option>
+                                        <option value="ท่องเที่ยว" {% if event.category == "ท่องเที่ยว" %}selected{% endif %}>ท่องเที่ยว</option>
+                                        <option value="อาหาร" {% if event.category == "อาหาร" %}selected{% endif %}>อาหาร</option>
+                                        <option value="ศิลปะ" {% if event.category == "ศิลปะ" %}selected{% endif %}>ศิลปะ</option>
+                                        <option value="สุขภาพ" {% if event.category == "สุขภาพ" %}selected{% endif %}>สุขภาพ</option>
+                                        <option value="ความบันเทิง" {% if event.category == "ความบันเทิง" %}selected{% endif %}>ความบันเทิง</option>
                                     </select>
                             
                                     <label class="edit-event-label">Max Participants</label>

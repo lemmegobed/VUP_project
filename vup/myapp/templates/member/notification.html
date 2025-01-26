@@ -24,16 +24,140 @@
     </div>
 
     <!-- Notification Section -->
-    <div class="notification-container"> 
+    <!-- <div class="notification-container">
+        <h1><i class="fas fa-bell"></i> Notification</h1>
+        <div class="notification-content">
+            <ul>
+                {% for notification in notifications %}
+                    <li class="{% if not notification.is_read %}unread{% endif %}">
+                        <div class="icon-noti">
+                            <i class="fa-solid fa-circle"></i>
+                        </div>
+                        <p>{{ notification.message }}</p>
+                        {% if notification.related_event %}
+                            <p>เกี่ยวข้องกับกิจกรรม: {{ notification.related_event.event_name }}</p>
+                        {% endif %}
+                    </li>
+                {% empty %}
+                    <li>ไม่มีการแจ้งเตือน</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div> -->
+    
+    
+
+    <!-- <div class="notification-container">
+        <h1><i class="fas fa-bell"></i> Notification</h1>
+        <div class="notification-content">
+            <ul>
+                {% for notification in notifications %}
+                    <li class="{% if not notification.is_read %}unread{% endif %}">
+                        <div class="icon-noti">
+                            <i class="fa-solid fa-circle"></i>
+                        </div>
+                        <p>{{ notification.message }}</p>
+                        {% if notification.related_event %}
+                            <p>เกี่ยวข้องกับกิจกรรม: {{ notification.related_event.event_name }}</p>
+                        {% endif %}
+                    </li>
+                {% empty %}
+                    <li>ไม่มีการแจ้งเตือน</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div> -->
+    
+    <div class="notification-container">
+        <h1><i class="fas fa-bell"></i> Notification</h1>
+    <div class="notification-content">
+        
+        <ul>
+            {% for notification in user.notifications.all %}
+                <!-- การแจ้งเตือนประเภท request -->
+                {% if notification.notification_type == "request" %}
+                    {% if notification.related_event and notification.related_event.is_active and notification.related_event.created_by.is_banned == False %}
+                        <li class="{% if not notification.is_read %}unread{% endif %}">
+                            
+                           
+                                <div class="message-noti">
+                                    <i class="fa-solid fa-circle"></i>
+                                    <p class="notification-text"></i>{{ notification.message }}</p>
+                                </div>
+                                <!-- <p class="notification-text"></i>{{ notification.message }}</p> -->
+                                <div class="button-action-noti">
+                                    {% with notification.related_event.event_requests.first as event_request %}
+                                        {% if event_request and event_request.response_status == "pending" %}
+                                            <!-- แสดงปุ่ม YES และ NO -->
+                                            <button class="btn-yes" onclick="handleAction({{ event_request.id }}, 'accept')">อนุมัติ</button>
+                                            <button class="btn-no" onclick="handleAction({{ event_request.id }}, 'reject')">ปฏิเสธ</button>
+                                        {% elif event_request and event_request.response_status == "accepted" %}
+                                            <!-- แสดงสถานะว่าอนุมัติแล้ว -->
+                                            <button class="btn-approved" disabled>อนุมัติแล้ว</button>
+                                        {% elif event_request and event_request.response_status == "rejected" %}
+                                            <!-- แสดงสถานะว่าปฏิเสธแล้ว -->
+                                            <button class="btn-rejected" disabled>ปฏิเสธแล้ว</button>
+                                        {% else %}
+                                            <p>Response Status: Unknown</p>
+                                        {% endif %}
+                                    {% endwith %}
+                                </div>
+                        </li>
+
+                    {% endif %}
+                
+                <!-- การแจ้งเตือนประเภท response -->
+                {% elif notification.notification_type == "response" %}
+                {% if notification.related_event and notification.related_event.is_active and notification.related_event.created_by.is_banned == False %}
+                    {% with notification.related_event.event_requests.first as event_request %}
+                        {% if event_request and event_request.response_status == "accepted" %}
+                            <li class="{% if not notification.is_read %}unread{% endif %}">
+                                <div class="message-noti">
+                                    <i class="fa-solid fa-circle"></i>
+                                    <p>{{ notification.message }}</p>
+                                </div>
+                                <!-- แสดงปุ่มเข้าร่วมแชทเฉพาะสถานะ accepted -->
+                                <button class="btn-chat" onclick="window.location.href='/chatroom/{{ notification.related_event.id }}/'">เข้าร่วมแชท!</button>
+                            </li>
+                        {% elif event_request and event_request.response_status == "rejected" %}
+                            <li class="{% if not notification.is_read %}unread{% endif %}">
+                                <div class="message-noti">
+                                    <i class="fa-solid fa-circle"></i>
+                                    <p>{{ notification.message }}</p>
+                                </div>
+                                <!-- ไม่แสดงปุ่มเข้าร่วมแชทในกรณี rejected -->
+                            </li>
+                        {% endif %}
+                    {% endwith %}
+                {% endif %}
+                
+                <!-- การแจ้งเตือนประเภท system -->
+                {% elif notification.notification_type == "system" %}
+                    
+                        <li class="{% if not notification.is_read %}unread{% endif %}">
+                            <div class="message-noti-system">
+                                <i class="fa-solid fa-triangle-exclamation"></i>
+                                <p>{{ notification.message }}</p>
+                            </div>
+                        </li>
+                    
+                {% endif %}
+            {% empty %}
+            <li class="no-notifications">ไม่มีการแจ้งเตือน</li>
+            {% endfor %}
+        </ul>
+    <!-- </div> -->
+    </div>
+    
+    
+    <!-- <div class="notification-container"> 
         <h1><i class="fas fa-bell"></i> Notification</h1>
         <div class="notification-content">
             <div class="noti-container">
                 <ul>
                     {% for notification in user.notifications.all %}
+                        {% if notification.related_event.is_active %}
                         <li class="{% if not notification.is_read %}unread{% endif %}">
-                            <!-- <button onclick="markAsRead({{ notification.id }})">
-                                <i class="fas fa-bell"></i> 
-                            </button> -->
                             <div class="icon-noti">
                                 <i class="fa-solid fa-circle"></i>
                             </div>
@@ -44,12 +168,15 @@
                             {% endif %}
 
                         </li>
+                        {% endif %}
                     {% endfor %}
                 </ul>
 
             </div>
         </div>
-    </div>
+    </div> --> 
+
+    
     
     <!-- <div class="notification-container">
         <h1><i class="fas fa-bell"></i> Notification</h1>
@@ -126,30 +253,107 @@
 
 <!-- ปุ่มตอบรับ -->
 <script>
-    function handleAction(requestId, action) {
-    fetch(`/requests/${requestId}/handle/`, {
+
+function handleAction(eventRequestId, action) {
+    fetch(`/events/requests/${eventRequestId}/handle-request/`, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/x-www-form-urlencoded',
             'X-CSRFToken': '{{ csrf_token }}',
         },
-        body: JSON.stringify({ action: action }),
+        body: `action=${action}`,  // ส่ง action: accept หรือ reject
     })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json();
-    })
+    .then(response => response.json())
     .then(data => {
-        alert(data.message);
-        location.reload(); // รีโหลดหน้าเพื่ออัปเดตสถานะ
+        alert(data.message);  // แสดงข้อความตอบกลับจาก backend
+        location.reload();  // รีโหลดหน้าเพื่ออัปเดตข้อมูล
     })
     .catch(error => {
         console.error('Error:', error);
-        alert('เกิดข้อผิดพลาด');
+        alert('เกิดข้อผิดพลาด! โปรดลองใหม่');
     });
 }
+
+
+// function handleAction(eventRequestId, action) {
+//     console.log(`Event Request ID: ${eventRequestId}, Action: ${action}`);
+
+//     fetch(`/events/requests/${eventRequestId}/handle-request/`, {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/x-www-form-urlencoded',
+//             'X-CSRFToken': '{{ csrf_token }}',
+//         },
+//         body: `action=${action}`,
+//     })
+//     .then(response => {
+//         if (!response.ok) {
+//             throw new Error('Network response was not ok');
+//         }
+//         return response.json();
+//     })
+//     .then(data => {
+//         alert(data.message);
+//         location.reload(); // Reload หน้าเพื่ออัปเดตสถานะ
+//     })
+//     .catch(error => {
+//         console.error('Error:', error);
+//         alert('เกิดข้อผิดพลาด! โปรดลองใหม่');
+//     });
+// }
+
+
+
+
+// function handleAction(eventId, action) {
+//     // ซ่อนปุ่มทั้งหมดใน div ที่เกี่ยวข้อง
+//     const buttonContainer = document.getElementById(`action-buttons-${eventId}`);
+//     if (buttonContainer) {
+//         buttonContainer.style.display = 'none'; // ซ่อนปุ่ม
+//     }
+
+//     // ดำเนินการส่งคำขอ
+//     fetch(`/events/${eventId}/handle-request/`, {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/x-www-form-urlencoded',
+//             'X-CSRFToken': '{{ csrf_token }}',
+//         },
+//         body: `action=${action}`
+//     })
+//     .then(response => response.json())
+//     .then(data => {
+//         alert(data.message); // แจ้งข้อความตอบกลับ
+//     })
+//     .catch(error => {
+//         console.error('Error:', error);
+//         alert('เกิดข้อผิดพลาด! โปรดลองใหม่');
+//         // แสดงปุ่มกลับมา หากเกิดข้อผิดพลาด
+//         if (buttonContainer) {
+//             buttonContainer.style.display = 'block';
+//         }
+//     });
+// }
+
+// function handleAction(eventId, action) {
+//     fetch(`/events/${eventId}/handle-request/`, {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/x-www-form-urlencoded',
+//             'X-CSRFToken': '{{ csrf_token }}',
+//         },
+//         body: `action=${action}`  // ส่ง action: accept หรือ reject
+//     })
+//     .then(response => response.json())
+//     .then(data => {
+//         alert(data.message);
+//         location.reload();
+//     })
+//     .catch(error => {
+//         console.error('Error:', error);
+//         alert('เกิดข้อผิดพลาด! โปรดลองใหม่');
+//     });
+// }
 
 </script>
 </html>

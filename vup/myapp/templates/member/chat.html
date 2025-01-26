@@ -20,7 +20,7 @@
 <body>
 
     <!-- เมนู -->
-    a<div class="menu-container">
+    <div class="menu-container">
         <div class="profile-section">
             <img src="{{ member_data.profile.url }}" alt="Profile Image" class="profile-image">
             <p class="username">{{ member_data.username }}</p>
@@ -51,27 +51,66 @@
     <div class="outer-box">
         <div class="profile-header" style="display: inline-flex; align-items: center; gap: 8px;">
             <i class="fa-regular fa-comments"></i>
-            <p class="my_profile_head" style="margin: 0;">Chat</p>
+            <p class="my_profile_head" style="margin: 0;">Chat Room</p>
         </div>
-        
                
-        <div class="inner-box">
-            <div class="box-profile-show">
-                <!-- <img src="{{ member_data.profile.url }}" alt="Profile Image" class="profile-image-show">
+        <!-- <div class="inner-box"> -->
                 
-                <div class="in-box-profile-show">
-                    <p class="username-profile">{{ member_data.username }}</p>
-                    
-                    <div class="box-age">
-                        <p class="age">{{ member_data.age }}Y</p>
-                    </div>
-                </div> -->
-           </div>
-            
-
             <div class="content-box">
+                <div class="chat-rooms-list">
+                    {% for chat_room in chat_rooms %}
+                        <div class="chat-room" onclick="window.location.href='{% url 'chat_room_detail' chat_room.id %}'">
+                            <div class="chat-room-icon">
+                                {% if chat_room.event.category == 'การศึกษา' %}
+                                    <i class="fas fa-book"></i>
+                                {% elif chat_room.event.category == 'กีฬา' %}
+                                    <i class="fas fa-futbol"></i>
+                                {% elif chat_room.event.category == 'ท่องเที่ยว' %}
+                                    <i class="fas fa-plane"></i>
+                                {% elif chat_room.event.category == 'อาหาร' %}
+                                    <i class="fas fa-utensils"></i>
+                                {% elif chat_room.event.category == 'ศิลปะ' %}
+                                    <i class="fas fa-palette"></i>
+                                {% elif chat_room.event.category == 'สุขภาพ' %}
+                                    <i class="fas fa-heartbeat"></i>
+                                {% elif chat_room.event.category == 'ความบันเทิง' %}
+                                    <i class="fas fa-music"></i>
+                                {% else %}
+                                    <i class="fas fa-question-circle"></i>
+                                {% endif %}
+                            </div>
+                            <div class="chat-room-details">
+                                <p>
+                                    <strong class="chat-room-name">ห้อง : {{ chat_room.name }}</strong>
+                                    <span class="chat-room-count">(<i class="fa-solid fa-user"></i>{{ chat_room.member_count }})</span>
+                                </p>
+ 
+                                <div class="chat-room-details-tag">
+                                    <div class="chat-room-details-tag-div">
+                                        <p><i class="fa-solid fa-shapes"></i>: {{ chat_room.event.category }}</p> 
+                                    </div>
+                                    <div class="chat-room-details-tag-div">
+                                        <p>
+                                            <span class="chat-room-location"><i class="fa-solid fa-location-dot"></i>: {{ chat_room.event.location }}</span>
+                                            <strong class="chat-room-province">,{{ chat_room.event.province }}</strong>
+                                        </p>
+                                    </div>
+
+                                    <div class="chat-room-details-tag-div">
+                                        <p><i class="fa-solid fa-calendar-days"></i>: {{ chat_room.event.event_datetime }}</p>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    {% empty %}
+                        <p>No chat rooms available.</p>
+                    {% endfor %}
+                </div>
+                
             </div>
-        </div>
+            
+        <!-- </div> -->
     </div>
     
         <div>

@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from datetime import date
 from django.conf import settings 
 from django.utils import timezone
+from django.utils.timezone import now
 
 
 class Member(AbstractUser):
@@ -48,11 +49,11 @@ class User(models.Model):
         return self.username
 
 class Event(models.Model):
-    event_name = models.CharField(max_length=50)
+    event_name = models.CharField(max_length=100)
     event_title = models.CharField(max_length=100)
     event_datetime = models.DateTimeField()
-    location = models.CharField(max_length=200)
-    category = models.CharField(max_length=100)
+    location = models.CharField(max_length=100)
+    category = models.CharField(max_length=50)
     province = models.CharField(max_length=100,)
     created_at = models.DateTimeField(default=timezone.now) 
     created_by = models.ForeignKey(Member, on_delete=models.CASCADE, related_name="events")
@@ -65,6 +66,22 @@ class Event(models.Model):
     def __str__(self):
         return self.event_name
     
+    @property
+    def time_since(self):
+        delta = now() - self.created_at
+        seconds = int(delta.total_seconds())
+        
+        if seconds < 60:
+            return "ตอนนี้"
+        elif seconds < 3600:
+            return f"{seconds // 60} นาที"
+        elif seconds < 86400:
+            return f"{seconds // 3600} ชั่วโมง"
+        elif seconds < 31536000:
+            return f"{seconds // 86400} วัน"
+        else:
+            return f"{seconds // 31536000} ปี"
+    
     class Meta:
         ordering = ['-created_at']
 
@@ -76,7 +93,7 @@ class Event_Request(models.Model):
         ('rejected', 'ปฏิเสธ'),
     ]
 
-    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name="requests")  
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name="event_requests")
     sender = models.ForeignKey(Member, on_delete=models.CASCADE, related_name="sent_requests")  
     receiver = models.ForeignKey(Member, on_delete=models.CASCADE, related_name="received_requests")  
     request_time = models.DateTimeField(auto_now_add=True) 
@@ -90,9 +107,9 @@ class Event_Request(models.Model):
     
 class Notification(models.Model):
     NOTIFICATION_TYPES = [
-        ('request', 'คำขอเข้าร่วมกิจกรรม'),
-        ('response', 'ตอบกลับคำขอ'),
-        ('other', 'อื่น ๆ'),
+        ('คำขอเข้าร่วมกิจกรรม', 'คำขอเข้าร่วมกิจกรรม'),
+        ('ตอบกลับคำขอ', 'ตอบกลับคำขอ'),
+        ('อื่น ๆ', 'อื่น ๆ'),
     ]
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="notifications")  # ผู้รับการแจ้งเตือน
@@ -100,7 +117,14 @@ class Notification(models.Model):
     related_event = models.ForeignKey(Event, on_delete=models.CASCADE, null=True, blank=True, related_name="notifications")  # กิจกรรมที่เกี่ยวข้อง (ถ้ามี)
     notification_type = models.CharField(max_length=20, choices=NOTIFICATION_TYPES, default='other')  # ประเภทของการแจ้งเตือน
     is_read = models.BooleanField(default=False)  # สถานะว่าอ่านแล้วหรือยัง
+    # is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)  # เวลาที่สร้างการแจ้งเตือน
+    related_request = models.ForeignKey(
+        'Event_Request',  # เพิ่มความสัมพันธ์กับ Event_Request
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True
+    )
 
     def __str__(self):
         return f"การแจ้งเตือนสำหรับ {self.user.username} - {self.notification_type}"
@@ -113,25 +137,56 @@ class Notification(models.Model):
         self.is_read = True
         self.save()
 
+    @property
+    def is_event_active(self):
+        """ตรวจสอบว่าอีเว้นท์ที่เกี่ยวข้องยัง Active อยู่หรือไม่"""
+        if self.related_event:
+            return self.related_event.is_active
+        return False  # ถ้าไม่มีอีเว้นท์ที่เกี่ยวข้อง
+
     
 class ChatRoom(models.Model):
-    event = models.OneToOneField(Event, on_delete=models.CASCADE)
-    users = models.ManyToManyField(Member)
+    name = models.CharField(max_length=100, default='Unnamed Chat Room')   # ชื่อห้องแชท
+    event = models.ForeignKey('Event', on_delete=models.CASCADE, related_name='chat_rooms')  # เชื่อมกับ Event
+    members = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='chat_rooms', blank=True)  # สมาชิกในห้องแชท
+    created_at = models.DateTimeField(default=timezone.now) 
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="created_chat_rooms")  # ใช้ Member
+    is_active = models.BooleanField(default=True)
+
+    @property
+    def name(self):
+        # ดึงชื่อห้องแชทจาก event.event_name
+        return self.event.event_name
+
+    @name.setter
+    def name(self, value):
+        # อัปเดต event.event_name
+        self.event.event_name = value
+        self.event.save()
 
     def __str__(self):
-        return f"ChatRoom for {self.event.name}"
+        return self.name
 
+    def member_count(self):
+        return self.members.count()
 
-class Message(models.Model):
+    def member_count(self):
+        return self.members.count()
+
+    
+class Chat_Message(models.Model):
     chatroom = models.ForeignKey(ChatRoom, on_delete=models.CASCADE, related_name="messages")
     sender = models.ForeignKey(Member, on_delete=models.CASCADE)
-    content = models.TextField()
-    timestamp = models.DateTimeField(auto_now_add=True)
+    message = models.CharField(max_length=200)
+    created_at = models.DateTimeField(auto_now_add=True)
 
+    # def __str__(self):
+    #     return f"Message from {self.sender.username} in {self.chatroom.event.name}"
     def __str__(self):
-        return f"Message from {self.sender.username} in {self.chatroom.event.name}"
-
-
+        return f"{self.sender.username} : {self.message}"
+    
+    class Meta:
+        ordering = ['-created_at']
 
 
 class Report(models.Model):

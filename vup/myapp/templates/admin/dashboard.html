@@ -52,8 +52,8 @@
                 <div class="icon-total-member">
                    <i class="fa-solid fa-users"></i> 
                 </div>
-                <h1>{{ total_users }}
-                <p>Total Members</p>
+                <h1>{{ total_users }}</h1>
+                <p>ผู้ใช้ทั้งหมด</p>
             </div>
 
             <div class="total-members">
@@ -61,24 +61,24 @@
                     <i class="fa-solid fa-user"></i>
                 </div>
                 <h1>{{ total_members }}</h1>
-                <p>Members</p>
+                <p>ผู้ใช้ปัจจุบัน</p>
             </div>
 
 
             <div class="total-members">
                 <div class="icon-total-events">
-                    <i class="fa-solid fa-trash-can"></i>
+                    <i class="fa-solid fa-ban"></i>
                 </div>
-                <h1>{{ total_delete_member }}
-                <p>Delete</p>
+                <h1>{{ total_delete_member }}</h1>
+                <p>ผู้ใช้ถูกแบนแล้ว</p>
             </div>
 
             <div class="total-events">
                 <div class="icon-total-events">
                     <i class="fa-solid fa-triangle-exclamation"></i>
                 </div>
-                <h1>{{ total_events }}</h1>
-                <p>Warned</p>
+                <h1>{{ total_warned_event }}</h1>
+                <p>กิจกรรมถูกเตือนแล้ว</p>
             </div>
 
             <div class="total-events">
@@ -86,7 +86,7 @@
                     <i class="fa-solid fa-chart-pie"></i>
                 </div>
                 <h1>{{ total_events }}</h1>
-                <p>Total Events</p>
+                <p>กิจกรรม</p>
 
                 <ul>
                     {% for category in events_by_category %}
@@ -99,12 +99,12 @@
                 <div class="icon-total-events">
                     <i class="fa-solid fa-circle-exclamation"></i>
                 </div>
-                <h1>{{ total_events }}</h1>
-                <p>Total Report</p>
+                <h1>{{ total_warned_event  }}</h1>
+                <p>การรายงาน</p>
 
                 <ul>
-                    {% for category in events_by_category %}
-                        <li>{{ category.category }}: {{ category.event_count }}</li>
+                    {% for report in report_event_by_category %}
+                    <li>{{ report.report_type }}: {{ report.report_event_by_category }}</li>
                     {% endfor %}
                 </ul>
             </div>

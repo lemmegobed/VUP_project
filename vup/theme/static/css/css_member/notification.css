@@ -1,6 +1,11 @@
+body,html{
+    font-family:"Anuphan", sans-serif;
+}
+
 .calendar-notification {
     display: block;
-    width: 350px; 
+    min-width: 300px;
+    min-height: 100vh; 
     /* height: 100vh;
     height: auto; */
     background-color: #2b3f65; 
@@ -13,10 +18,10 @@
     z-index: 1000; 
     border-radius: 30px 0 0 30px;
  /* กำหนดความสูงสูงสุดของ Notification */
-    /* max-height: 100vh; */
+    max-height: 100vh;
     
     /* เพิ่ม Scroll Bar เมื่อเนื้อหาเกินความสูง */
-    overflow-y: auto;
+    /* overflow-y: auto; */
 
     /* ซ่อน Scroll Bar เริ่มต้น (ถ้าต้องการให้เลื่อนดูเฉพาะตอนเมาส์วาง) */
     scrollbar-width: thin; /* สำหรับ Firefox */
@@ -101,13 +106,6 @@
 /* .fc .fc-toolbar {
     justify-content: space-between; 
 } */
-.icon-noti{
-    font-size: 8px;
-    color: #28b328;
-    /* align-items: center; */
-    text-align: center;
-    margin-left: 5px;
-}
 
 .notification-container {
     margin: 0;
@@ -144,13 +142,44 @@
     height: 250px;
     /* margin-top: 0; */
 }
-
-.notification-content p{
-    font-size: 12px;
-    font-weight: normal;
-    color: #000000;
-    
+.message-noti ,.message-noti-system {
+    display: flex; 
+    align-items: center; 
+    /* gap: 5px;  */
+    text-align: justify;
+    /* margin-bottom: 10px; */
+    /* margin: 0; */
 }
+
+.message-noti i {
+    font-size: 8px;
+    color: #322969;
+    margin-left: 5px;
+}
+
+.message-noti-system i{
+    font-size: 14px;
+    color: #6b6b6b;
+    margin-left: 5px;
+}
+
+
+
+.notification-content ul li.unread {
+    /* background: #c4c3c3; */
+    border: 1px solid #aaa9a9;
+    /* font-weight: bold; */
+    padding: 5px;
+}
+
+.no-notifications {
+    /* text-align: center; */
+    color: #888; 
+    /* padding: 10px;  */
+    /* border: 1px solid #ddd; */
+
+}
+
 
 .notification-content ul {
     list-style: none;
@@ -159,39 +188,86 @@
 }
 
 .notification-content ul li {
-    /* font-weight: 200; */
-    width: auto;
+    display: flex; 
+    flex-direction: column; 
+    align-items: flex-start; 
+    /* justify-content: space-between;  */
+    background: #e6e5e5;
     padding: 5px;
-    margin-bottom: 5px;
     border-radius: 5px;
-    background: #a53535;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: background 0.3s;
+    margin-bottom: 7px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.notification-content ul li.unread {
-    background: #c4c3c3;
-    bo
-    /* font-weight: bold; */
-}
-
-/* .notification-content ul li:hover {
-    background: #f1f1f1;
-} */
-
-/* .notification-content ul li button {
-    padding: 5px 10px;
+.notification-content p {
+    /* margin-bottom: 10px;  */
     font-size: 12px;
-    color: #000000;
-    background: #6d2323;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background 0.3s;
+    color: #000;
+    margin: 0;
+    margin-bottom: 5px;
 }
 
-.notification-content ul li button:hover {
-    background: #787b7e;
-} */
+.button-action-noti {
+    display: flex;
+    flex-direction: row; 
+    gap: 5px; 
+    justify-content: flex-start; 
+    align-items: center; 
+    margin-left: 20px;
+}
+
+.button-action-noti button {
+    font-family:"Anuphan", sans-serif;
+    padding: 4px;
+    font-size: 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-yes {
+    background-color: #2e7738; /* สีเขียว */
+    color: white;
+}
+
+.btn-yes:hover {
+    background-color: #3bbb42;
+}
+
+.btn-no {
+    background-color: #a53c34; /* สีแดง */
+    color: white;
+}
+
+.btn-no:hover {
+    background-color: #e53935;
+}
+
+.btn-approved,
+.btn-rejected {
+    background-color: #9e9e9e; /* สีเทา */
+    color: white;
+    /* cursor: not-allowed; */
+    opacity: 0.8;
+}
+
+.btn-chat{
+    font-family:"Anuphan", sans-serif;
+    padding: 5px;
+    font-size: 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    background-color: #342a88; 
+    color: white;
+    margin-left: 20px;
+
+}
+
+.btn-chat:hover {
+    background-color: #231042;
+}
+
+
