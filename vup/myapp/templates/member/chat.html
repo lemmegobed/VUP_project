@@ -59,7 +59,7 @@
             <div class="content-box">
                 <div class="chat-rooms-list">
                     {% for chat_room in chat_rooms %}
-                        <div class="chat-room" onclick="window.location.href='{% url 'chat_room_detail' chat_room.id %}'">
+                        <div class="chat-room" onclick="window.location.href='{% url 'chat_room' chat_room.id %}'">
                             <div class="chat-room-icon">
                                 {% if chat_room.event.category == 'การศึกษา' %}
                                     <i class="fas fa-book"></i>

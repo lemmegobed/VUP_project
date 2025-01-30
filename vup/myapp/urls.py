@@ -14,6 +14,7 @@ urlpatterns = [
     # path('delete-member/<int:id>/', delete_member, name='delete_member'),
     path('block/<int:id>/', block_user, name='block_user'),
     path('edit-member/<int:member_id>/', edit_member, name='edit_member'),
+    path('upload-ads/', upload_ads, name='upload_ads'),
 
     # path('warn_member/<int:id>/', warn_member, name='warn_member'),
     path('warn_event/<int:event_id>/', warn_event, name='warn_event'),
@@ -29,8 +30,17 @@ urlpatterns = [
     path('profile/<int:member_id>/edit', profile_edit, name='edit_profile'),
     path('my-activity/', my_activity, name='my_activity'),
     path('chat/', chat_rooms_list, name='chat'),
-    path('chat-room/<int:room_id>/', chat_room_detail, name='chat_room_detail'),
+    # path('chatroom/<int:event_id>/', chat_room_detail, name='chat_room'),
+    # path('chatroom/<int:chat_room_id>/', views.chat_room, name='chat_room'),
+    # path('chat-room/<int:chat_room_id>/', views.chat_room, name='chat_room'),
+    path('chat-room/<int:chat_room_id>/', chat_room_detail, name='chat_room'),
 
+    path("event/<int:event_id>/review/", review_event, name="review_event"),
+
+    # path('api/check-participant-status/<int:event_id>/', check_participant_status, name='check_participant_status'),
+
+    # path('api/events/', events_api, name='events_api'),
+    path('api/user-events/', user_events_api, name='user_events_api'),
 
     path('new_event/', new_event_view, name='new_event'),
     # path('update_event/<int:event_id>/', update_event_view, name='update_event'),

@@ -3,6 +3,11 @@ from django.contrib.auth.forms import UserCreationForm
 from .models import *
 
 
+class AdvertisementForm(forms.ModelForm):
+    class Meta:
+        model = Advertisement
+        fields = ['image','keyword']
+
 class MemberRegistrationForm(UserCreationForm):
 
     SEX_CHOICES = [
@@ -171,6 +176,10 @@ class UpdateEventForm(forms.ModelForm):
         self.fields['event_name'].required = False
         self.fields['event_title'].required = False
 
+class EventReviewForm(forms.ModelForm):
+    class Meta:
+        model = EventReview
+        fields = ['attendance_status', 'comment']
 
 class ReportForm(forms.ModelForm):
     class Meta:
@@ -183,4 +192,16 @@ class ReportForm(forms.ModelForm):
         labels = {
             'report_type': 'Type of Report',
             'description': 'Description',
+        }
+
+class ChatMessageForm(forms.ModelForm):
+    class Meta:
+        model = Chat_Message
+        fields = ['message']
+        widgets = {
+            'message': forms.TextInput(attrs={
+                'class': 'chat-input',
+                'placeholder': 'Type a message...',
+                'autocomplete': 'off'
+            }),
         }

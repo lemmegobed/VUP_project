@@ -1,0 +1,74 @@
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+}
+h1 {
+    text-align: center;
+    color: #333;
+}
+#chat-log {
+    border: 1px solid #ddd;
+    background-color: #fff;
+    width: 80%;
+    margin: 0 auto;
+    height: 300px;
+    overflow-y: scroll;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+#chat-message-input {
+    width: 80%;
+    padding: 10px;
+    margin: 10px auto;
+    display: block;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+#chat-message-submit {
+    display: block;
+    width: 50%;
+    margin: 0 auto;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+#chat-message-submit:hover {
+    background-color: #0056b3;
+}
+
+.system-message {
+    display: inline-block;
+    width: fit-content; /* ปรับขนาดอัตโนมัติตามความยาวของข้อความ */
+    padding: 5px 10px; /* ปรับ Padding ให้ข้อความดูดีขึ้น */
+    font-size: 12px;
+    color: #616161;
+    border-radius: 20px;
+    background-color: #cccccc; /* สีพื้นหลัง */
+    text-align: center; /* จัดข้อความให้อยู่ตรงกลาง */
+    
+    /* จัดให้อยู่ตรงกลางแนวนอน */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px auto; /* ทำให้กล่องอยู่ตรงกลางแนวนอน */
+}
+
+
+.message-chat {
+    display: inline-block; /* ให้ขนาดของกล่องเท่ากับข้อความ */
+    width: fit-content;  /* จำกัดความกว้างไม่ให้กว้างเกินไป */
+    padding: 0px 15px; /* ปรับ Padding ให้ข้อความดูดีขึ้น */
+    border: 1px solid #aaa9a9;
+    color: #000000;
+    border-radius: 20px;
+    word-wrap: break-word; 
+    background-color: #ffffff;
+}
+

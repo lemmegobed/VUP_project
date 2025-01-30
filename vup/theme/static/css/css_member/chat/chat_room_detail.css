@@ -1,0 +1,167 @@
+/* ใช้ฟอนต์ Anuphan */
+body, html {
+    font-family: "Anuphan", sans-serif;
+}
+
+/* กล่องแชททั้งหมด */
+.chat-container {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    height: 80vh;
+}
+
+/* ส่วนแสดงข้อความ */
+/* #chat-log {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+} */
+
+#chat-log {
+    max-height: 400px;  /* หรือความสูงที่ต้องการ */
+    overflow-y: auto;   /* ให้เลื่อนลงได้ */
+    display: flex;
+    flex-direction: column;  /* ให้ข้อความใหม่ไปอยู่ข้างล่าง */
+}
+
+
+/* รูปแบบข้อความ */
+.chat-message {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: fit-content; /* ทำให้ขนาดกระชับพอดีกับข้อความ */
+    margin-bottom: 20px;
+}
+/* ข้อความที่เราส่ง */
+.chat-message.sent {
+    align-items: flex-end;
+    text-align: right;
+    max-width: 60%; /* ลดขนาดของข้อความเราให้ไม่กว้างเกินไป */
+    margin-left: auto; /* บังคับให้ข้อความดันไปชิดขวา */
+}
+/* ข้อความที่เราได้รับ */
+.chat-message.received {
+    align-items: flex-start;
+    text-align: left;
+}
+
+/* รูปโปรไฟล์ */
+.profile-pic {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid #a3a3a3;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* ส่วนที่รวมชื่อและรูป */
+.message-header {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* ระยะห่างระหว่างรูปและชื่อ */
+    font-weight: bold;
+    font-size: 14px;
+    color: #333;
+}
+
+/* ทำให้รูปอยู่ขวาของชื่อเมื่อเป็นข้อความของเรา */
+.sent-header {
+    flex-direction: row-reverse;
+}
+
+/* กล่องข้อความ */
+.message-body {
+    display: flex;
+    flex-direction: column;
+    max-width: 100%;
+    margin-top: 5px;
+}
+
+/* กล่องข้อความจริง */
+.message-content {
+    background: #ffc1e3;
+    padding: 10px 15px;
+    border-radius: 12px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    display: inline-block;
+    max-width: 100%;
+    position: relative;
+}
+
+/* ข้อความที่เราส่ง */
+.chat-message.sent .message-content {
+    background: #ffc1e3;
+    color: rgb(0, 0, 0);
+}
+
+/* ข้อความ */
+.message-text {
+    margin-top: 2px;
+}
+
+/* เวลาส่งข้อความ */
+.message-time {
+    font-size: 10px;
+    color: #555454;
+    text-align: right;
+    margin-top: 5px;
+}
+
+/* ข้อความระบบ */
+.system-message {
+    text-align: center;
+    font-size: 10px;
+    color: #6d6d6d;
+    background: #e7e6e6;
+    padding: 5px;
+    border-radius: 20px;
+    margin: 10px 0;
+}
+
+/* ฟอร์มส่งข้อความ */
+.chat-input-form {
+    display: flex;
+    padding: 10px;
+    background: #fff;
+    border-top: 1px solid #ddd;
+}
+
+.chat-input {
+    flex-grow: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 20px;
+    background: #f1f1f1;
+    border: 1px solid #b9b8b8;
+    outline: none;
+}
+
+/* ปุ่มส่งข้อความ */
+.send-button {
+    background: #ce3b78;
+    color: white;
+    border: none;
+    padding: 10px;
+    margin-left: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+}
+
+/* ไอคอนในปุ่มส่ง */
+.send-button i {
+    font-size: 18px;
+}

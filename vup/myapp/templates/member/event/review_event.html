@@ -1,0 +1,21 @@
+<form method="post">
+    {% csrf_token %}
+    <h2>รีวิวผู้เข้าร่วมกิจกรรม: {{ event.event_name }}</h2>
+
+    {% for participant in participants %}
+        <div>
+            <label>{{ participant.username }}</label>
+            <select name="status_{{ participant.id }}">
+                <option value="attended">มาตามนัด</option>
+                <option value="missed">ผิดนัด</option>
+            </select>
+            <input type="text" name="comment_{{ participant.id }}" placeholder="เพิ่มคำอธิบาย">
+        </div>
+    {% empty %}
+        <p>ไม่มีผู้เข้าร่วมที่สามารถรีวิวได้</p>
+    {% endfor %}
+
+    {% if participants %}
+        <button type="submit">ส่งรีวิว</button>
+    {% endif %}
+</form>

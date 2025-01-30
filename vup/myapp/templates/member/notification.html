@@ -20,8 +20,11 @@
         <h1><i class="fas fa-calendar-alt"></i> Calendar</h1>
         <div class="calendar-box">
             <div id="calendar"></div>
-        </div>
+            <!-- <div id="calendar"></div> -->
+        </div> 
     </div>
+
+  
 
     <!-- Notification Section -->
     <!-- <div class="notification-container">
@@ -78,121 +81,126 @@
                 {% if notification.notification_type == "request" %}
                     {% if notification.related_event and notification.related_event.is_active and notification.related_event.created_by.is_banned == False %}
                         <li class="{% if not notification.is_read %}unread{% endif %}">
-                            
-                           
-                                <div class="message-noti">
-                                    <i class="fa-solid fa-circle"></i>
-                                    <p class="notification-text"></i>{{ notification.message }}</p>
-                                </div>
-                                <!-- <p class="notification-text"></i>{{ notification.message }}</p> -->
-                                <div class="button-action-noti">
-                                    {% with notification.related_event.event_requests.first as event_request %}
-                                        {% if event_request and event_request.response_status == "pending" %}
+                            <div class="message-noti">
+                                <i class="fa-solid fa-circle"></i>
+                                <p class="notification-text">{{ notification.message }}</p>
+                            </div>
+                            <div class="button-action-noti">
+                                <!-- ใช้ related_request ของ notification -->
+                                {% with notification.related_request as event_request %}
+                                    {% if event_request %}
+                                        {% if event_request.response_status == "pending" %}
                                             <!-- แสดงปุ่ม YES และ NO -->
-                                            <button class="btn-yes" onclick="handleAction({{ event_request.id }}, 'accept')">อนุมัติ</button>
-                                            <button class="btn-no" onclick="handleAction({{ event_request.id }}, 'reject')">ปฏิเสธ</button>
-                                        {% elif event_request and event_request.response_status == "accepted" %}
-                                            <!-- แสดงสถานะว่าอนุมัติแล้ว -->
+                                            <div class="action-buttons">
+                                                <button class="btn-yes" onclick="handleAction({{ event_request.id }}, 'accept')">อนุมัติ</button>
+                                                <button class="btn-no" onclick="handleAction({{ event_request.id }}, 'reject')">ปฏิเสธ</button>
+                                            </div>
+                                        {% elif event_request.response_status == "accepted" %}
+                                            <!-- แสดงข้อความสถานะอนุมัติ -->
                                             <button class="btn-approved" disabled>อนุมัติแล้ว</button>
-                                        {% elif event_request and event_request.response_status == "rejected" %}
-                                            <!-- แสดงสถานะว่าปฏิเสธแล้ว -->
+                                        {% elif event_request.response_status == "rejected" %}
+                                            <!-- แสดงข้อความสถานะปฏิเสธ -->
                                             <button class="btn-rejected" disabled>ปฏิเสธแล้ว</button>
-                                        {% else %}
-                                            <p>Response Status: Unknown</p>
                                         {% endif %}
-                                    {% endwith %}
-                                </div>
-                        </li>
+                                    {% endif %}
+                                {% endwith %}
+                            </div>
 
+                            <!-- <p>คำขอทั้งหมด:</p>
+<ul>
+    {% for event_request in notification.related_event.event_requests.all %}
+        <li>ID: {{ event_request.id }}, สถานะ: {{ event_request.response_status }}</li>
+    {% endfor %}
+</ul> -->
+                            
+                            
+                        </li>
                     {% endif %}
                 
                 <!-- การแจ้งเตือนประเภท response -->
                 {% elif notification.notification_type == "response" %}
-                {% if notification.related_event and notification.related_event.is_active and notification.related_event.created_by.is_banned == False %}
-                    {% with notification.related_event.event_requests.first as event_request %}
-                        {% if event_request and event_request.response_status == "accepted" %}
-                            <li class="{% if not notification.is_read %}unread{% endif %}">
-                                <div class="message-noti">
-                                    <i class="fa-solid fa-circle"></i>
-                                    <p>{{ notification.message }}</p>
-                                </div>
-                                <!-- แสดงปุ่มเข้าร่วมแชทเฉพาะสถานะ accepted -->
-                                <button class="btn-chat" onclick="window.location.href='/chatroom/{{ notification.related_event.id }}/'">เข้าร่วมแชท!</button>
-                            </li>
-                        {% elif event_request and event_request.response_status == "rejected" %}
-                            <li class="{% if not notification.is_read %}unread{% endif %}">
-                                <div class="message-noti">
-                                    <i class="fa-solid fa-circle"></i>
-                                    <p>{{ notification.message }}</p>
-                                </div>
-                                <!-- ไม่แสดงปุ่มเข้าร่วมแชทในกรณี rejected -->
-                            </li>
-                        {% endif %}
-                    {% endwith %}
-                {% endif %}
+                    {% if notification.related_event and notification.related_event.is_active and notification.related_event.created_by.is_banned == False %}
+                        <li class="{% if not notification.is_read %}unread{% endif %}">
+                            <div class="message-noti">
+                                <i class="fa-solid fa-circle"></i>
+                                <p>{{ notification.message|safe }}</p>
+                            </div>
+                            <!-- <button class="btn-chat" onclick="window.location.href='/chatroom/{{ notification.related_event.id }}/'">เข้าร่วมแชท!</button> -->
+                        </li>
+                    {% endif %}
                 
                 <!-- การแจ้งเตือนประเภท system -->
                 {% elif notification.notification_type == "system" %}
-                    
-                        <li class="{% if not notification.is_read %}unread{% endif %}">
-                            <div class="message-noti-system">
-                                <i class="fa-solid fa-triangle-exclamation"></i>
-                                <p>{{ notification.message }}</p>
-                            </div>
-                        </li>
-                    
+                    <li class="{% if not notification.is_read %}unread{% endif %}">
+                        <div class="message-noti-system">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                            <p>{{ notification.message }}</p>
+                        </div>
+                    </li>
                 {% endif %}
             {% empty %}
-            <li class="no-notifications">ไม่มีการแจ้งเตือน</li>
+                <li class="no-notifications">ไม่มีการแจ้งเตือน</li>
             {% endfor %}
         </ul>
-    <!-- </div> -->
+
     </div>
     
-    
-    <!-- <div class="notification-container"> 
-        <h1><i class="fas fa-bell"></i> Notification</h1>
-        <div class="notification-content">
-            <div class="noti-container">
-                <ul>
-                    {% for notification in user.notifications.all %}
-                        {% if notification.related_event.is_active %}
-                        <li class="{% if not notification.is_read %}unread{% endif %}">
-                            <div class="icon-noti">
-                                <i class="fa-solid fa-circle"></i>
-                            </div>
-                            <p>{{ notification.message }}</p>
-                            {% if notification.related_request and notification.related_request.response_status == 'pending' %}
-                                <button onclick="handleAction({{ notification.related_request.id }}, 'accept')">อนุมัติ</button>
-                                <button onclick="handleAction({{ notification.related_request.id }}, 'reject')">ปฏิเสธ</button>
-                            {% endif %}
+    <!-- Popup Modal -->
+    <!-- Popup Modal (calendar-detail) -->
+<!-- Popup Modal (calendar-detail) -->
+<div id="calendarDetailModal" class="calendar-modal">
+    <div class="calendar-modal-content">
+      <span class="calendar-close">&times;</span>
+      <h2 id="calendarModalTitle"></h2>
+      <h2>เจ้าของกิจกรรม:<span id="calendarModalCreatedBy"></span></h2>
+      <p><strong><i class="fa-solid fa-calendar-days"></i>วันที่จัดกิจกรรม:</strong> <span id="calendarModalDate"></span></p>
+      <p><strong><i class="fa-solid fa-location-dot location-icon"></i>สถานที่:</strong> <span id="calendarModalLocation"></span></p>
+      <p><strong><i class="fa-solid fa-shapes"></i>หมวดหมู่:</strong> <span id="calendarModalCategory"></span></p>
+      <p><strong><i class="fa-solid fa-location-dot"></i>จังหวัด:</strong> <span id="calendarModalProvince"></span></p>
+      <p><strong>📝 คำอธิบาย:</strong> <span id="calendarModalDescription"></span></p>
+      <p><strong><i class="fa-solid fa-user"></i>จำนวนผู้เข้าร่วมสูงสุด:</strong> <span id="calendarModalMaxParticipants"></span></p>
+    </div>
+  </div>
+  
 
-                        </li>
-                        {% endif %}
-                    {% endfor %}
-                </ul>
 
-            </div>
+<!-- <div id="calendarDetailModal" class="calendar-modal">
+    <div class="calendar-modal-content">
+      <span class="calendar-close">&times;</span>
+      <h2 id="calendarModalTitle"></h2>
+        <div class="calendar-event-detail">
+                <p><strong>📅 วันที่จัดกิจกรรม:</strong></p>
+                <p class="calendar-event-detail-in"><span id="calendarModalDate"></span></p>
         </div>
-    </div> --> 
-
-    
-    
-    <!-- <div class="notification-container">
-        <h1><i class="fas fa-bell"></i> Notification</h1>
-        <div class="notification-content">
-            <div class="noti-container">
-                <ul>
-                    {% for notification in user.notifications.all %}
-                        <li class="{% if not notification.is_read %}unread{% endif %}">
-                            {{ notification.message }}
-                            <button onclick="markAsRead({{ notification.id }})">Mark as Read</button>
-                        </li>
-                    {% endfor %}
-                </ul>
-            </div>
+        <div class="calendar-event-detail">
+            <p><strong>📍 สถานที่:</strong> </p>
+            <p class="calendar-event-detail-in"><span id="calendarModalLocation"></span></p>
         </div>
-    </div> -->
+        <div class="calendar-event-detail">
+            <p><strong>🏷️ ประเภท:</strong> </p>
+            <p class="calendar-event-detail-in"><span id="calendarModalCategory"></span></p>
+        </div>
+        <div class="calendar-event-detail">
+            <p><strong>🌍 จังหวัด:</strong> </p>
+            <p class="calendar-event-detail-in"><span id="calendarModalProvince"></span></p>
+        </div>
+        <div class="calendar-event-detail">
+            <p><strong>📝 คำอธิบาย:</strong> </p>
+            <p class="calendar-event-detail-in"><span id="calendarModalDescription"></span></p>
+        </div>
+        <div class="calendar-event-detail">
+            <p><strong>👤 ผู้สร้าง:</strong> </p>
+            <p class="calendar-event-detail-in"><span id="calendarModalCreatedBy"></span></p>
+        </div>
+        <div class="calendar-event-detail">
+            <p><strong>👥 จำนวนผู้เข้าร่วมสูงสุด:</strong></p>
+            <p class="calendar-event-detail-in"> <span id="calendarModalMaxParticipants"></span></p>
+        </div>
+      
+    </div>
+  </div> -->
+  
+   
 
 </div>
 
@@ -356,4 +364,74 @@ function handleAction(eventRequestId, action) {
 // }
 
 </script>
+
+<!-- ปฏิทิน -->
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var calendarEl = document.getElementById('calendar');
+  var modal = document.getElementById("calendarDetailModal");
+  var closeModal = document.getElementsByClassName("calendar-close")[0];
+
+  var calendar = new FullCalendar.Calendar(calendarEl, {
+    initialView: 'dayGridMonth',
+    events: '/api/user-events/',
+    headerToolbar: {
+      left: 'prev,next today',
+      center: 'title',
+      right: 'dayGridMonth,timeGridWeek,timeGridDay'
+    },
+
+    eventClick: function(info) {
+      document.getElementById("calendarModalTitle").textContent = info.event.title || "ไม่มีชื่อกิจกรรม";
+      document.getElementById("calendarModalDate").textContent = new Date(info.event.start).toLocaleString();
+      document.getElementById("calendarModalLocation").textContent = info.event.extendedProps.location || "ไม่มีข้อมูล";
+      document.getElementById("calendarModalCategory").textContent = info.event.extendedProps.category || "ไม่ระบุ";
+      document.getElementById("calendarModalProvince").textContent = info.event.extendedProps.province || "ไม่ระบุ";
+      document.getElementById("calendarModalDescription").textContent = info.event.extendedProps.description || "ไม่มีคำอธิบาย";
+      document.getElementById("calendarModalCreatedBy").textContent = info.event.extendedProps.created_by || "ไม่ระบุ";
+      document.getElementById("calendarModalMaxParticipants").textContent = info.event.extendedProps.max_participants || 0;
+
+      modal.style.display = "block";
+    }
+  });
+
+  calendar.render();
+
+  closeModal.onclick = function() {
+    modal.style.display = "none";
+  };
+
+  window.onclick = function(event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  };
+});
+
+</script>
+<!-- <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var calendarEl = document.getElementById('calendar');
+  
+      var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        events: '/api/user-events/', // API ที่โหลดเฉพาะกิจกรรมของเรา
+        headerToolbar: {
+          left: 'prev,next today',
+          center: 'title',
+          right: 'dayGridMonth,timeGridWeek,timeGridDay'
+        },
+        eventClick: function(info) {
+          alert(
+            '📅 กิจกรรม: ' + info.event.title +
+            '\n📍 คำอธิบาย: ' + (info.event.extendedProps.description || 'ไม่มีข้อมูล') +
+            '\n🌟 ประเภท: ' + (info.event.extendedProps.category || 'ไม่ระบุ')
+          );
+        }
+      });
+  
+      calendar.render();
+    });
+  </script> -->
 </html>

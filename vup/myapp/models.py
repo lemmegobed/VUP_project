@@ -6,6 +6,13 @@ from django.utils import timezone
 from django.utils.timezone import now
 
 
+class Advertisement(models.Model):
+    image = models.ImageField(upload_to='ads/')
+    keyword = models.CharField(max_length=255)
+
+    def __str__(self):
+        return f"Ad: {self.keyword}"
+
 class Member(AbstractUser):
     is_banned = models.BooleanField(default=False)
     profile = models.ImageField(upload_to='profiles/', blank=True, null=True, default='profiles/default_profile_image.png')
@@ -59,6 +66,7 @@ class Event(models.Model):
     created_by = models.ForeignKey(Member, on_delete=models.CASCADE, related_name="events")
     max_participants = models.PositiveIntegerField(default=0)
     is_active = models.BooleanField(default=True)
+    has_ended = models.BooleanField(default=False)
     # is_banned = models.BooleanField(default=False)
     # participants = models.ManyToManyField(Member, related_name='events_joined', blank=True)
     
@@ -105,6 +113,34 @@ class Event_Request(models.Model):
     def __str__(self):
         return f"Request by {self.sender} to join {self.event} - Status: {self.response_status}"
     
+    class Meta:
+        ordering = ['-request_time']
+
+
+class EventReview(models.Model):
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name="reviews")
+    reviewer = models.ForeignKey(Member, on_delete=models.CASCADE, related_name="given_reviews")
+    participant = models.ForeignKey(Member, on_delete=models.CASCADE, related_name="received_reviews")
+    attendance_status = models.CharField(
+        max_length=10,
+        choices=[('มาตามนัด', 'มาตามนัด'), ('ผิดนัด', 'ผิดนัด')],
+        default='มาตามนัด'
+    )
+    comment = models.TextField(blank=True, null=True)
+    reviewed_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Review for {self.participant.username} on {self.event.event_name}"
+
+
+# class Participant(models.Model):
+#     event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='participants')
+#     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='participations')
+#     is_approved = models.BooleanField(default=False)  # บันทึกสถานะการอนุมัติ
+
+#     def __str__(self):
+#         return f"{self.user.username} - {self.event.event_name}"
+
 class Notification(models.Model):
     NOTIFICATION_TYPES = [
         ('คำขอเข้าร่วมกิจกรรม', 'คำขอเข้าร่วมกิจกรรม'),
@@ -152,11 +188,16 @@ class ChatRoom(models.Model):
     created_at = models.DateTimeField(default=timezone.now) 
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="created_chat_rooms")  # ใช้ Member
     is_active = models.BooleanField(default=True)
+    updated_at = models.DateTimeField(auto_now=True) 
 
     @property
     def name(self):
         # ดึงชื่อห้องแชทจาก event.event_name
         return self.event.event_name
+    
+    @property
+    def chat_room_url(self):
+        return f"/chat-room/{self.id}/"
 
     @name.setter
     def name(self, value):
@@ -172,21 +213,27 @@ class ChatRoom(models.Model):
 
     def member_count(self):
         return self.members.count()
+    
+    def update_last_activity(self):
+        # อัปเดตฟิลด์ `updated_at` เป็นเวลาปัจจุบัน
+        self.updated_at = timezone.now()
+        self.save()
+
+        
 
     
 class Chat_Message(models.Model):
     chatroom = models.ForeignKey(ChatRoom, on_delete=models.CASCADE, related_name="messages")
-    sender = models.ForeignKey(Member, on_delete=models.CASCADE)
+    sender = models.ForeignKey(Member, on_delete=models.CASCADE, null=True, blank=True)
     message = models.CharField(max_length=200)
     created_at = models.DateTimeField(auto_now_add=True)
+    is_system_message = models.BooleanField(default=False)
 
-    # def __str__(self):
-    #     return f"Message from {self.sender.username} in {self.chatroom.event.name}"
     def __str__(self):
         return f"{self.sender.username} : {self.message}"
     
     class Meta:
-        ordering = ['-created_at']
+        ordering = ['created_at']
 
 
 class Report(models.Model):

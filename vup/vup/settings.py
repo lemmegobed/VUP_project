@@ -39,13 +39,16 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "daphne",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "myapp",
+    "myapp", 
+    "channels",
+    "rest_framework",
     
 ]
 
@@ -72,14 +75,34 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                # 'myapp.context_processors.notification_context',
             ],
         },
     },
 ]
 
-WSGI_APPLICATION = "vup.wsgi.application"
+# WSGI_APPLICATION = "vup.wsgi.application"
+ASGI_APPLICATION = 'vup.asgi.application'
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer",
+    },
+}
+
+
+# CHANNEL_LAYERS = {
+#     "default": {
+#         "BACKEND": "channels_redis.core.RedisChannelLayer",
+#         "CONFIG": {
+#             "hosts": [("127.0.0.1", 6379)],  # Redis ต้องทำงานบนพอร์ตนี้
+#         },
+#     },
+# }
 
 AUTH_USER_MODEL = 'myapp.Member'
+
+
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases

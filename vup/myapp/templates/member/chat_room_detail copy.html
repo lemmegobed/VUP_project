@@ -1,0 +1,161 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Room: {{ chat_room.name }}</title>
+    <link rel="stylesheet" href="{% static 'css\css_member\chat\chat_room.css' %}">
+</head>
+<body>
+    <!-- <h1>{{ chat_room.name }}</h1> -->
+    <!-- <div class="chat-room">
+        <p>Event: {{ chat_room.name  }}</p>
+        <p>Created by: {{ chat_room.created_by.username }}</p>
+        <p>Members:</p>
+        <ul>
+            {% for member in chat_room.members.all %}
+                <li>{{ member.username }}</li>
+            {% endfor %}
+        </ul>
+    </div> -->
+
+    
+    <div class="chat-room">
+        <!-- <h2>ห้องแชท: {{ chat_room.id }}</h2> -->
+ 
+    
+    
+    <h1>ห้องแชท : {{ chat_room.name }} {{ chat_room.id }}</h1>
+    <!-- <h2>ห้องแชท: {{ chat_room.name }}</h2> -->
+    <p>กิจกรรม : {{ chat_room.name  }}</p>
+    <p>เจ้าของกิจกรรม : {{ chat_room.created_by.username }}</p>
+    <p>ผู้เข้าร่วม :
+        <ul>
+            {% for member in chat_room.members.all %}
+                <li>{{ member.username }}</li>
+            {% endfor %}
+        </ul>
+    </p>
+       
+    <div id="chat-log">
+        {% for message in messages %}
+                {% if message.is_system_message %}
+                    <!-- <div class="message-join"> -->
+                       <!-- ข้อความระบบ -->
+                        <li class="system-message">
+                            <p class="system-text">{{ message.message }}</p>
+                        </li>   
+                    <!-- </div> -->
+                  
+                {% else %}
+                    <!-- ข้อความจากสมาชิก -->
+                    <li class="user-message">
+                        <div class="message-info">
+                            <span class="sender">{{ message.sender.username }}</span>
+                            <span class="timestamp">{{ message.created_at|date:"H:i:s" }}</span>
+                        </div>
+                        <div class="message-chat">
+                            <p class="message-content">{{ message.message }}</p>
+                        </div>
+                        
+                    </li>
+                {% endif %}
+            {% empty %}
+                <!-- ไม่มีข้อความ -->
+                <!-- <li class="no-message">ยังไม่มีข้อความในห้องแชท</li> -->
+            {% endfor %}
+        <!-- แสดงข้อความแชท -->
+    </div>
+    <input id="chat-message-input" type="text" placeholder="Type your message here...">
+    <button id="chat-message-submit">ส่ง</button>
+
+    
+</body>
+
+<script>
+    // const roomId = "{{ chat_room_id }}";  
+    
+
+    // สร้าง WebSocket Connection
+    // const roomId = "{{ chat_room_id }}";  
+    const username = "{{ request.user.username }}";  
+
+    const roomId = "{{ chat_room_id }}";  // ตรวจสอบว่า chat_room_id ถูกส่งมาจาก context
+    console.log("Room ID:", roomId);      // ใช้ console.log เพื่อตรวจสอบค่า
+
+    const chatSocket = new WebSocket(
+        'ws://' + window.location.host + '/ws/chat/' + roomId + '/'
+    );
+
+    // รับข้อความจาก WebSocket
+    chatSocket.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+        const message = data.message;
+        const sender = data.sender;
+
+        const chatLog = document.getElementById('chat-log');
+        chatLog.innerHTML += `<b>${sender}:</b> ${message}<br>`;
+        chatLog.scrollTop = chatLog.scrollHeight;  // เลื่อนลงมาที่ข้อความล่าสุด
+    };
+    
+
+    // เมื่อ WebSocket ปิด
+    chatSocket.onclose = function(e) {
+        console.error('Chat socket closed unexpectedly');
+    };
+
+    // ส่งข้อความเมื่อกดปุ่ม Send
+    document.getElementById('chat-message-submit').onclick = function() {
+        const messageInputDom = document.getElementById('chat-message-input');
+        const message = messageInputDom.value;
+
+        chatSocket.send(JSON.stringify({
+            'message': message,
+            'username': username
+        }));
+
+        messageInputDom.value = '';  // ล้างข้อความหลังส่ง
+    };
+
+    // ส่งข้อความเมื่อกด Enter
+    document.getElementById('chat-message-input').onkeyup = function(e) {
+        if (e.keyCode === 13) {  // ตรวจสอบว่าเป็นปุ่ม Enter
+            document.getElementById('chat-message-submit').click();
+        }
+    };
+</script>
+<!-- 
+<script>
+    const chatRoomId = "{{ chat_room.id }}";
+    const userName = "{{ request.user.username }}";
+
+    const chatSocket = new WebSocket(
+        `ws://${window.location.host}/ws/chat/${chatRoomId}/`
+    );
+
+    chatSocket.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+        const messageContainer = document.getElementById('messages');
+        const newMessage = document.createElement('div');
+        newMessage.textContent = `${data.sender}: ${data.message}`;
+        messageContainer.appendChild(newMessage);
+    };
+
+    chatSocket.onclose = function(e) {
+        console.error('Chat socket closed unexpectedly');
+    };
+
+    document.querySelector('#chat-message-submit').onclick = function(e) {
+        const messageInput = document.querySelector('#chat-message-input');
+        const message = messageInput.value;
+
+        chatSocket.send(JSON.stringify({
+            'message': message,
+            'sender': userName,
+        }));
+
+        messageInput.value = ''; // ล้างข้อความในช่อง input
+    };
+</script> -->
+</html>

@@ -49,8 +49,18 @@
     <!-- <div id="notificationBar" class="notification-bar" style="display: none;">
         <span id="notificationMessage"></span>
     </div> -->
-
+    <h1>fff</h1>
     <div class="home_page" id="home_page">
+
+        <div class="slider-container">
+            <div class="slides">
+                {% for ad in advertisements %}
+                    <a href="{{ 'chat' }}" class="slide" onclick="filterEvents('{{ ad.keyword }}')">
+                        <img src="{{ ad.image.url }}" alt="โฆษณา {{ ad.keyword }}">
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
         <!-- ค้นหาแบบข้อความ -->
         <div class="search-container">
            
@@ -185,7 +195,7 @@
                 <div class="post-right">
                     <div class="time-since-created">
                         <!-- <i class="fa-solid fa-clock"></i> -->
-                        <span class="time-text">{{ event.time_since }}ที่แล้ว</span>
+                        <span class="time-text">{{ event.time_since }}</span>
                     </div>
                     
 
@@ -599,5 +609,29 @@ function getCSRFToken() {
 }
 
 </script> -->
+
+<!-- ads -->
+<script>
+    let currentIndex = 0;
+    const slides = document.querySelector(".slides");
+    const totalSlides = document.querySelectorAll(".slide").length;
+
+    function moveSlide() {
+        currentIndex = (currentIndex + 1) % totalSlides;
+        slides.style.transform = `translateX(${-currentIndex * 100}%)`;
+    }
+    setInterval(moveSlide, 3000);
+
+    function filterEvents(keyword) {
+        let events = document.querySelectorAll("#event-list li");
+        events.forEach(event => {
+            if (event.getAttribute("data-keyword") === keyword) {
+                event.style.display = "block";
+            } else {
+                event.style.display = "none";
+            }
+        });
+    }
+</script>
 </body>
 </html>

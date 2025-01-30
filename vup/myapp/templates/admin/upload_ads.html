@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>อัปโหลดโฆษณา</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 50%;
+            margin: auto;
+        }
+        input, button {
+            margin: 10px 0;
+            padding: 10px;
+            width: 100%;
+        }
+        img {
+            width: 150px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            background: #fff;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>อัปโหลดโฆษณา (สูงสุด 5 รูป)</h2>
+        {% if advertisements|length < 5 %}
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <label>อัปโหลดรูปภาพ:</label>
+                {{ form.image }}
+                <!-- <label>ระบุลิงก์:</label>
+                {{ form.link }} -->
+                <label>คีย์เวิร์ดของกิจกรรม:</label>
+                {{ form.keyword }}
+                <button type="submit">อัปโหลด</button>
+            </form>
+        {% else %}
+            <p>อัปโหลดครบแล้ว (สูงสุด 5 รูป)</p>
+        {% endif %}
+
+        <h3>รูปที่อัปโหลดแล้ว</h3>
+        <ul>
+            {% for ad in advertisements %}
+                <li>
+                    <img src="{{ ad.image.url }}" alt="โฆษณา">
+                    <!-- <p>ลิงก์: <a href="{{ ad.link }}" target="_blank">{{ ad.link }}</a></p> -->
+                    <p>คีย์เวิร์ด: {{ ad.keyword }}</p>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+</body>
+</html>
