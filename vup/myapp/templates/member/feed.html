@@ -153,8 +153,11 @@
                         <img src="{{ event.created_by.profile.url }}" alt="Profile Image" class="profile-image-post">
                         <div class="member-info">
                             <div class="username-container">
-                                <p class="username-post">{{ event.created_by.username }}</p>
+                                <a href="{% if event.created_by.id == request.user.id %}{% url 'profile' %}{% else %}{% url 'member_profile' event.created_by.id %}{% endif %}" class="username-post">
+                                    {{ event.created_by.username }}
+                                </a>
                             </div>
+                            
 
                             <p class="location">
                                 <strong>กำลังจะไปที่... </strong>
@@ -265,7 +268,7 @@ for (let pair of formData.entries()) {
 </script> -->
 
 <!-- แก้ไขอีเว้น -->
-<script>
+<!-- <script>
     // เปิด Modal
 function openJoinModal() {
     document.getElementById('join-modal').classList.remove('hidden');
@@ -317,7 +320,7 @@ function closeEditEventModal() {
     modal.style.display = "none";  // ปิด modal
 }
 
-</script>
+</script> -->
 <!-- <script>
 // ฟังก์ชันเปิด modal
 function openEditEventModal() {
@@ -418,7 +421,7 @@ window.onclick = function(event) {
 
 <!-- ส่งคำขอเข้าร่วม -->
 
-<script>
+<!-- <script>
 function showJoinModal(eventId) {
     document.getElementById("join-modal").style.display = "block";
 }
@@ -440,7 +443,7 @@ function sendJoinRequest(eventId) {
             closeJoinModal();
         });
 }
-</script>
+</script> -->
 <!-- <script>
 function openJoinModal() {
     document.getElementById("join-modal").style.display = "flex";
@@ -469,7 +472,7 @@ function confirmJoin(eventId) {
 </script> -->
 
 <!-- แก้ไขอีเว้น -->
-<script>
+<!-- <script>
 
 function showJoinModal(eventId, eventName) {
     // แสดงชื่ออีเวนต์ใน Modal
@@ -505,39 +508,38 @@ function sendJoinRequest(eventId) {
         });
 }
     
-    </script>
+    </script> -->
 
-
+<!-- ส่งคำขอเข้าร่วม -->
 <script>
-let selectedEventId = null;
+    let selectedEventId = null;
 
-function openJoinPopup(eventId, eventName) {
-    selectedEventId = eventId;  // เก็บ Event ID สำหรับการส่งคำขอ
-    document.getElementById('join-popup').style.display = 'flex';
-}
+    function openJoinPopup(eventId, eventName) {
+        selectedEventId = eventId;  // เก็บ Event ID สำหรับการส่งคำขอ
+        document.getElementById('join-popup').style.display = 'flex';
+    }
 
-function closeJoinPopup() {
-    document.getElementById('join-popup').style.display = 'none';
-}
+    function closeJoinPopup() {
+        document.getElementById('join-popup').style.display = 'none';
+    }
 
-function confirmJoin() {
-    if (!selectedEventId) return;
+    function confirmJoin() {
+        if (!selectedEventId) return;
 
-    fetch(`/events/${selectedEventId}/send-request/`, {
-        method: 'POST',
-        headers: {
-            'X-CSRFToken': '{{ csrf_token }}',  // ใช้สำหรับ CSRF Protection
-            'Content-Type': 'application/json',
-        },
-    })
-    .then(response => response.json())
-    .then(data => {
-        alert(data.message);
-        closeJoinPopup();  // ปิดป๊อปอัปหลังจากบันทึกคำขอ
-    })
-    .catch(error => console.error('Error:', error));
-}
-
+        fetch(`/events/${selectedEventId}/send-request/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',  // ใช้สำหรับ CSRF Protection
+                'Content-Type': 'application/json',
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert(data.message);
+            closeJoinPopup();  // ปิดป๊อปอัปหลังจากบันทึกคำขอ
+        })
+        .catch(error => console.error('Error:', error));
+    }
 </script>
 
 <!-- <script>

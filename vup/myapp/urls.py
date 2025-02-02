@@ -28,6 +28,9 @@ urlpatterns = [
     path('report/<int:event_id>/', submit_report, name='submit_report'),
 
     path('profile/', profile_view, name='profile'),
+    path('profile/<int:member_id>/',member_profile, name='member_profile'),
+    path("check-username/", check_username, name="check_username"),
+    path("check-username/register/", check_username_register, name="check_username_register"),
     
     # path('profile/<int:member_id>/edit', profile_edit, name='edit_profile'),
     path('my-activity/', my_activity, name='my_activity'),

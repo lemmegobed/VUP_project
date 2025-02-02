@@ -181,6 +181,65 @@
             margin-right: 10px;        
         }
 
+ /* ทำให้ input และไอคอนอยู่ในกรอบเดียวกัน */
+.username-check {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 75%; 
+}
+
+/* ปรับขนาด input ให้รองรับไอคอน */
+.username-check input {
+    width: 100%;
+    padding-right: 35px; /* เผื่อพื้นที่ให้ไอคอน */
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f0f0f0;
+}
+
+/* ซ่อนไอคอนเริ่มต้น */
+#usernameStatusIcon {
+    position: absolute;
+    right: 10px;
+    display: none; /* ซ่อนก่อน */
+    color: gray;
+}
+
+/* ถ้า username ใช้ได้ */
+.username-valid {
+    color: green !important;
+    display: block !important;
+}
+
+/* ถ้า username ซ้ำ */
+.username-invalid {
+    color: red !important;
+    display: block !important;
+}
+
+/* กำลังตรวจสอบ */
+.username-loading {
+    color: blue !important;
+    display: block !important;
+    animation: spin 1s infinite linear;
+}
+
+/* เอฟเฟกต์หมุน */
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+
+/* ข้อความแจ้งเตือน */
+.error-message {
+    font-size: 14px;
+    color: red;
+    margin-top: 5px;
+    display: none; /* ซ่อนเป็นค่าเริ่มต้น */
+}
+
 
 
     </style>
@@ -242,9 +301,13 @@
 
             <div class="form-group">
                 <label for="username">Username</label>
-                <input type="text" name="username" required>
+                    <div class="username-check">
+                        <input type="text" name="username" id="id_username" required>
+                        <i id="usernameStatusIcon" class="fa-solid fa-circle-check username-default"></i>
+                    </div>
             </div>
-
+            <p id="usernameErrorMessage" class="error-message"></p> <!-- ข้อความแจ้งเตือน -->
+            
             <div class="form-group">
                 <label for="email">Email</label>
                 <input type="email" name="email" required>
@@ -291,5 +354,41 @@
     }   
 </script>
 
+
+<script>
+    document.getElementById("id_username").addEventListener("input", function() {
+        let username = this.value;
+        let statusIcon = document.getElementById("usernameStatusIcon");
+        let errorMessage = document.getElementById("usernameErrorMessage");
+    
+        // แสดงไอคอนเฉพาะเมื่อเริ่มพิมพ์
+        if (username.length > 0) {
+            statusIcon.style.display = "block";
+        } else {
+            statusIcon.style.display = "none";
+            errorMessage.style.display = "none";
+            return;
+        }
+    
+        statusIcon.className = "fa-solid fa-spinner username-loading"; // แสดงไอคอนโหลด
+    
+        fetch(`/check-username/register/?username=${username}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.exists) {
+                    statusIcon.className = "fa-solid fa-circle-xmark username-invalid"; // ❌
+                    errorMessage.innerText = "ชื่อผู้ใช้นี้ถูกใช้แล้ว กรุณาเปลี่ยนชื่อใหม่";
+                    errorMessage.style.display = "block";
+                } else {
+                    statusIcon.className = "fa-solid fa-circle-check username-valid"; // ✅
+                    errorMessage.style.display = "none";
+                }
+            })
+            .catch(error => console.error("Error checking username:", error));
+    });
+    </script>
+    
+    
+    
 
 </html>

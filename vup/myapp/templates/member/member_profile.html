@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HOME</title>
+    
+    {% load static %}
+    <link href="{% static 'css/css_member/member_profile.css' %}" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Prompt:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Taviraj:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@100..700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- เมนู -->
+    <div class="menu-container">
+        <div class="profile-section">
+            <img src="{{ user_login.profile.url }}" alt="Profile Image" class="profile-image">
+            <p class="username">{{ user_login.username }}</p>
+            <button id="openModal" class="new-event-btn">+ New Event</button>
+        </div>
+
+        <div class="menu-items">
+            <a class="menu-item home-btt " href="{% url 'feed' %}">
+                <i class="fa-solid fa-earth-americas"></i>Feed
+            </a>
+            <a class="menu-item profile-btt " href="{% url 'profile' %}">
+                <i class="fas fa-user"></i> ข้อมูลส่วนตัว
+            </a>
+
+            <a class="menu-item chat-btt" href="{% url 'chat' %}">
+                <i class="fas fa-comment"></i> Chat
+            </a>
+            <!-- <a class="menu-item activity-btt " href="{% url 'my_activity' %}">
+                <i class="fa-solid fa-bolt"></i></i>Activity
+            </a> -->
+        </div>
+
+
+        <a href="{% url 'logout' %}" class="logout">
+            Logout
+        </a>
+    </div>
+
+    <div class="outer-box-profile">
+        <div class="profile-header">
+            <i class="fa-solid fa-chevron-left back-icon"></i>
+            <p class="my_profile_head">{{ member.username }}</p>
+        </div>
+        
+               
+        <div class="inner-box">
+            <div class="box-profile-show">
+                
+
+                <img src="{{ member.profile.url }}" alt="Profile Image" class="profile-image-show">
+                
+                <div class="in-box-profile-show">
+                    <p class="username-profile">{{ member.username }}</p>
+                    
+                    <div class="box-age">
+                        <p class="age">{{ member.age }}Y</p>
+                    </div>
+
+                </div>
+                <p class="description-show",id="current-description">{{ member.description|default:"เพิ่มคำอธิบาย" }}</p>
+            </div>
+
+            <div class="outer-rating-box">
+                <!-- <p class="rating-title">Rating</p> -->
+                <div class="event-statistics">
+                    <div class="event-summary">
+                        <h3>
+                            <span class="event-summary-number">{{ total_events }}</span><br>
+                            <span class="event-summary-text">กิจกรรมที่สร้าง</span>
+                        </h3>
+                    </div>
+                    <div class="event-join">
+                        <h3>
+                            <span class="event-summary-number">{{ total_joined_events }}</span><br>
+                            <span class="event-summary-text">จำนวนการเข้าร่วม</span>
+                        </h3>
+                    </div>
+                    <div class="event-rating">
+                        <h3>
+                            <span class="event-summary-number">0</span><br>
+                            <span class="event-summary-text">คะแนน</span>
+                        </h3>
+                    </div>
+                    <div class="event-default">
+                        <h3>
+                            <span class="event-summary-number">0</span><br>
+                            <span class="event-summary-text">ผิดนัด</span>
+                        </h3>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-box">
+
+                <div class="event-container">
+                    {% for event in events %}
+                    <div class="event-post">
+                        <!-- Profile and Event Details -->
+                        <div class="post-left">
+                            <!-- รายละเอียดผู้โพสต์ -->
+                            <div class="post_member">
+                                <img src="{{ event.created_by.profile.url }}" alt="Profile Image" class="profile-image-post">
+                                <div class="member-info">
+                                    <div class="username-container">
+                                        <p class="username-post">
+                                            {{ event.created_by.username }}
+                                        </p>
+                                    </div>
+                                    
+        
+                                    <p class="location">
+                                        <strong>กำลังจะไปที่... </strong>
+                                        <i class="fa-solid fa-location-dot location-icon"></i>
+                                        <a href="https://www.google.com/maps/search/?api=1&query={{ event.location }}" target="_blank">{{ event.location }}</a>
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <!-- รายละเอียดอีเวนต์ -->
+                            <div class="detail-post">
+                                <h2>{{ event.event_name }}</h2>
+                                <p>{{ event.event_title }}</p>
+                            </div>
+        
+                            <!-- รายละเอียดเพิ่มเติม (วัน, หมวดหมู่, จังหวัด) -->
+                            <div class="filter-box-post">
+                                <div class="date">
+                                    <i class="fa-solid fa-calendar-days"></i>
+                                    <p>: {{ event.event_datetime }}</p>
+                                </div>
+                                <div class="participants">
+                                    <i class="fa-solid fa-user"></i>
+                                    <p>: {{ event.max_participants }}</p>
+                                </div>
+                                <div class="category">
+                                    <i class="fa-solid fa-shapes"></i>
+                                    <p>: {{ event.category }}</p>
+                                </div>
+                                <div class="province">
+                                    <i class="fa-solid fa-location-dot"></i>
+                                    <p>: {{ event.province }}</p>
+                                </div>
+                            </div>
+                        </div>
+        
+                        <!-- post-right -->
+                        <div class="post-right">
+                            <div class="time-since-created">
+                                <!-- <i class="fa-solid fa-clock"></i> -->
+                                <span class="time-text">{{ event.time_since }}</span>
+                            </div>
+                            
+        
+                            <!-- ซ่อนเฉพาะ report-event และ join-btn-container สำหรับเจ้าของ -->
+                            {% if request.user.id != event.created_by.id %}
+                            <div class="report-event">
+                                <a class="btn-report" href="{% url 'submit_report' event.id %}">
+                                    <i class="fa-solid fa-circle-exclamation"></i>
+                                    <span class="tooltip-text">รายงานกิจกรรมนี้</span>
+                                </a>
+                            </div>
+                            
+                            <div class="join-btn-container">
+                                <button class="join-btn" onclick="openJoinPopup({{ event.id }}, '{{ event.name|escapejs }}')">
+                                    I want to Join
+                                </button>
+                            </div>
+                            {% endif %}
+                            <!-- ป๊อปอัป -->
+
+                            <div class="popup-container" id="join-popup" style="display: none;">
+                                <div class="popup-content">
+                                    <!-- <h2>Confirm Joining</h2> -->
+                                    <div class="modal-icon">
+                                        <i class="fa-solid fa-exclamation-circle"></i>
+                                    </div>
+                                    <p>คุณต้องการส่งคำขอคำเข้ารวมกิจกรรมนี้ใช่ไหม?</p>
+                                    <div class="popup-actions">
+                                        <button class="popup-btn confirm-btn" onclick="confirmJoin()">
+                                            <i class="fa-solid fa-check"></i>ใช่
+                                        </button>
+                                        <button class="popup-btn cancel-btn" onclick="closeJoinPopup()">
+                                            <i class="fa-solid fa-times"></i>ไม่
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        
+                            
+                        </div> 
+                    </div>
+                    {% empty %}
+                        <p class="no_event">- No events available -</p>
+                    {% endfor %}
+                </div>
+            </div>
+            
+    </div>
+
+        <div>
+            {% include 'member/notification.html' %}
+        </div>
+
+        
+</body>
+
+<!-- ย้อนกลับ -->
+<script>
+    document.querySelector('.back-icon').addEventListener('click', function() {
+        window.history.back();
+    });
+</script>
+
+<script>
+    let selectedEventId = null;
+
+    function openJoinPopup(eventId, eventName) {
+        selectedEventId = eventId;  // เก็บ Event ID สำหรับการส่งคำขอ
+        document.getElementById('join-popup').style.display = 'flex';
+    }
+
+    function closeJoinPopup() {
+        document.getElementById('join-popup').style.display = 'none';
+    }
+
+    function confirmJoin() {
+        if (!selectedEventId) return;
+
+        fetch(`/events/${selectedEventId}/send-request/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',  // ใช้สำหรับ CSRF Protection
+                'Content-Type': 'application/json',
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert(data.message);
+            closeJoinPopup();  // ปิดป๊อปอัปหลังจากบันทึกคำขอ
+        })
+        .catch(error => console.error('Error:', error));
+    }
+</script>
+
+</html>

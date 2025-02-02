@@ -84,7 +84,7 @@
                     </div>
                     <div class="event-join">
                         <h3>
-                            <span class="event-summary-number">0</span><br>
+                            <span class="event-summary-number">{{ total_joined_events }}</span><br>
                             <span class="event-summary-text">จำนวนการเข้าร่วม</span>
                         </h3>
                     </div>
@@ -111,8 +111,8 @@
                             <p><i class="fa-solid fa-user"></i>ข้อมูลผู้ใช้</p>
                             
                             <div class="box-btn-edit">
-                                <button onclick="openModal('profileModal')" class="btn btn-primary mt-4">
-                                    <i class="fa-regular fa-pen-to-square"></i>แก้ไขโปรไฟล์</button>
+                                <button onclick="openModal('profileModal')" class="btn-edit-profile">
+                                    <i class="fa-regular fa-pen-to-square"></i>แก้ไข</button>
                             </div>
                         </div>
                         
@@ -124,9 +124,6 @@
                         <!-- <p><strong>คำอธิบาย:</strong> {{ user.description|default:"ยังไม่มีคำอธิบาย" }}</p> -->
                     </div>
     
-
-                    <!-- ฟอร์มแก้ไขข้อมูลส่วนตัวจ้าาา -->
-                    
                 </div>
             </div>
 
@@ -137,6 +134,7 @@
                     {% for event in events %}
                     <div class="event-box-post"> 
                         <div class="post_member">
+                            
                             
                             <img src="{{ event.created_by.profile.url }}" alt="Profile Image" class="profile-image-post">
                             <div class="member-info">
@@ -153,7 +151,7 @@
                         </div>
     
                         
-                
+                  
                         <div class="detail-post">
                             <h2>{{ event.event_name }}</h2>
                             <p>{{ event.event_title }}</p>
@@ -177,17 +175,29 @@
                                 <p>: {{ event.province }}</p>
                             </div>
                         </div>
-                
-                        <!-- ปุ่มแก้ไขและลบ -->
+
+                        
+                        
+                        
+                        
+
                         <div class="post-actions">
-                            <button onclick="openModal('eventModal-{{ event.id }}')" class="btn btn-primary">แก้ไข</button>
-                            <button class="btn-delete" onclick="openConfirmDeleteModal('{{ event.id }}')">ลบ</button>
-                            
+                            <button onclick="openModal('eventModal-{{ event.id }}')" class="btn-edit-event">
+                                <i class="fas fa-edit"></i> <!-- ไอคอนแก้ไข -->
+                            </button>
+                            <button class="btn-delete-event" onclick="openConfirmDeleteModal('{{ event.id }}')">
+                                <i class="fas fa-trash"></i> <!-- ไอคอนลบ -->
+                            </button>
+    
+                            <!-- ฟอร์มลบกิจกรรม -->
                             <form id="deleteForm-{{ event.id }}" method="POST" action="{% url 'delete_event' event.id %}">
                                 {% csrf_token %}
                             </form>
-                          
                         </div>
+                    
+                    
+                        <!-- ปุ่มแก้ไขและลบ -->
+                        
                     </div>
                     {% empty %}
                     <p>คุณยังไม่มีโพสต์</p>
@@ -197,8 +207,72 @@
         </div>
 
    <!-- ✅ MODAL ฟอร์มแก้ไขโปรไฟล์ -->
-    <div id="profileModal" class="modal">
+   <div id="profileModal" class="modal">
         <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('profileModal')">&times;</span>
+            <h2 class="modal-header">แก้ไขโปรไฟล์</h2>
+            
+            <form method="post" enctype="multipart/form-data" class="profile-form">
+                {% csrf_token %}
+                <div class="profile-group">
+                    <label class="profile-label">รูปโปรไฟล์</label>{{ form.profile }}
+                </div>
+
+                <div class="profile-group">
+                    <label class="profile-label">ชื่อผู้ใช้</label>
+                    <div class="username-check">
+                        {{ form.username }}
+                        <i id="usernameStatusIcon" class="fa-solid fa-circle-check username-default"></i>
+                    </div>
+                    
+                </div>
+                <p id="usernameErrorMessage" class="error-message"></p> 
+
+                
+
+                <div class="profile-group">
+                    <label class="profile-label">อีเมล</label>
+                    {{ form.email }}
+                </div>
+
+                <div class="profile-group">
+                    <label class="profile-label">ชื่อ</label>
+                    {{ form.first_name }}
+                </div>
+
+                <div class="profile-group">
+                    <label class="profile-label">นามสกุล</label>
+                    {{ form.last_name }}
+                </div>
+
+                <div class="profile-group">
+                    <label class="profile-label">เพศ</label>
+                    {{ form.sex }}
+                </div>
+
+                <div class="profile-group">
+                    <label class="profile-label">วันเกิด</label>
+                    {{ form.birthdate }}
+                </div>
+
+                <div class="profile-group">
+                    <label class="profile-label">คำอธิบาย</label>
+                    {{ form.description }}
+                </div>
+
+                <input type="hidden" name="update_profile" value="true">
+                <div class="profile-footer">
+                    <!-- <button type="button" onclick="closeModal('profileModal')" class="profile-btn profile-btn-secondary">ยกเลิก</button> -->
+                    <button type="submit" class="profile-btn profile-btn-primary">บันทึก</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- <div id="profileModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('profileModal')">&times;</span>
             <h2 class="modal-header">แก้ไขโปรไฟล์</h2>
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
@@ -210,73 +284,94 @@
                 </div>
             </form>
         </div>
-    </div>
+    </div> -->
 
     
 
     <!-- ✅ MODAL ฟอร์มแก้ไขกิจกรรม -->
     {% for event in events %}
-        <div id="eventModal-{{ event.id }}" class="modal">
-            <div class="modal-content">
-                <h2 class="modal-header">แก้ไขกิจกรรม: {{ event.name }}</h2>
-                <form method="post">
-                
-                    <input type="hidden" name="event_id" value="{{ event.id }}">
-                    <form class="edit-event-form" method="POST" action="">
-                        {% csrf_token %}
-                        <input type="hidden" name="event_id" value="{{ event.id }}">
-                
-                        <label class="edit-event-label">Event Name</label>
-                        <input class="edit-event-input" type="text" name="event_name" value="{{ event.event_name }}" required>
-                
-                        <label class="edit-event-label">Event Title</label>
-                        <input class="edit-event-input" type="text" name="event_title" value="{{ event.event_title }}" required>
-                
-                        <label class="edit-event-label">Event Datetime</label>
-                        <input class="edit-event-input" type="datetime-local" name="event_datetime" value="{{ event.event_datetime|date:'Y-m-d\TH:i' }}" required>
-                
-                        <label class="edit-event-label">Location</label>
-                        <input class="edit-event-input" type="text" name="location" value="{{ event.location }}" required>
-                
-                        <label class="edit-event-label">Category</label>
-                        <select class="edit-event-select" name="category" required>
-                            <option value="เลือกหมวด" {% if event.category == "เลือกหมวด" %}selected{% endif %}>เลือกหมวด</option>
-                            <option value="การศึกษา" {% if event.category == "การศึกษา" %}selected{% endif %}>การศึกษา</option>
-                            <option value="กีฬา" {% if event.category == "กีฬา" %}selected{% endif %}>กีฬา</option>
-                            <option value="ท่องเที่ยว" {% if event.category == "ท่องเที่ยว" %}selected{% endif %}>ท่องเที่ยว</option>
-                            <option value="อาหาร" {% if event.category == "อาหาร" %}selected{% endif %}>อาหาร</option>
-                            <option value="ศิลปะ" {% if event.category == "ศิลปะ" %}selected{% endif %}>ศิลปะ</option>
-                            <option value="สุขภาพ" {% if event.category == "สุขภาพ" %}selected{% endif %}>สุขภาพ</option>
-                            <option value="ความบันเทิง" {% if event.category == "ความบันเทิง" %}selected{% endif %}>ความบันเทิง</option>
-                        </select>
-                
-                        <label class="edit-event-label">Max Participants</label>
-                        <input class="edit-event-input" type="number" name="max_participants" value="{{ event.max_participants }}" required>
-                
-                        <label class="edit-event-label">Province</label>
-                        <input class="edit-event-input" type="text" name="province" value="{{ event.province }}" required>
-                
-                        <button type="submit" name="event_submit" class="btn-save-event">บันทึก</button>
-                    </form>
-                    <input type="hidden" name="event_submit" value="true">
-                    <div class="modal-footer">
-                        <button type="button" onclick="closeModal('eventModal-{{ event.id }}')" class="btn btn-secondary">ยกเลิก</button>
-                        <button type="submit" class="btn btn-primary">บันทึก</button>
-                    </div>
-                </form>
-            </div>
+    <div id="eventModal-{{ event.id }}" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('eventModal-{{ event.id }}')">&times;</span>
+            <h2 class="modal-header">แก้ไขกิจกรรม</h2>
+            <form method="POST" class="edit-event-form">
+                {% csrf_token %}
+                <input type="hidden" name="event_id" value="{{ event.id }}">
+    
+                <div class="form-group">
+                    <label class="edit-event-label">Event Name</label>
+                    <input class="edit-event-input" type="text" name="event_name" value="{{ event.event_name }}" required>
+                </div>
+    
+                <div class="form-group">
+                    <label class="edit-event-label">Event Title</label>
+                    <input class="edit-event-input" type="text" name="event_title" value="{{ event.event_title }}" required>
+                </div>
+    
+                <div class="form-group">
+                    <label class="edit-event-label">Event Datetime</label>
+                    <input class="edit-event-input" type="datetime-local" name="event_datetime" value="{{ event.event_datetime|date:'Y-m-d\TH:i' }}" required>
+                </div>
+    
+                <div class="form-group">
+                    <label class="edit-event-label">Location</label>
+                    <input class="edit-event-input" type="text" name="location" value="{{ event.location }}" required>
+                </div>
+    
+                <div class="form-group">
+                    <label class="edit-event-label">Category</label>
+                    <select class="edit-event-select" name="category" required>
+                        <option value="" disabled selected>เลือกจังหวัด</option>
+                        <option value="การศึกษา" {% if event.category == "การศึกษา" %}selected{% endif %}>การศึกษา</option>
+                        <option value="กีฬา" {% if event.category == "กีฬา" %}selected{% endif %}>กีฬา</option>
+                        <option value="ท่องเที่ยว" {% if event.category == "ท่องเที่ยว" %}selected{% endif %}>ท่องเที่ยว</option>
+                        <option value="อาหาร" {% if event.category == "อาหาร" %}selected{% endif %}>อาหาร</option>
+                        <option value="ศิลปะ" {% if event.category == "ศิลปะ" %}selected{% endif %}>ศิลปะ</option>
+                        <option value="สุขภาพ" {% if event.category == "สุขภาพ" %}selected{% endif %}>สุขภาพ</option>
+                        <option value="ความบันเทิง" {% if event.category == "ความบันเทิง" %}selected{% endif %}>ความบันเทิง</option>
+                    </select>
+                </div>
+    
+                <div class="form-group">
+                    <label class="edit-event-label">Max Participants</label>
+                    <input class="edit-event-input" type="number" name="max_participants" value="{{ event.max_participants }}" required>
+                </div>
+    
+                <div class="form-group">
+                    <label class="edit-event-label">Province</label>
+                    <select class="edit-event-select" name="province" required>
+                        <option value="" disabled selected>เลือกจังหวัด</option>
+                        {% for province in provinces %}
+                            <option value="{{ province }}" {% if event.province == province %}selected{% endif %}>{{ province }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+    
+                <button type="submit" name="event_submit" class="btn-save-event">บันทึก</button>
+            </form>
         </div>
+    </div>
+    
+        
     {% endfor %}
 
      <!-- ✅ MODAL ยืนยันการลบ -->
      <div id="deleteConfirmModal" class="modal">
         <div class="modal-content">
-            <h2 class="modal-header">ยืนยันการลบ</h2>
+            <div class="modal-icon">
+                <i class="fa-solid fa-exclamation-circle"></i>
+            </div>
+
             <p>คุณแน่ใจหรือไม่ว่าต้องการลบกิจกรรมนี้?</p>
             <div class="modal-footer">
-                <button type="button" onclick="closeModal('deleteConfirmModal')" class="btn-secondary">ยกเลิก</button>
-                <button id="confirmDeleteButton" class="btn-delete">ลบ</button>
+                <button id="confirmDeleteButton" class="btn-delete">
+                    <i class="fa-solid fa-check"></i>ใช่
+                </button>
+                <button type="button" onclick="closeModal('deleteConfirmModal')" class="btn-secondary">
+                    <i class="fa-solid fa-times"></i>ไม่
+                </button>
             </div>
+            
         </div>
     </div>
 
@@ -298,7 +393,7 @@
         }
     </script>
 
-        <!-- ✅ SCRIPT เปิด-ปิด Modal -->
+        <!-- ลบ-->
         <script>
             let currentDeleteEventId = null;
     
@@ -316,6 +411,52 @@
             function closeModal(id) {
                 document.getElementById(id).classList.remove("active");
             }
-        </script>
+        </script> 
 
+
+<script>
+    document.getElementById("id_username").addEventListener("input", function() {
+        let username = this.value;
+        let statusIcon = document.getElementById("usernameStatusIcon");
+        let errorMessage = document.getElementById("usernameErrorMessage");
+    
+        if (username.length < 3) {
+            statusIcon.className = "fa-solid fa-circle-check username-default";
+            errorMessage.style.display = "none"; // ซ่อนข้อความ
+            return;
+        }
+    
+        statusIcon.className = "fa-solid fa-spinner username-loading"; // แสดงไอคอนโหลด
+    
+        fetch(`/check-username/?username=${username}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.exists) {
+                    statusIcon.className = "fa-solid fa-circle-xmark username-invalid"; // ❌
+                    errorMessage.innerText = "ชื่อผู้ใช้นี้ถูกใช้แล้ว กรุณาเปลี่ยนชื่อใหม่";
+                    errorMessage.style.display = "block";
+                } else {
+                    statusIcon.className = "fa-solid fa-circle-check username-valid"; // ✅
+                    errorMessage.style.display = "none"; // ซ่อนข้อความ
+                }
+            })
+            .catch(error => console.error("Error checking username:", error));
+    });
+    
+    /* ป้องกันการบันทึกถ้า username ยังใช้ไม่ได้ */
+    document.querySelector(".profile-form").addEventListener("submit", function(event) {
+        let statusIcon = document.getElementById("usernameStatusIcon");
+        let errorMessage = document.getElementById("usernameErrorMessage");
+    
+        if (statusIcon.classList.contains("username-invalid")) {
+            event.preventDefault(); // ป้องกันการ submit
+            errorMessage.innerText = "ชื่อผู้ใช้นี้ไม่สามารถใช้ได้ กรุณาเปลี่ยนชื่อใหม่";
+            errorMessage.style.display = "block";
+        }
+    });
+    </script>
+    
+    
+    
+    
 </html>

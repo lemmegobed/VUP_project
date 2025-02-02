@@ -338,15 +338,27 @@ def home_view(request):
     })
 
 
+PROVINCES = [
+    "กรุงเทพมหานคร", "กระบี่", "กาญจนบุรี", "กาฬสินธุ์", "กำแพงเพชร", "ขอนแก่น", "จันทบุรี", "ฉะเชิงเทรา",
+    "ชลบุรี", "ชัยนาท", "ชัยภูมิ", "ชุมพร", "เชียงราย", "เชียงใหม่", "ตรัง", "ตราด", "ตาก", "นครนายก",
+    "นครปฐม", "นครพนม", "นครราชสีมา", "นครศรีธรรมราช", "นครสวรรค์", "นนทบุรี", "นราธิวาส", "น่าน",
+    "บึงกาฬ", "บุรีรัมย์", "ปทุมธานี", "ประจวบคีรีขันธ์", "ปราจีนบุรี", "ปัตตานี", "พระนครศรีอยุธยา", "พังงา",
+    "พัทลุง", "พิจิตร", "พิษณุโลก", "เพชรบุรี", "เพชรบูรณ์", "แพร่", "พะเยา", "ภูเก็ต", "มหาสารคาม", "มุกดาหาร",
+    "แม่ฮ่องสอน", "ยโสธร", "ยะลา", "ร้อยเอ็ด", "ระนอง", "ระยอง", "ราชบุรี", "ลพบุรี", "ลำปาง", "ลำพูน",
+    "เลย", "ศรีสะเกษ", "สกลนคร", "สงขลา", "สมุทรปราการ", "สมุทรสงคราม", "สมุทรสาคร", "สระแก้ว",
+    "สระบุรี", "สิงห์บุรี", "สุโขทัย", "สุพรรณบุรี", "สุราษฎร์ธานี", "สุรินทร์", "หนองคาย", "หนองบัวลำภู",
+    "อ่างทอง", "อำนาจเจริญ", "อุดรธานี", "อุตรดิตถ์", "อุทัยธานี", "อุบลราชธานี"
+]
 
 @login_required
-
 def profile_view(request):
     member_data = Member.objects.get(username=request.user.username) 
     
     # ดึงกิจกรรมที่ผู้ใช้สร้าง
     events = Event.objects.filter(created_by=request.user, is_active=True)
     total_events = events.count()
+
+    total_joined_events = Event_Request.objects.filter(sender=member_data, response_status='accepted').count()
 
     # ดึงกิจกรรมที่กำลังดำเนินการอยู่ (ข้อมูลจาก my_activity)
     # active_events = Event.objects.filter(created_by=request.user, is_active=True)
@@ -381,13 +393,50 @@ def profile_view(request):
         'member_data': member_data,
         'events': events,
         'total_events': total_events,  
+        'total_joined_events':total_joined_events,
         # 'active_events': active_events,  
         # 'active_events_count': active_events_count,
         'form': form,
         'event_form': event_form,  # ฟอร์มสร้าง/แก้ไขกิจกรรม
+        "provinces": PROVINCES
     }
     return render(request, 'member/profile.html', context)
 
+def check_username_register(request):
+    username = request.GET.get("username", None)
+
+    # ตรวจสอบว่ามีชื่อซ้ำในระบบหรือไม่
+    exists = User.objects.filter(username=username).exists()
+    return JsonResponse({"exists": exists})
+
+@login_required
+def check_username(request):
+    username = request.GET.get("username", None)
+    
+    if username == request.user.username:
+        return JsonResponse({"exists": False})  
+
+    exists = User.objects.filter(username=username).exists()
+    return JsonResponse({"exists": exists})
+
+def member_profile(request, member_id):
+    member = get_object_or_404(Member, id=member_id)
+    user_login = Member.objects.get(username=request.user.username)
+
+    events = Event.objects.filter(created_by=member, is_active=True)
+    total_events = events.count()
+
+    total_joined_events = Event_Request.objects.filter(sender=member, response_status='accepted').count()
+
+    context = {
+        'user_login':user_login,
+        'member': member,
+        'events':events,
+        'total_events':total_events,
+        'total_joined_events': total_joined_events,
+        
+    } 
+    return render(request, 'member/member_profile.html', context)
 
 def delete_event(request, event_id):
     event = get_object_or_404(Event, id=event_id)

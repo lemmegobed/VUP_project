@@ -287,16 +287,6 @@ font-size: 12px;
 /* color: #ffffff; */
 }
 
-/* กรอบครอบชั้นที่สอง */
-.content-box {
-width: 85%;
-margin-left: 30px;
-border: 2px solid #cfcfcf; 
-padding: 15px;
-border-radius: 8px; 
-background-color: #f7f7f7; 
-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
-}
 
 /* เนื้อหา */
 .box-profile-show {
@@ -418,18 +408,6 @@ margin-left: 10px;
     background-color: #477db6;
 }
 
-/* .modal {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%; 
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.5);
-} */
-
 .profile-header {
     display: flex;
     align-items: center; 
@@ -440,17 +418,25 @@ margin-left: 10px;
 }
 
 .my_profile_head {
-    font-size: 16px; 
+    font-size: 20px; 
     font-weight: bold;
     color: #000000; 
     margin: 0; 
 }
 
 .profile-header i {
-    font-size: 30px; 
+    font-size: 25px; 
     color: #000000; 
-    margin-right: 5px; 
-    /* transition: transform 0.3s, color 0.3s;  */
+    cursor: pointer;
+}
+
+
+/* .post-box{
+    display: flex;
+} */
+
+.event-container {
+    margin-top: 20px;
 }
 
 .post-box{
@@ -465,13 +451,15 @@ margin-left: 10px;
     border-radius: 15px;
     margin-bottom: 20px;
     background-color: #fff;
+    border: 1px solid #d1d1d1;
     width: 100%;
     max-width: 650px;   
     min-width: 650px;   
     min-height: 200px;
     overflow: hidden;   
     margin: auto;
-    margin-top: 10px;
+    padding: 20px 0px 30px 20px;   /* บน,ขวา,ล่าง,ซ้าย */
+    margin-top: 20px;
 }
 
 .post-left {
@@ -490,8 +478,8 @@ margin-left: 10px;
 .post_member {
     display: flex;
     gap: 10px; 
-    margin: 10px;
-    padding: 20px 0;
+    /* margin: 10px; */
+    padding: 10px 0;
     /* line-height: 15px;  */
 }
 
@@ -547,7 +535,7 @@ margin-left: 10px;
     /* border: 1px solid #ca1b96; */
     line-height: 10px;
     color: #000;
-    margin-left: 14px;
+    /* margin-left: 14px; */
 }
 
 .detail-post h2 {
@@ -570,8 +558,8 @@ margin-left: 10px;
     gap: 10px;
     /* margin-top: 10px; */
     /* border: 1px solid #22abd4; */
-    margin-left: 15px;
-    margin-bottom: 30px;
+    /* margin-left: 15px; */
+    /* margin-bottom: 30px; */
     
 }
 
@@ -586,155 +574,138 @@ margin-left: 10px;
     font-size: 12px;
 }
 
+/* ไอคอนสำหรับแต่ละ dropdown */
+.filter-item i {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #000;
+    font-size: 18px;
+}
 
 
-.event-container {
+.post-right {
+    /* margin: 0; */
     display: flex;
-    flex-direction: column;
-    gap: 20px;
-    padding: 10px;
-}
+    flex-direction: column;  
+    justify-content: flex-start;  
+    height: 30vh;  
+    width: 40%;
+    /* border: 1px solid #d33636; */
+    /* padding: 0px  0px  30px 0px;  */
+} 
 
-
-/* Left Section */
-.post-left {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    width: 70%;
-}
-
-/* Profile and Username */
-.post_member {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.profile-image-post {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    object-fit: cover;
-}
-
-.username-post {
-    font-weight: bold;
-    margin: 0;
-    font-size: 16px;
-}
-
-.location {
-    font-size: 14px;
-    color: #666;
-}
-
-/* Filter Section */
-.filter-box-post p {
-    margin: 0;
-    font-size: 14px;
-    color: #333;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-
-/* แสดงเวลาอยู่ด้านบนสุด */
 .time-since-created {
-    font-size: 14px;
-    color: #777;
-    text-align: left;
-}
-
-/* จัดปุ่มให้อยู่ในบรรทัดเดียวกัน */
-.post-actions {
     display: flex;
-    gap: 10px;
     align-items: center;
+    width: 100%; 
+    margin-left: 130px;
+    padding-bottom: 10px;
+    margin-top: -5px;
 }
 
-/* ปุ่มแก้ไข (เฉพาะกิจกรรม) */
-.btn-edit-event {
-    background-color: #c9c9c9; /* สีปุ่ม */
-    color: white; /* สีไอคอน */
-    width: 35px;
-    height: 35px;
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-    transition: background 0.2s;
+.time-since-created .time-text {
+    font-size: 12px; 
+    color: #575757; 
+    opacity: 0.8;
+    /* margin-left: 130px;
+    padding-bottom: 10px; */
+}
+
+.report-event {
+    display: flex; 
+    justify-content: flex-end; 
+    align-items: center; 
+    /* padding: 5px;  */
+    margin-right: 40px;
+    margin-top: -10px;
+}
+
+.btn-report {
+    display: inline-flex; 
+    align-items: center;
+    position: relative; 
+    text-decoration: none; 
+    color: #9b9b9b; 
+    cursor: pointer; 
+    transition: color 0.3s ease;
+}
+
+
+.btn-report:hover {
+    transform: scale(1.1); 
+    color: #e74c3c;
+}
+
+.btn-report i {
+    margin: 0; 
+}
+
+
+.tooltip-text {
+    visibility: hidden; /* ซ่อนข้อความ */
+    width: auto;
+    background-color: #e74c3c; /* สีพื้นหลังของ Tooltip */
+    color: #fff; /* สีข้อความ */
+    text-align: center;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 10px;
+    position: absolute;
+    top: 50%; 
+    left: -100px;
+    transform: translateY(-50%);
+    white-space: nowrap;
+    z-index: 1000;
+    opacity: 0; 
+    transition: opacity 0.3s ease-in-out;
+}
+
+.btn-report:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1; 
+}
+.join-btn-container {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 10px;
+    /* flex-shrink: 0; */
+    /* margin-left: 20px; */
+    /* border: 1px solid #000000; */
+    margin-right: 50px;
+    margin-top: 20px;
 }
 
-/* ปรับขนาดของไอคอนให้พอดีกับปุ่ม */
-.btn-edit-event i {
-    font-size: 16px;
-    padding: 10px;
-    line-height: 1;
-}
-
-.btn-edit-event:hover {
-    background-color: #0056b3;
-}
-
-/* ปุ่มลบ (เฉพาะกิจกรรม) */
-.btn-delete-event {
-    background-color: #dc3545;
+.join-btn {
+    /* display: flex; */
+    /* flex-direction: column; */
+    /* align-items: center; */
+    /* justify-content: center; */
+    background-color: #4CAF50;
     color: white;
-    width: 35px;
-    height: 35px;
-    border: none;
+    /* padding: 10px; */
+    border: 1px solid #adadad;
     border-radius: 50%;
+    width: 140px;
+    height: 140px;
     cursor: pointer;
-    transition: background 0.2s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    /* text-align: center; */
+    /* line-height: 5px; */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    /* font-size: 12px; */
 }
 
-.btn-delete-event:hover {
-    background-color: #c82333;
+.join-btn:hover {
+    background-color: #1d8522;
 }
 
-/* ปรับขนาดไอคอน */
-.btn-edit-event i,
-.btn-delete-event i {
-    font-size: 16px;
+.join-btn p{
+    font-family:"Anuphan", sans-serif;
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 14px;
 }
-
-/* Edit and Delete Buttons */
-/* .edit-button, .delete-button {
-    background-color: transparent;
-    border: none;
-    color: #666;
-    cursor: pointer;
-    font-size: 16px;
-    transition: color 0.3s;
-} */
-
-/* .edit-button:hover {
-    color: #4caf50; 
-}
-
-.delete-button:hover {
-    color: #f44336; 
-} */
-
-/* Position for post container */
-.event-box-post {
-    width: 90%;
-    background-color: #ffffff;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    margin: 0 auto; /* จัดกึ่งกลางแนวนอน */
-}
-
 
 .date, .time, .category, .participants ,.province {
     background-color: #ffffff;
@@ -749,6 +720,30 @@ margin-left: 10px;
     font-weight: bold;
     font-size: 13px;
 }
+
+.province {
+    background-color: #ffffff;
+    color: rgb(0, 0, 0);
+    border: 1px solid #646464;
+    border-radius: 20px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 13px;
+    padding: 10px 10px;
+    /* gap: 8px;  */
+}
+
+.province i {
+    margin-left: 10px; 
+}
+
+.province p {
+    margin-right: 10px; 
+}
+
 
 .date {
     width: 45%; 
@@ -783,6 +778,16 @@ margin-left: 10px;
     height: 50px;
     border: 1px solid #000000;
 }
+
+
+
+
+.no_event{
+    text-align: center;
+    color: #777777;
+    font-size: 12px;
+}
+
 .button-container {
     margin-top: 20px;
     display: flex;
@@ -792,375 +797,127 @@ margin-left: 10px;
 }
 
 
-.event-box-post {
-    position: relative; 
+.btn {
+padding: 10px 20px;
+border-radius: 5px;
+border: none;
+cursor: pointer;
+font-size: 16px;
+font-weight: bold;
+transition: background-color 0.3s ease;
+gap: 0;
 }
 
-.post-actions {
-    position: absolute;
-    top: 10px; 
-    right: 10px; 
-    display: flex;
-    gap: 10px; 
+.btn-yes {
+background-color: #2d7e23;
+color: white;
 }
 
-/* modal.css */
-.modal {
-    position: fixed;
-    inset: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    visibility: hidden;
-    opacity: 0;
-    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+/* .btn-yes:hover {
+background-color: #c0392b;
+} */
+
+.btn-no {
+background-color:  #c0392b;
+color: white;
+}
+/* 
+.btn-no:hover {
+background-color: #95a5a6;
+} */
+
+/* สไตล์สำหรับ Join Modal */
+.join-modal {
+display: none;
+position: fixed;
+z-index: 1000;
+left: 0;
+top: 0;
+width: 100%;
+height: 100%;
+background-color: rgba(0, 0, 0, 0.5);
+justify-content: center;
+align-items: center;
 }
 
-.modal.active {
-    visibility: visible;
-    opacity: 1;
+.join-modal-content {
+background-color: #fff;
+padding: 20px;
+border-radius: 10px;
+width: 300px;
+text-align: center;
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.modal-content {
-    position: relative;
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    width: 500px;
-    /* text-align: center; */
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+.join-modal-close {
+position: absolute;
+top: 10px;
+right: 15px;
+font-size: 18px;
+cursor: pointer;
+color: #aaa;
 }
 
-#deleteConfirmModal .modal-content {
-    position: relative;
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    width: 350px;
-    text-align: center;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-}
-
-.modal.active .modal-content {
-    transform: translateY(0);
-}
-
-.modal-header {
-    text-align: center;
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 20px;
-}
-
-.modal-footer {
-    display: flex;
-    justify-content: center;
-    margin-top: 10px;
-    gap: 10px;
-}
-
-
-.btn-edit-profile {
-    font-family:"Anuphan", sans-serif;
-    background-color: transparent;
-    border: none;
-    color: #666;
-    cursor: pointer;
-    font-size: 16px;
-    transition: color 0.3s;
-
-}
-
-
-#deleteConfirmModal .modal-icon {
+.modal-icon {
     font-size: 50px;
     color: #969696; /* สีส้ม */
     margin-bottom: 10px;
 }
 
-/* ปุ่มลบ */
-#deleteConfirmModal .btn-delete {
-    background-color: #4CAF50;
-    color: white;
+.popup-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none; /* ค่าเริ่มต้นเป็น none */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    }
+    
+    
+    /* Popup content */
+    .popup-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    .popup-content h2 {
+    margin-top: 0;
+    }
+    
+    .popup-content p {
+    margin: 15px 0;
+    }
+    
+    .popup-actions {
+    display: flex; /* ใช้ flexbox */
+    justify-content: center; /* จัดให้อยู่ตรงกลางในแนวนอน */
+    gap: 10px; /* ระยะห่างระหว่างปุ่ม */
+    margin-top: 20px;
+    }
+    
+    .popup-btn {
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 14px;
-    font-weight: normal;
-}
-
-/* ปุ่มยกเลิก */
-#deleteConfirmModal .btn-secondary {
+    }
+    
+    .confirm-btn {
+    background-color: #4CAF50;
+    color: white;
+    }
+    
+    .cancel-btn {
     background-color: #f44336;
     color: white;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-}
-
-/* hover effect */
-#deleteConfirmModal .btn-delete:hover {
-    background-color: #257c19;
-}
-
-#deleteConfirmModal .btn-secondary:hover {
-    background-color: #912020;
-}
-
-
-/* ปรับให้ label อยู่ด้านซ้าย input */
-#eventModal-{{ event.id }} .form-group {
-    display: flex;
-    flex-direction: row; /* จัด label และ input ในแนวนอน */
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    margin-bottom: 15px;
-}
-
-/* ป้ายกำกับ (label) อยู่ด้านซ้าย */
-#eventModal-{{ event.id }} .edit-event-label {
-    font-size: 14px;
-    font-weight: bold;
-    color: rgb(5, 5, 5);
-    min-width: 150px; /* ป้องกัน label บีบ */
-    text-align: left;
-    margin-right: 10px;
-}
-
-/* ปรับให้ Input และ Select เต็มพื้นที่ */
-#eventModal-{{ event.id }} .edit-event-input {
-    flex: 1; /* ขยายเต็มที่ */
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 16px;
-    background-color: #fff;
-}
-
-#eventModal-{{ event.id }} .edit-event-select {
-    flex: 1; /* ขยายเต็มที่ */
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 16px;
-    background-color: #fff;
-}
-
-
-/* กำหนดให้ Select มีดีไซน์เหมือน Input */
-#eventModal-{{ event.id }} .edit-event-select {
-    appearance: none;
-}
-
-/* เพิ่มเอฟเฟกต์เมื่อโฟกัส */
-#eventModal-{{ event.id }} .edit-event-input:focus,
-#eventModal-{{ event.id }} .edit-event-select:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-}
-
-/* ปุ่มบันทึก */
-#eventModal-{{ event.id }} .btn-save-event {
-    background-color: #003366;
-    color: white;
-    padding: 12px;
-    border: none;
-    border-radius: 30px;
-    font-size: 18px;
-    cursor: pointer;
-    margin-top: 15px;
-    width: 100%;
-}
-
-#eventModal-{{ event.id }} .btn-save-event:hover {
-    background-color: #002244;
-}
-
-
-.close-btn {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    font-size: 24px;
-    font-weight: bold;
-    color: #555;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.close-btn:hover {
-    color: #ff0000;
-}
-
-/* ปรับ modal-content ให้รองรับปุ่มปิด */
-.modal-content {
-    position: relative; /* เพื่อให้ปุ่ม X อยู่ในตำแหน่งที่ถูกต้อง */
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    width: 500px;
-    max-width: 90%;
-    text-align: left;
-}
-
-
-
-
-//* ปรับ modal-content ให้รองรับปุ่มปิด */
-#profileModal .modal-content {
-    position: relative;
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    width: 500px;
-    max-width: 90%;
-    text-align: left;
-}
-
-
-/* กล่องฟอร์ม */
-#profileModal .profile-group {
-    display: flex;
-    flex-direction: row; /* จัด label และ input ในแนวนอน */
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    margin-bottom: 15px;
-}
-
-/* ป้ายกำกับ */
-#profileModal .profile-label {
-    font-size: 14px;
-    font-weight: bold;
-    color: rgb(5, 5, 5);
-    min-width: 150px; /* ป้องกัน label บีบ */
-    text-align: left;
-    margin-right: 10px;
-}
-
-/* อินพุต */
-.input {
-    width: 100%; 
-    /* padding-right: 40px;  */
-    padding-left: 12px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 16px;
-    background-color: #f0f0f0;
-    height: 40px;
-}
-
-#profileModal .profile-select{
-    flex: 1; /* ขยายเต็มที่ */
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 16px;
-    background-color: #fff;
-}
-
-
-#profileModal .profile-textarea {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 16px;
-    background-color: #fff;
-}
-
-/* ปุ่ม */
-#profileModal .profile-btn {
-    width: 100%;
-    padding: 12px;
-    font-size: 18px;
-    border-radius: 30px;
-    cursor: pointer;
-    border: none;
-}
-
-#profileModal .profile-btn-primary {
-    background-color: #003366;
-    color: white;
-}
-
-#profileModal .profile-btn-secondary {
-    background-color: #ccc;
-    color: black;
-}
-
-#profileModal .profile-btn-primary:hover {
-    background-color: #002244;
-}
-
-
-/* ทำให้ input และไอคอนอยู่ในกรอบเดียวกัน */
-.username-check {
-    position: relative;
-    display: flex;
-    align-items: center;
-    width: 100%; /* ขยายให้กว้างเต็มพื้นที่ */
-}
-
-/* ปรับขนาด input ให้ยาวขึ้นและรองรับไอคอน */
-.username-check input {
-    width: 100%; 
-    padding-right: 40px; 
-    padding-left: 12px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 16px;
-    background-color: #f0f0f0;
-    height: 40px;
-}
-
-/* จัดตำแหน่งไอคอนให้อยู่ด้านใน input */
-#usernameStatusIcon {
-    position: absolute;
-    right: 12px;
-    display: none; /* ซ่อนเริ่มต้น */
-    font-size: 18px;
-    pointer-events: none; /* ป้องกันการคลิกไอคอน */
-}
-
-/* ถ้า username ใช้ได้ */
-.username-valid {
-    color: green !important;
-    display: block !important;
-}
-
-/* ถ้า username ซ้ำ */
-.username-invalid {
-    color: red !important;
-    display: block !important;
-}
-
-/* กำลังตรวจสอบ */
-.username-loading {
-    color: blue !important;
-    display: block !important;
-    animation: spin 1s infinite linear;
-}
-
-/* เอฟเฟกต์หมุน */
-@keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
-
-
-/* ข้อความแจ้งเตือนเมื่อชื่อซ้ำ */
-.error-message {
-    font-size: 14px;
-    color: red;
-    margin-top: 5px;
-    display: none; /* ซ่อนข้อความเป็นค่าเริ่มต้น */
-}
+    }
+    
