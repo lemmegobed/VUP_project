@@ -6,4 +6,6 @@ class MyappConfig(AppConfig):
     name = "myapp"
 
     # def ready(self):
-    #     import myapp.signals
+    #     """เรียก Scheduler เมื่อแอป Django เริ่มทำงาน"""
+    #     from myapp.scheduler import start
+    #     start()

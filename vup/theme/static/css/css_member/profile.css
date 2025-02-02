@@ -145,15 +145,6 @@ transition: background-color 0.3s ease;
 gap: 0;
 }
 
-.btn-yes {
-background-color: #2d7e23;
-color: white;
-}
-
-.btn-no {
-background-color:  #c0392b;
-color: white;
-}
 
 
 .outer-box-profile {
@@ -171,39 +162,28 @@ margin-top: 30px;
 margin-bottom: 30px;
 }
 
-/* .event-container {
-display: flex; 
-gap: 10px; 
-justify-content: center; 
-margin: 20px 0; 
-} */
+
 
 .outer-rating-box {
-border: 2px solid #d1d1d1;
-border-radius: 10px;
-padding: 20px;
-margin: auto;
-width: 85%;
-background-color: #fdfdfd;
-box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-text-align: center;
-margin-bottom: 20px;
-}
+    border: 2px solid #d1d1d1;
+    border-radius: 10px;
+    padding: 20px;
+    margin: auto;
+    width: 85%;
+    background-color: #fdfdfd;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    margin-bottom: 20px;
+    }
 
-/* .rating-title {
-font-size: 18px;
-margin-bottom: 20px;
-color: #444;
-} */
 
-.event-container {
+.event-statistics {
 display: flex;
 justify-content: space-between;
 flex-wrap: wrap;
 gap: 5px;
 }
 
-/* Event Summary */
 .event-summary {
 /* border: 1px solid #868686; */
 border-radius: 50%;
@@ -438,8 +418,7 @@ margin-left: 10px;
     background-color: #477db6;
 }
 
-.modal {
-    /* justify-content:center; */
+/* .modal {
     display: none;
     position: fixed;
     z-index: 1;
@@ -449,35 +428,8 @@ margin-left: 10px;
     height: 100%; 
     overflow: auto;
     background-color: rgba(0, 0, 0, 0.5);
-}
+} */
 
-.modal-content {
-    justify-content:center;
-    align-items: center;
-    background-color: #fff;
-    margin: auto;
-    margin-top: 5%;
-    padding: 20px;
-    border: 1px solid #888;
-    border-radius: 8px;
-    width: 50%;
-    max-width: 500px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-}
 .profile-header {
     display: flex;
     align-items: center; 
@@ -499,5 +451,373 @@ margin-left: 10px;
     color: #000000; 
     margin-right: 5px; 
     /* transition: transform 0.3s, color 0.3s;  */
+}
+
+.post-box{
+    display: flex;
+}
+.event-post {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    /* border: 1px solid #ccc; */
+    border-radius: 15px;
+    margin-bottom: 20px;
+    background-color: #fff;
+    width: 100%;
+    max-width: 650px;   
+    min-width: 650px;   
+    min-height: 200px;
+    overflow: hidden;   
+    margin: auto;
+    margin-top: 10px;
+}
+
+.post-left {
+    display: flex;
+    flex-direction: column;
+    gap: 0px;
+    flex-grow: 1;
+    /* border: 1px solid #ad2e2e; */
+    width: 100%;
+    max-width: 400px;
+    margin-left: 30px;
+    overflow: hidden;  
+}
+
+
+.post_member {
+    display: flex;
+    gap: 10px; 
+    margin: 10px;
+    padding: 20px 0;
+    /* line-height: 15px;  */
+}
+
+.member-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.username-container {
+    display: flex;
+    align-items: center; 
+    gap: 5px; 
+}
+
+.username-post {
+    font-weight: bold;
+    font-size: 16px;
+    margin: 0;
+}
+
+.userid-post {
+    font-size: 14px;
+    color: #797979;
+    margin: 0;
+}
+
+.location-icon {
+    color:  #ec2727;
+    font-size: 14px; 
+    margin-right: 5px; 
+    margin-left: 5px;
+}
+
+.location {
+    font-size: 13px;
+    margin: 0;
+    color:  #888;
+    margin-top: 5px; 
+    font-weight: normal;
+}
+
+.location a {
+    color: red;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.location a:hover {
+    text-decoration: underline;
+}
+
+.detail-post {
+    /* border: 1px solid #ca1b96; */
+    line-height: 10px;
+    color: #000;
+    margin-left: 14px;
+}
+
+.detail-post h2 {
+    font-size: 18px;
+    font-weight: bolder;
+    line-height: 5px;
+    margin-top: 10px;
+}
+
+.detail-post p {
+    font-size: 13px;
+    font-weight: normal;
+    line-height: 15px;
+    margin-top: 10px;
+}
+
+.filter-box-post {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    /* margin-top: 10px; */
+    /* border: 1px solid #22abd4; */
+    margin-left: 15px;
+    margin-bottom: 30px;
+    
+}
+
+.filter-box-post > div {
+    display: flex;
+    align-items: center;
+    padding: 0px 0px; 
+    background-color: #ffffff;
+    /* border: 1px solid #646464; */
+    border-radius: 40px;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+
+
+.event-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 10px;
+}
+
+
+/* Left Section */
+.post-left {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 70%;
+}
+
+/* Profile and Username */
+.post_member {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.profile-image-post {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.username-post {
+    font-weight: bold;
+    margin: 0;
+    font-size: 16px;
+}
+
+.location {
+    font-size: 14px;
+    color: #666;
+}
+
+/* Filter Section */
+.filter-box-post p {
+    margin: 0;
+    font-size: 14px;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+
+.post-actions {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    gap: 10px;
+}
+
+/* Edit and Delete Buttons */
+.edit-button, .delete-button {
+    background-color: transparent;
+    border: none;
+    color: #666;
+    cursor: pointer;
+    font-size: 16px;
+    transition: color 0.3s;
+}
+
+.edit-button:hover {
+    color: #4caf50; /* สีเขียวสำหรับแก้ไข */
+}
+
+.delete-button:hover {
+    color: #f44336; /* สีแดงสำหรับลบ */
+}
+
+/* Position for post container */
+.event-box-post {
+    width: 90%;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin: 0 auto; /* จัดกึ่งกลางแนวนอน */
+}
+
+
+.date, .time, .category, .participants ,.province {
+    background-color: #ffffff;
+    color: rgb(0, 0, 0);
+    /* padding: 0px;  */
+    border: 1px solid #646464;
+    border-radius: 20px;
+    text-align: center;
+    display: flex; 
+    align-items: center;
+    justify-content: center; 
+    font-weight: bold;
+    font-size: 13px;
+}
+
+.date {
+    width: 45%; 
+    font-weight: bold;
+}
+
+.time {
+    width: 15%; 
+    font-weight: bold;
+}
+
+.category {
+    width: 25%; 
+    font-weight: bold;
+}
+
+.participants {
+    width: 15%; 
+    font-weight: bold;
+}
+
+
+.province {
+    width:auto; 
+    padding-right: 30px;
+    font-weight: bold;
+}
+
+.profile-image-post {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    border: 1px solid #000000;
+}
+.button-container {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center; /* จัดให้อยู่กึ่งกลางแนวนอน */
+    align-items: center; /* จัดให้อยู่กึ่งกลางแนวตั้ง (ถ้าจำเป็น) */
+    gap: 10px; /* ระยะห่างระหว่างปุ่ม */
+}
+
+
+.event-box-post {
+    position: relative; 
+}
+
+.post-actions {
+    position: absolute;
+    top: 10px; 
+    right: 10px; 
+    display: flex;
+    gap: 10px; 
+}
+
+/* modal.css */
+.modal {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+}
+
+.modal.active {
+    visibility: visible;
+    opacity: 1;
+}
+
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 400px;
+    max-width: 90%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transform: translateY(-20px);
+    transition: transform 0.3s ease-in-out;
+}
+
+.modal.active .modal-content {
+    transform: translateY(0);
+}
+
+.modal-header {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 15px;
+}
+
+.modal-footer button {
+    margin-left: 10px;
+}
+
+.btn {
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-primary {
+    background-color: #3b82f6;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #2563eb;
+}
+
+.btn-secondary {
+    background-color: #e5e7eb;
+    color: black;
+}
+
+.btn-secondary:hover {
+    background-color: #d1d5db;
 }
 

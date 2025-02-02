@@ -67,8 +67,6 @@ class Event(models.Model):
     max_participants = models.PositiveIntegerField(default=0)
     is_active = models.BooleanField(default=True)
     has_ended = models.BooleanField(default=False)
-    # is_banned = models.BooleanField(default=False)
-    # participants = models.ManyToManyField(Member, related_name='events_joined', blank=True)
     
 
     def __str__(self):
@@ -149,14 +147,14 @@ class Notification(models.Model):
     ]
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="notifications")  # ผู้รับการแจ้งเตือน
-    message = models.TextField()  # ข้อความการแจ้งเตือน
+    message = models.TextField()  
     related_event = models.ForeignKey(Event, on_delete=models.CASCADE, null=True, blank=True, related_name="notifications")  # กิจกรรมที่เกี่ยวข้อง (ถ้ามี)
     notification_type = models.CharField(max_length=20, choices=NOTIFICATION_TYPES, default='other')  # ประเภทของการแจ้งเตือน
-    is_read = models.BooleanField(default=False)  # สถานะว่าอ่านแล้วหรือยัง
+    is_read = models.BooleanField(default=False)  
     # is_active = models.BooleanField(default=True)
-    created_at = models.DateTimeField(auto_now_add=True)  # เวลาที่สร้างการแจ้งเตือน
+    created_at = models.DateTimeField(auto_now_add=True)  
     related_request = models.ForeignKey(
-        'Event_Request',  # เพิ่มความสัมพันธ์กับ Event_Request
+        'Event_Request',  
         on_delete=models.CASCADE,
         null=True,
         blank=True

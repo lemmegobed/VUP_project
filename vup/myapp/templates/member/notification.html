@@ -105,13 +105,6 @@
                                     {% endif %}
                                 {% endwith %}
                             </div>
-
-                            <!-- <p>คำขอทั้งหมด:</p>
-<ul>
-    {% for event_request in notification.related_event.event_requests.all %}
-        <li>ID: {{ event_request.id }}, สถานะ: {{ event_request.response_status }}</li>
-    {% endfor %}
-</ul> -->
                             
                             
                         </li>
@@ -139,7 +132,7 @@
                     </li>
                 {% endif %}
             {% empty %}
-                <li class="no-notifications">ไม่มีการแจ้งเตือน</li>
+                 <li class="no-notifications">ไม่มีการแจ้งเตือน</li>
             {% endfor %}
         </ul>
 
@@ -282,91 +275,9 @@ function handleAction(eventRequestId, action) {
     });
 }
 
-
-// function handleAction(eventRequestId, action) {
-//     console.log(`Event Request ID: ${eventRequestId}, Action: ${action}`);
-
-//     fetch(`/events/requests/${eventRequestId}/handle-request/`, {
-//         method: 'POST',
-//         headers: {
-//             'Content-Type': 'application/x-www-form-urlencoded',
-//             'X-CSRFToken': '{{ csrf_token }}',
-//         },
-//         body: `action=${action}`,
-//     })
-//     .then(response => {
-//         if (!response.ok) {
-//             throw new Error('Network response was not ok');
-//         }
-//         return response.json();
-//     })
-//     .then(data => {
-//         alert(data.message);
-//         location.reload(); // Reload หน้าเพื่ออัปเดตสถานะ
-//     })
-//     .catch(error => {
-//         console.error('Error:', error);
-//         alert('เกิดข้อผิดพลาด! โปรดลองใหม่');
-//     });
-// }
-
-
-
-
-// function handleAction(eventId, action) {
-//     // ซ่อนปุ่มทั้งหมดใน div ที่เกี่ยวข้อง
-//     const buttonContainer = document.getElementById(`action-buttons-${eventId}`);
-//     if (buttonContainer) {
-//         buttonContainer.style.display = 'none'; // ซ่อนปุ่ม
-//     }
-
-//     // ดำเนินการส่งคำขอ
-//     fetch(`/events/${eventId}/handle-request/`, {
-//         method: 'POST',
-//         headers: {
-//             'Content-Type': 'application/x-www-form-urlencoded',
-//             'X-CSRFToken': '{{ csrf_token }}',
-//         },
-//         body: `action=${action}`
-//     })
-//     .then(response => response.json())
-//     .then(data => {
-//         alert(data.message); // แจ้งข้อความตอบกลับ
-//     })
-//     .catch(error => {
-//         console.error('Error:', error);
-//         alert('เกิดข้อผิดพลาด! โปรดลองใหม่');
-//         // แสดงปุ่มกลับมา หากเกิดข้อผิดพลาด
-//         if (buttonContainer) {
-//             buttonContainer.style.display = 'block';
-//         }
-//     });
-// }
-
-// function handleAction(eventId, action) {
-//     fetch(`/events/${eventId}/handle-request/`, {
-//         method: 'POST',
-//         headers: {
-//             'Content-Type': 'application/x-www-form-urlencoded',
-//             'X-CSRFToken': '{{ csrf_token }}',
-//         },
-//         body: `action=${action}`  // ส่ง action: accept หรือ reject
-//     })
-//     .then(response => response.json())
-//     .then(data => {
-//         alert(data.message);
-//         location.reload();
-//     })
-//     .catch(error => {
-//         console.error('Error:', error);
-//         alert('เกิดข้อผิดพลาด! โปรดลองใหม่');
-//     });
-// }
-
 </script>
 
 <!-- ปฏิทิน -->
-
 <script>
 document.addEventListener('DOMContentLoaded', function () {
   var calendarEl = document.getElementById('calendar');
@@ -410,28 +321,12 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 </script>
-<!-- <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      var calendarEl = document.getElementById('calendar');
-  
-      var calendar = new FullCalendar.Calendar(calendarEl, {
-        initialView: 'dayGridMonth',
-        events: '/api/user-events/', // API ที่โหลดเฉพาะกิจกรรมของเรา
-        headerToolbar: {
-          left: 'prev,next today',
-          center: 'title',
-          right: 'dayGridMonth,timeGridWeek,timeGridDay'
-        },
-        eventClick: function(info) {
-          alert(
-            '📅 กิจกรรม: ' + info.event.title +
-            '\n📍 คำอธิบาย: ' + (info.event.extendedProps.description || 'ไม่มีข้อมูล') +
-            '\n🌟 ประเภท: ' + (info.event.extendedProps.category || 'ไม่ระบุ')
-          );
-        }
-      });
-  
-      calendar.render();
-    });
-  </script> -->
+
+<!-- รีหน้า -->
+
+
+
+
+
+
 </html>

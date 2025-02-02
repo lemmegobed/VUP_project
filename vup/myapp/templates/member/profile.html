@@ -33,14 +33,15 @@
                 <i class="fa-solid fa-earth-americas"></i>Feed
             </a>
             <a class="menu-item profile-btt active" href="{% url 'profile' %}">
-                <i class="fas fa-user"></i> Profile
+                <i class="fas fa-user"></i> ข้อมูลส่วนตัว
             </a>
+
             <a class="menu-item chat-btt" href="{% url 'chat' %}">
                 <i class="fas fa-comment"></i> Chat
             </a>
-            <a class="menu-item activity-btt " href="{% url 'my_activity' %}">
+            <!-- <a class="menu-item activity-btt " href="{% url 'my_activity' %}">
                 <i class="fa-solid fa-bolt"></i></i>Activity
-            </a>
+            </a> -->
         </div>
 
 
@@ -74,7 +75,7 @@
 
             <div class="outer-rating-box">
                 <!-- <p class="rating-title">Rating</p> -->
-                <div class="event-container">
+                <div class="event-statistics">
                     <div class="event-summary">
                         <h3>
                             <span class="event-summary-number">{{ total_events }}</span><br>
@@ -108,10 +109,10 @@
                     <div class="profile-details">
                         <div class="head-info-user">
                             <p><i class="fa-solid fa-user"></i>ข้อมูลผู้ใช้</p>
+                            
                             <div class="box-btn-edit">
-                                <button id="edit-profile-btn" class="edit-button">
-                                    <i class="fa-regular fa-pen-to-square"></i> Edit <!-- ไอคอนแก้ไข -->
-                                </button>   
+                                <button onclick="openModal('profileModal')" class="btn btn-primary mt-4">
+                                    <i class="fa-regular fa-pen-to-square"></i>แก้ไขโปรไฟล์</button>
                             </div>
                         </div>
                         
@@ -122,84 +123,199 @@
                         <p><strong>Birthdate :</strong> {{ user.birthdate }}</p>
                         <!-- <p><strong>คำอธิบาย:</strong> {{ user.description|default:"ยังไม่มีคำอธิบาย" }}</p> -->
                     </div>
-        
+    
 
+                    <!-- ฟอร์มแก้ไขข้อมูลส่วนตัวจ้าาา -->
                     
-                <!-- <button id="edit-profile-btn" class="edit-button">แก้ไขข้อมูล</button> -->
-
-            <!-- ฟอร์มแก้ไขข้อมูลส่วนตัวจ้าาา -->
-            <div id="edit-profile-modal" class="modal">
-                <div class="modal-content">
-                    <span class="close" id="close-modal">&times;</span>
-                    <h1>Edit personal information</h1>
-                    <form method="POST" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        {{ form.as_p }}
-                        <button type="submit">Save</button>
-                    </form> 
                 </div>
             </div>
 
-            
-            
+            <h2 class="text-2xl font-semibold text-gray-700 mt-6">กิจกรรมของฉัน ({{ total_events }})</h2>
         
-            
+
+                <div class="event-container">
+                    {% for event in events %}
+                    <div class="event-box-post"> 
+                        <div class="post_member">
+                            
+                            <img src="{{ event.created_by.profile.url }}" alt="Profile Image" class="profile-image-post">
+                            <div class="member-info">
+                                <div class="username-container">
+                                    <p class="username-post">{{ event.created_by.username }}</p>
+                                </div>
+                                <p class="location">
+                                    <strong>กำลังจะไปที่... </strong>
+                                    <i class="fa-solid fa-location-dot location-icon"></i>
+                                    <a href="https://www.google.com/maps/search/?api=1&query={{ event.location }}" target="_blank">{{ event.location }}</a>
+                                </p>  
+                            </div>
+                            
+                        </div>
     
+                        
+                
+                        <div class="detail-post">
+                            <h2>{{ event.event_name }}</h2>
+                            <p>{{ event.event_title }}</p>
+                        </div>
+                
+                        <div class="filter-box-post">
+                            <div class="date">
+                                <i class="fa-solid fa-calendar-days"></i>
+                                <p>: {{ event.event_datetime }}</p>
+                            </div>
+                            <div class="participants">
+                                <i class="fa-solid fa-user"></i>
+                                <p>: {{ event.max_participants }}</p>
+                            </div>
+                            <div class="category">
+                                <i class="fa-solid fa-shapes"></i>
+                                <p>: {{ event.category }}</p>
+                            </div>
+                            <div class="province">
+                                <i class="fa-solid fa-location-dot"></i>
+                                <p>: {{ event.province }}</p>
+                            </div>
+                        </div>
+                
+                        <!-- ปุ่มแก้ไขและลบ -->
+                        <div class="post-actions">
+                            <button onclick="openModal('eventModal-{{ event.id }}')" class="btn btn-primary">แก้ไข</button>
+                            <button class="btn-delete" onclick="openConfirmDeleteModal('{{ event.id }}')">ลบ</button>
+                            
+                            <form id="deleteForm-{{ event.id }}" method="POST" action="{% url 'delete_event' event.id %}">
+                                {% csrf_token %}
+                            </form>
+                          
+                        </div>
+                    </div>
+                    {% empty %}
+                    <p>คุณยังไม่มีโพสต์</p>
+                    {% endfor %}
                 </div>
+    </div> 
+        </div>
+
+   <!-- ✅ MODAL ฟอร์มแก้ไขโปรไฟล์ -->
+    <div id="profileModal" class="modal">
+        <div class="modal-content">
+            <h2 class="modal-header">แก้ไขโปรไฟล์</h2>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="hidden" name="update_profile" value="true">
+                <div class="modal-footer">
+                    <button type="button" onclick="closeModal('profileModal')" class="btn btn-secondary">ยกเลิก</button>
+                    <button type="submit" class="btn btn-primary">บันทึก</button>
+                </div>
+            </form>
         </div>
     </div>
+
+    
+
+    <!-- ✅ MODAL ฟอร์มแก้ไขกิจกรรม -->
+    {% for event in events %}
+        <div id="eventModal-{{ event.id }}" class="modal">
+            <div class="modal-content">
+                <h2 class="modal-header">แก้ไขกิจกรรม: {{ event.name }}</h2>
+                <form method="post">
+                
+                    <input type="hidden" name="event_id" value="{{ event.id }}">
+                    <form class="edit-event-form" method="POST" action="">
+                        {% csrf_token %}
+                        <input type="hidden" name="event_id" value="{{ event.id }}">
+                
+                        <label class="edit-event-label">Event Name</label>
+                        <input class="edit-event-input" type="text" name="event_name" value="{{ event.event_name }}" required>
+                
+                        <label class="edit-event-label">Event Title</label>
+                        <input class="edit-event-input" type="text" name="event_title" value="{{ event.event_title }}" required>
+                
+                        <label class="edit-event-label">Event Datetime</label>
+                        <input class="edit-event-input" type="datetime-local" name="event_datetime" value="{{ event.event_datetime|date:'Y-m-d\TH:i' }}" required>
+                
+                        <label class="edit-event-label">Location</label>
+                        <input class="edit-event-input" type="text" name="location" value="{{ event.location }}" required>
+                
+                        <label class="edit-event-label">Category</label>
+                        <select class="edit-event-select" name="category" required>
+                            <option value="เลือกหมวด" {% if event.category == "เลือกหมวด" %}selected{% endif %}>เลือกหมวด</option>
+                            <option value="การศึกษา" {% if event.category == "การศึกษา" %}selected{% endif %}>การศึกษา</option>
+                            <option value="กีฬา" {% if event.category == "กีฬา" %}selected{% endif %}>กีฬา</option>
+                            <option value="ท่องเที่ยว" {% if event.category == "ท่องเที่ยว" %}selected{% endif %}>ท่องเที่ยว</option>
+                            <option value="อาหาร" {% if event.category == "อาหาร" %}selected{% endif %}>อาหาร</option>
+                            <option value="ศิลปะ" {% if event.category == "ศิลปะ" %}selected{% endif %}>ศิลปะ</option>
+                            <option value="สุขภาพ" {% if event.category == "สุขภาพ" %}selected{% endif %}>สุขภาพ</option>
+                            <option value="ความบันเทิง" {% if event.category == "ความบันเทิง" %}selected{% endif %}>ความบันเทิง</option>
+                        </select>
+                
+                        <label class="edit-event-label">Max Participants</label>
+                        <input class="edit-event-input" type="number" name="max_participants" value="{{ event.max_participants }}" required>
+                
+                        <label class="edit-event-label">Province</label>
+                        <input class="edit-event-input" type="text" name="province" value="{{ event.province }}" required>
+                
+                        <button type="submit" name="event_submit" class="btn-save-event">บันทึก</button>
+                    </form>
+                    <input type="hidden" name="event_submit" value="true">
+                    <div class="modal-footer">
+                        <button type="button" onclick="closeModal('eventModal-{{ event.id }}')" class="btn btn-secondary">ยกเลิก</button>
+                        <button type="submit" class="btn btn-primary">บันทึก</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    {% endfor %}
+
+     <!-- ✅ MODAL ยืนยันการลบ -->
+     <div id="deleteConfirmModal" class="modal">
+        <div class="modal-content">
+            <h2 class="modal-header">ยืนยันการลบ</h2>
+            <p>คุณแน่ใจหรือไม่ว่าต้องการลบกิจกรรมนี้?</p>
+            <div class="modal-footer">
+                <button type="button" onclick="closeModal('deleteConfirmModal')" class="btn-secondary">ยกเลิก</button>
+                <button id="confirmDeleteButton" class="btn-delete">ลบ</button>
+            </div>
+        </div>
+    </div>
+
+ 
     </div>
 
         <div>
             {% include 'member/notification.html' %}
         </div>
-
-
-        
-
-    <script>
-        // จัดการการแสดง/ซ่อน Modal
-        const modal = document.getElementById('edit-profile-modal');
-        const editProfileBtn = document.getElementById('edit-profile-btn');
-        const closeModal = document.getElementById('close-modal');
-
-        // แสดง Modal เมื่อคลิกปุ่ม "แก้ไขข้อมูล"
-        editProfileBtn.addEventListener('click', () => {
-            modal.style.display = 'block';
-        });
-
-        // ปิด Modal เมื่อคลิกปุ่ม "x"
-        closeModal.addEventListener('click', () => {
-            modal.style.display = 'none';
-        });
-
-        // ปิด Modal เมื่อคลิกนอกพื้นที่ Modal
-        window.addEventListener('click', (event) => {
-            if (event.target == modal) {
-                modal.style.display = 'none';
-            }
-        });
-    </script>
-    
-    <!-- สคริปต์สำหรับจัดการการแสดง/ซ่อน
-    <script>
-        const editButton = document.getElementById('edit-btn');
-        const cancelButton = document.getElementById('cancel-btn');
-        const descriptionDisplay = document.getElementById('description-display');
-        const descriptionForm = document.getElementById('description-form');
-    
-        // เมื่อคลิก "แก้ไขคำอธิบาย"
-        editButton.addEventListener('click', () => {
-            descriptionDisplay.style.display = 'none'; // ซ่อนข้อความเดิม
-            descriptionForm.style.display = 'block';  // แสดงฟอร์ม
-        });
-    
-        // เมื่อคลิก "ยกเลิก"
-        cancelButton.addEventListener('click', () => {
-            descriptionForm.style.display = 'none';  // ซ่อนฟอร์ม
-            descriptionDisplay.style.display = 'block'; // แสดงข้อความเดิม
-        });
-    </script> -->
-    
 </body>
+
+<!-- ✅ SCRIPT เปิด-ปิด Modal -->
+    <script>
+        function openModal(id) {
+            document.getElementById(id).classList.add("active");
+        }
+        function closeModal(id) {
+            document.getElementById(id).classList.remove("active");
+        }
+    </script>
+
+        <!-- ✅ SCRIPT เปิด-ปิด Modal -->
+        <script>
+            let currentDeleteEventId = null;
+    
+            function openConfirmDeleteModal(eventId) {
+                currentDeleteEventId = eventId;
+                document.getElementById('deleteConfirmModal').classList.add("active");
+            }
+    
+            document.getElementById("confirmDeleteButton").addEventListener("click", function () {
+                if (currentDeleteEventId) {
+                    document.getElementById(`deleteForm-${currentDeleteEventId}`).submit();
+                }
+            });
+    
+            function closeModal(id) {
+                document.getElementById(id).classList.remove("active");
+            }
+        </script>
+
 </html>

@@ -15,12 +15,14 @@ from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Count
 from django.db.models.signals import post_save, pre_delete
 from django.dispatch import receiver
-from django.utils.timezone import now
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
-from .serializers import ChatMessageSerializer
-from django.core.management.base import BaseCommand
+from django.utils.timezone import now, timedelta
+# from rest_framework.views import APIView
+# from rest_framework.response import Response
+# from rest_framework.permissions import IsAuthenticated
+# from .serializers import ChatMessageSerializer
+# from django.core.management.base import BaseCommand
+
+
 
 
 def login_view(request):
@@ -338,28 +340,87 @@ def home_view(request):
 
 
 @login_required
+
 def profile_view(request):
     member_data = Member.objects.get(username=request.user.username) 
-    user_events = Event.objects.filter(created_by=request.user)  # ดึง Event ที่ผู้ใช้นี้สร้าง
-    total_events = user_events.count()
     
+    # ดึงกิจกรรมที่ผู้ใช้สร้าง
+    events = Event.objects.filter(created_by=request.user, is_active=True)
+    total_events = events.count()
+
+    # ดึงกิจกรรมที่กำลังดำเนินการอยู่ (ข้อมูลจาก my_activity)
+    # active_events = Event.objects.filter(created_by=request.user, is_active=True)
+    # active_events_count = active_events.count()
+
+    # ฟอร์มแก้ไขโปรไฟล์
     if request.method == 'POST':
-        form = MemberUpdateForm(request.POST, request.FILES, instance=member_data)
-        if form.is_valid():
-            form.save()  
-            return redirect('profile')  
+        if 'update_profile' in request.POST:  # ตรวจสอบว่ามาจากการอัปเดตโปรไฟล์
+            form = MemberUpdateForm(request.POST, request.FILES, instance=member_data)
+            if form.is_valid():
+                form.save()  
+                return redirect('profile')  
+
+        elif 'event_submit' in request.POST:  # ตรวจสอบว่ามาจากการสร้างหรือแก้ไขกิจกรรม
+            event_id = request.POST.get('event_id', None)
+            if event_id:  
+                event = get_object_or_404(Event, id=event_id, created_by=request.user)
+                event_form = EventForm(request.POST, instance=event)
+            else:  
+                event_form = EventForm(request.POST)
+                event_form.instance.created_by = request.user
+
+            if event_form.is_valid():
+                event_form.save()
+                return redirect('profile')
+
     else:
-        form = MemberUpdateForm(instance=member_data)  # กรณีไม่ใช่ POST ให้สร้างฟอร์มจากข้อมูลผู้ใช้ที่ล็อกอิน
-    
+        form = MemberUpdateForm(instance=member_data)  
+        event_form = EventForm()  
+
     context = {
-        'user_events': user_events,
+        'member_data': member_data,
+        'events': events,
         'total_events': total_events,  
+        # 'active_events': active_events,  
+        # 'active_events_count': active_events_count,
         'form': form,
-        'member_data': member_data
+        'event_form': event_form,  # ฟอร์มสร้าง/แก้ไขกิจกรรม
     }
     return render(request, 'member/profile.html', context)
 
 
+def delete_event(request, event_id):
+    event = get_object_or_404(Event, id=event_id)
+    if request.method == 'POST':
+        event.delete()  
+        return redirect('profile')  
+
+# def profile_view(request):
+#     member_data = Member.objects.get(username=request.user.username) 
+#     user_events = Event.objects.filter(created_by=request.user)  # ดึง Event ที่ผู้ใช้นี้สร้าง
+#     total_events = user_events.count()
+    
+#     if request.method == 'POST':
+#         form = MemberUpdateForm(request.POST, request.FILES, instance=member_data)
+#         if form.is_valid():
+#             form.save()  
+#             return redirect('profile')  
+#     else:
+#         form = MemberUpdateForm(instance=member_data)  # กรณีไม่ใช่ POST ให้สร้างฟอร์มจากข้อมูลผู้ใช้ที่ล็อกอิน
+    
+#     context = {
+#         'user_events': user_events,
+#         'total_events': total_events,  
+#         'form': form,
+#         'member_data': member_data
+#     }
+#     return render(request, 'member/profile.html', context)
+
+
+
+    
+
+    
 def chat_rooms_list(request):
     # ดึงข้อมูลของผู้ใช้
     member_data = Member.objects.get(username=request.user.username)
@@ -377,18 +438,20 @@ def chat_rooms_list(request):
         'chat_rooms': chat_rooms,
     }
 
-    return render(request, 'member/chat.html', context)
+    return render(request, 'member/chat/chat.html', context)
 
 
 
 @login_required
 def chat_room_detail(request, chat_room_id):
+    member_data = Member.objects.get(username=request.user.username)
     chat_room = get_object_or_404(ChatRoom, id=chat_room_id)
     messages = Chat_Message.objects.filter(chatroom=chat_room).order_by('created_at')
 
     return render(request, 'member/chat/chat_room_detail.html', {
         'chat_room': chat_room,
         'messages': messages,
+        'member_data': member_data,
     })
 
 
@@ -520,31 +583,31 @@ def update_event(request):
         'events': events,
     })
 
-def profile_edit(request):
-    member_data = Member.objects.get(username=request.user.username) 
-    events = Event.objects.all()
-    form = EventForm()
-    user = request.user
-    user_events = Event.objects.filter(created_by=request.user)
+# def profile_edit(request):
+#     member_data = Member.objects.get(username=request.user.username) 
+#     events = Event.objects.all()
+#     form = EventForm()
+#     user = request.user
+#     user_events = Event.objects.filter(created_by=request.user)
 
     
-    if request.method == 'POST':
-        form = MemberUpdateForm(request.POST, request.FILES, instance=member_data)
-        if form.is_valid():
-            form.save()  
-            return redirect('profile')  
-    else:
-        form = MemberUpdateForm(instance=member_data)  # กรณีไม่ใช่ POST ให้สร้างฟอร์มจากข้อมูลผู้ใช้ที่ล็อกอิน
+#     if request.method == 'POST':
+#         form = MemberUpdateForm(request.POST, request.FILES, instance=member_data)
+#         if form.is_valid():
+#             form.save()  
+#             return redirect('profile')  
+#     else:
+#         form = MemberUpdateForm(instance=member_data)  # กรณีไม่ใช่ POST ให้สร้างฟอร์มจากข้อมูลผู้ใช้ที่ล็อกอิน
     
-    context = {
-        'user': user,
-        'events': events, 
-        'member_data': member_data,
-        'events': events,
-        'form': form,
-        'events': user_events
-    }
-    return render(request, 'member/profile_edit.html', context)
+#     context = {
+#         'user': user,
+#         'events': events, 
+#         'member_data': member_data,
+#         'events': events,
+#         'form': form,
+#         'events': user_events
+#     }
+#     return render(request, 'member/profile_edit.html', context)
 
 # def chat_view(request):
 #     member_data = Member.objects.get(username=request.user.username)
@@ -616,11 +679,7 @@ def new_event_view(request):
 #     return render(request, 'member/feed.html', {'form': form, 'events': events})
 
 #ลบอีเว้น-ผู้ใช้
-def delete_event(request, event_id):
-    event = get_object_or_404(Event, id=event_id)
-    if request.method == 'POST':
-        event.delete()  
-        return redirect('my_activity')  
+
  
 # ค้นหาอีเว้น
 def search_events(request):
@@ -742,7 +801,7 @@ def handle_event_request(request, event_request_id):
                 chat_room.members.add(event_request_instance.sender)
 
                 # สร้างลิงก์ห้องแชทโดยใช้ ChatRoom.id
-                chat_room_url = f"/chat-room/{chat_room.id}/"
+                chat_room_url = f"/chat/{chat_room.id}/"
 
                 # สร้างการแจ้งเตือนพร้อมลิงก์ห้องแชท
                 message = f"""
