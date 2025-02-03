@@ -438,7 +438,10 @@ align-items: center;
     font-weight: bold;
     font-size: 16px;
     margin: 0;
+    color: black; 
+    text-decoration: none; 
 }
+
 
 .userid-post {
     font-size: 14px;

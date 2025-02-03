@@ -151,7 +151,8 @@ class Notification(models.Model):
     related_event = models.ForeignKey(Event, on_delete=models.CASCADE, null=True, blank=True, related_name="notifications")  # กิจกรรมที่เกี่ยวข้อง (ถ้ามี)
     notification_type = models.CharField(max_length=20, choices=NOTIFICATION_TYPES, default='other')  # ประเภทของการแจ้งเตือน
     is_read = models.BooleanField(default=False)  
-    # is_active = models.BooleanField(default=True)
+    is_scheduled = models.BooleanField(default=False)  
+    scheduled_time = models.DateTimeField(null=True, blank=True)  
     created_at = models.DateTimeField(auto_now_add=True)  
     related_request = models.ForeignKey(
         'Event_Request',  
@@ -160,8 +161,16 @@ class Notification(models.Model):
         blank=True
     )
 
+    def schedule_notification(self):
+        """ ตั้งค่าให้แจ้งเตือนถูกส่งหลังจากกิจกรรมจบ """
+        if self.related_event and self.related_event.event_datetime:
+            self.scheduled_time = self.related_event.event_datetime + timezone.timedelta(hours=1)  # แจ้งเตือน 1 ชม. หลังจบ
+            self.is_scheduled = True
+            self.save()
+            
     def __str__(self):
         return f"การแจ้งเตือนสำหรับ {self.user.username} - {self.notification_type}"
+    
     
     class Meta:
         ordering = ['-created_at']

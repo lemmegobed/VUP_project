@@ -21,6 +21,7 @@ from django.utils.timezone import now, timedelta
 # from rest_framework.permissions import IsAuthenticated
 # from .serializers import ChatMessageSerializer
 # from django.core.management.base import BaseCommand
+from django.urls import reverse
 
 
 
@@ -402,13 +403,14 @@ def profile_view(request):
     }
     return render(request, 'member/profile.html', context)
 
+
+# เช็คในลงทะเบียน
 def check_username_register(request):
     username = request.GET.get("username", None)
-
-    # ตรวจสอบว่ามีชื่อซ้ำในระบบหรือไม่
     exists = User.objects.filter(username=username).exists()
     return JsonResponse({"exists": exists})
 
+# เช็คในฟอร์ม
 @login_required
 def check_username(request):
     username = request.GET.get("username", None)
@@ -680,11 +682,14 @@ def new_event_view(request):
             event.created_by = request.user
             event.save()
 
-            # สร้าง ChatRoom
+            # ✅ สร้างแจ้งเตือนหลังจากสร้าง Event
+            create_event_notifications(event)  # 🔥 เพิ่มบรรทัดนี้
+
+            # ✅ สร้าง ChatRoom สำหรับ Event
             chat_room = ChatRoom.objects.create(
                 name=event.event_name,
                 event=event,
-                created_by=request.user  # ใช้ request.user ที่รองรับ AUTH_USER_MODEL
+                created_by=request.user
             )
             chat_room.members.add(request.user)  # เพิ่มผู้สร้างเป็นสมาชิกคนแรก
 
@@ -695,6 +700,7 @@ def new_event_view(request):
     else:
         form = EventForm()
     return render(request, 'member/home.html', {'form': form})
+
 
 # def new_event_view(request):
 #     if request.method == 'POST':
@@ -903,7 +909,9 @@ def handle_event_request(request, event_request_id):
 @login_required
 def review_event(request, event_id):
     event = get_object_or_404(Event, id=event_id)
-    participants = event.participants.exclude(id=request.user.id)  # กรองไม่ให้รีวิวตัวเอง
+
+    # ดึงผู้เข้าร่วมกิจกรรมจาก EventRequest โดยเช็คว่าเป็น "accepted"
+    participants = Member.objects.filter(id__in=Event_Request.objects.filter(event=event, response_status='accepted').values('receiver_id'))
 
     if request.method == "POST":
         for participant in participants:
@@ -912,12 +920,12 @@ def review_event(request, event_id):
 
             EventReview.objects.create(
                 event=event,
-                reviewer=request.user,  # ผู้ล็อกอินเป็นคนรีวิว
-                participant=participant,  # ผู้เข้าร่วม (ยกเว้นตัวเอง)
+                reviewer=request.user,  # ผู้รีวิว
+                participant=participant,  # ผู้ถูกรีวิว
                 attendance_status=status,
                 comment=comment
             )
-        return redirect("event_detail", event_id=event.id)
+        return redirect('previous_page')  # กลับไปยังหน้าก่อนหน้านี้
 
     context = {"event": event, "participants": participants}
     return render(request, "member/event/review_event.html", context)
@@ -964,7 +972,54 @@ def user_events_api(request):
         for event in relevant_events
     ]
     return JsonResponse(data, safe=False)
-    
+
+def notification_list(request):
+    """ดึงแจ้งเตือนที่ถึงเวลาแล้วเท่านั้น"""
+    notifications = Notification.objects.filter(
+        user=request.user,
+        is_scheduled=False  # ✅ แสดงแจ้งเตือนที่เปิดเผยแล้ว
+    ).order_by('-created_at')
+
+    return render(request, 'member/notifications.html', {'notifications': notifications})
+
+def create_event_notifications(event):
+    """สร้างแจ้งเตือนล่วงหน้า สำหรับเจ้าของ Event และผู้เข้าร่วม"""
+    participants = list(Event_Request.objects.filter(
+        event=event, response_status="accepted"
+    ).values_list('sender', flat=True))
+
+    recipients = [event.created_by.id] + participants  
+
+    for user_id in recipients:
+        message = f"กิจกรรม {event.event_name} ของคุณเป็นยังไงบ้าง? มารีวิวกันเถอะ!"
+
+        review_link = reverse('review_event', kwargs={'event_id': event.id})  
+
+        full_message = f"{message} <a href='{review_link}'>คลิกที่นี่</a>"
+
+        print(f"🔔 กำลังสร้างแจ้งเตือนให้ User ID: {user_id}") 
+
+        Notification.objects.create(
+            user_id=user_id,
+            message=full_message,
+            related_event=event,
+            notification_type="อื่น ๆ",
+            is_scheduled=True,  
+            scheduled_time=event.event_datetime,
+            is_read=False
+        )
+
+
+def mark_notification_as_read(request, notification_id):
+    notification = get_object_or_404(Notification, id=notification_id)
+
+    if notification.related_event_id != request.user:
+        return JsonResponse({'message': 'Unauthorized'}, status=403)
+
+    notification.is_read = True
+    notification.save()
+    return JsonResponse({'message': 'Notification marked as read.'}, status=200)
+
 # def notification_context(request):
 #     if request.user.is_authenticated:  # ตรวจสอบว่าผู้ใช้ล็อกอินอยู่
 #         notifications = request.user.notifications.all()
@@ -1062,15 +1117,7 @@ def user_events_api(request):
 #     except Participant.DoesNotExist:
 #         return JsonResponse({'is_approved': False}) 
     
-def mark_notification_as_read(request, notification_id):
-    notification = get_object_or_404(Notification, id=notification_id)
 
-    if notification.related_event_id != request.user:
-        return JsonResponse({'message': 'Unauthorized'}, status=403)
-
-    notification.is_read = True
-    notification.save()
-    return JsonResponse({'message': 'Notification marked as read.'}, status=200)
 
 # @login_required
 # def chatroom_view(request, event_id):

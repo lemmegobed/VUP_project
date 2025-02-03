@@ -9,3 +9,7 @@ class MyappConfig(AppConfig):
     #     """เรียก Scheduler เมื่อแอป Django เริ่มทำงาน"""
     #     from myapp.scheduler import start
     #     start()
+
+    def ready(self):
+        from myapp.scheduler import start_scheduler
+        start_scheduler()  

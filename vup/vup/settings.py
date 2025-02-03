@@ -46,8 +46,11 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # 'django_cron',
+    'django_apscheduler',
     "myapp", 
     "channels",
+    
     
 ]
 
@@ -190,3 +193,7 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = "vup.projects1@gmail.com'"
 EMAIL_HOST_PASSWORD = 'Earn190546'
 EMAIL_USE_TLS = True 
+
+# CELERY_BROKER_URL = 'redis://localhost:6379/0'
+# CELERY_ACCEPT_CONTENT = ['json']
+# CELERY_TASK_SERIALIZER = 'json'
