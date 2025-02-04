@@ -172,6 +172,8 @@ USE_TZ = True
 
 TAILWIND_APP_NAME = 'theme'
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 STATIC_URL = "/static/"
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'theme/static'),
@@ -190,8 +192,8 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
-EMAIL_HOST_USER = "vup.projects1@gmail.com'"
-EMAIL_HOST_PASSWORD = 'Earn190546'
+EMAIL_HOST_USER = "vup.projects1@gmail.com"
+EMAIL_HOST_PASSWORD = 'sbjs hjoq gjut pkoq'
 EMAIL_USE_TLS = True 
 
 # CELERY_BROKER_URL = 'redis://localhost:6379/0'

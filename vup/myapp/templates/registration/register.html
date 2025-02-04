@@ -254,7 +254,8 @@
             
         </div>
 
-        <form method="post" enctype="multipart/form-data">
+        <form method="post" enctype="multipart/form-data" autocomplete="on">
+            
             {% csrf_token %}
 
             <div class="pic">
@@ -262,45 +263,45 @@
             </div>
             
             <div class="form-group">
-                <label for="profile">Profile</label>
+                <label for="profile">รูปโปรไฟล์</label>
                 <input type="file" name="profile" accept="image/*" id="profile" onchange="previewImage(event)" required>
             </div>
             
             <div class="form-group">
-                <label for="first_name">First Name</label>
+                <label for="first_name">ชื่อ</label>
                 <input type="text" name="first_name" required>
             </div>
 
             <div class="form-group">
-                <label for="last_name">Last Name</label>
+                <label for="last_name">นามสกุล</label>
                 <input type="text" name="last_name" required>
             </div>
             
             <div class="form-group">
-                <label for="sex">Sex</label>
+                <label for="sex">เพศ</label>
                 <div class="sex-selection">
                     <div class="sex-option">
-                        <input type="radio" id="male" name="sex" value="M" required>
+                        <input type="radio" id="male" name="sex" value="=ชาย" required>
                         <label for="male">
-                            <i class="fa-solid fa-mars" style="color: #4abfe2;"></i> Male 
+                            <i class="fa-solid fa-mars" style="color: #4abfe2;"></i> ชาย
                         </label>
                     </div>
                     <div class="sex-option">
-                        <input type="radio" id="female" name="sex" value="F" required>
+                        <input type="radio" id="female" name="sex" value="หญิง" required>
                         <label for="female">
-                            <i class="fa-solid fa-venus" style="color: #e672b0;"></i> Female
+                            <i class="fa-solid fa-venus" style="color: #e672b0;"></i> หญิง
                         </label>
                     </div>
                 </div>
             </div>
 
             <div class="form-group">
-                <label for="birthdate">Birthdate</label>
+                <label for="birthdate">วันเกิด</label>
                 <input type="date" name="birthdate" required>
             </div>
 
             <div class="form-group">
-                <label for="username">Username</label>
+                <label for="username">ยูซเซอร์เนม</label>
                     <div class="username-check">
                         <input type="text" name="username" id="id_username" required>
                         <i id="usernameStatusIcon" class="fa-solid fa-circle-check username-default"></i>
@@ -309,24 +310,24 @@
             <p id="usernameErrorMessage" class="error-message"></p> <!-- ข้อความแจ้งเตือน -->
             
             <div class="form-group">
-                <label for="email">Email</label>
+                <label for="email">อีเมล</label>
                 <input type="email" name="email" required>
             </div>
 
             <div class="form-group">
-                <label for="password1">Password</label>
+                <label for="password1">รหัสผ่าน</label>
                 <input type="password" name="password1" required>
             </div>
 
             <div class="form-group">
-                <label for="password2">Confirm Password</label>
+                <label for="password2">ยืนยันรหัสผ่าน</label>
                 <input type="password" name="password2" required>
             </div>
 
-            <button type="submit">Create Account</button>
+            <button type="submit">สร้างบัญชี</button>
         </form>
 
-        <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
+        <p>คุณมีบัญชีผู้ใช้แล้วใช่ไหม? <a href="{% url 'login' %}">เข้าสู่ระบบ</a></p>
     </div>
     
 

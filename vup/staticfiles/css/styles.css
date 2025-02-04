@@ -1,0 +1,22 @@
+/* ข้อความข้อผิดพลาด */
+.error-message {
+    color: #ff4d4d; /* สีแดงสำหรับข้อความ */
+    background-color: #ffe6e6; /* สีพื้นหลังอ่อน */
+    border: 1px solid #ff4d4d; /* ขอบสีแดง */
+    border-radius: 5px; /* มุมโค้งมน */
+    padding: 10px; /* ระยะห่างด้านใน */
+    margin-bottom: 15px; /* ระยะห่างจากฟอร์ม */
+    font-size: 14px; /* ขนาดตัวอักษร */
+    display: flex;
+    align-items: center;
+    gap: 10px; /* ระยะห่างระหว่างไอคอนกับข้อความ */
+}
+
+.error-message p {
+    margin: 0; /* ยกเลิก margin */
+}
+
+.error-message::before {
+    content: "⚠️"; /* เพิ่มไอคอนคำเตือน */
+    font-size: 16px; /* ขนาดไอคอน */
+}

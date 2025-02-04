@@ -6,7 +6,7 @@
     <title>Calendar and Notification</title>
 
     {% load static %}
-    <link href="{% static 'css/css_member/notification.css' %}" rel="stylesheet">
+    <link href="{% static 'css/css_member/noti_and_calendar.css' %}" rel="stylesheet">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
@@ -17,7 +17,7 @@
 <div class="calendar-notification">
     <!-- Calendar Section -->
     <div class="calendar-container">
-        <h1><i class="fas fa-calendar-alt"></i> Calendar</h1>
+        <h1><i class="fas fa-calendar-alt"></i> ปฏิทิน</h1>
         <div class="calendar-box">
             <div id="calendar"></div>
             <!-- <div id="calendar"></div> -->
@@ -72,7 +72,7 @@
     </div> -->
     
     <div class="notification-container">
-        <h1><i class="fas fa-bell"></i> Notification</h1>
+        <h1><i class="fas fa-bell"></i> การแจ้งเตือน</h1>
     <div class="notification-content">
         
         <ul>
@@ -152,15 +152,34 @@
 <div id="calendarDetailModal" class="calendar-modal">
     <div class="calendar-modal-content">
       <span class="calendar-close">&times;</span>
-      <h2 id="calendarModalTitle"></h2>
-      <h2>เจ้าของกิจกรรม:<span id="calendarModalCreatedBy"></span></h2>
-      <p><strong><i class="fa-solid fa-calendar-days"></i>วันที่จัดกิจกรรม:</strong> <span id="calendarModalDate"></span></p>
-      <p><strong><i class="fa-solid fa-location-dot location-icon"></i>สถานที่:</strong> <span id="calendarModalLocation"></span></p>
-      <p><strong><i class="fa-solid fa-shapes"></i>หมวดหมู่:</strong> <span id="calendarModalCategory"></span></p>
-      <p><strong><i class="fa-solid fa-location-dot"></i>จังหวัด:</strong> <span id="calendarModalProvince"></span></p>
-      <p><strong>📝 คำอธิบาย:</strong> <span id="calendarModalDescription"></span></p>
-      <p><strong><i class="fa-solid fa-user"></i>จำนวนผู้เข้าร่วมสูงสุด:</strong> <span id="calendarModalMaxParticipants"></span></p>
+
+      <div class="calendar-modal-head">
+        <h2> <i class="fa-regular fa-calendar"></i><span id="calendarModalTitle"></span></h2>
+        <p><strong>เจ้าของกิจกรรม : </strong><span id="calendarModalCreatedBy"></span></p>
+        <p><strong>วันที่ : </strong> <span id="calendarModalDate"></span></p>
+
+      </div>
+
+        <div class="calendar-modal-under">
+            <div class="calendar-box-detail-head">
+                <p><strong>คำอธิบาย : </strong> <span id="calendarModalDescription"></span></p>
+            </div> 
+            <div class="calendar-box-detail">
+                <p><strong><i class="fa-solid fa-location-crosshairs"></i>: </strong> <span id="calendarModalLocation"></span></p>
+            </div>   
+            <div class="calendar-box-detail">
+                <p><strong><i class="fa-solid fa-shapes"></i>: </strong> <span id="calendarModalCategory"></span></p>
+            </div> 
+            <div class="calendar-box-detail">
+                <p><strong><i class="fa-solid fa-location-dot"></i>: </strong> <span id="calendarModalProvince"></span></p>
+            </div> 
+
+            <div class="calendar-box-detail">
+                <p><strong><i class="fa-solid fa-user"></i>: </strong> <span id="calendarModalMaxParticipants"></span></p>
+            </div> 
+        </div>
     </div>
+      
   </div>
   
    

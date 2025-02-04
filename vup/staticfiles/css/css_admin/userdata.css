@@ -1,0 +1,574 @@
+body,html{
+    font-family:"Anuphan", sans-serif;
+    background-color: #f0eeee;
+    /* margin-left: 30%; */
+}
+
+.container {
+    display: flex;
+    flex-direction: row; /* จัดให้อยู่ในแนวนอน */
+    align-items: flex-start; /* จัดให้อยู่ด้านบน */
+}
+
+.menu-container {
+    width: 200px;
+    background-color: #1d1d1d;
+    color: white;
+    height: 94vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; 
+    align-items: center;
+    padding: 20px 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    border-radius: 0 40px 40px 0;
+}
+
+.profile-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.profile-image {
+    border-radius: 50%;
+    width: 70px;
+    height: 70px;
+    margin-bottom: 10px;
+    border: 2px solid #d1d1d1;
+    margin-top: 30px;
+}
+
+.username {
+    font-weight: bold;
+    font-size: 16px;
+    text-align: center;
+    margin: 0;
+}
+
+
+.menu-items {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%; 
+}
+
+.menu-item {
+    width: 80%; 
+    margin-left: 10px;
+    padding: 20px 15px;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    transition: background 0.3s;
+    margin-bottom: 10px;
+    border-radius: 25px 0 0 25px;
+}
+
+
+.menu-item.active {
+    background-color: #ffffff;
+    font-weight: bolder;
+    color: #1b1b1b;
+    border-radius: 25px 0 0 25px;
+}
+
+.menu-item:hover {
+    background-color: #f0eeee;
+    color: #1f1f20;
+    font-weight: bold;
+    border-radius: 25px 0 0 25px;
+    text-align: center;
+}
+
+i {
+    margin-right: 8px;
+}
+
+.profile-header {
+    display: flex;
+    align-items: center; /* จัดให้ไอเทมอยู่ตรงกลางในแนวตั้ง */
+    /* gap: 0px;  */
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.profile-header i {
+    font-size: 20px; /* ปรับขนาดไอคอนตามที่ต้องการ */
+}
+
+.my_profile_head {
+    margin: 0; /* เอา margin เริ่มต้นออกจาก p tag */
+}
+
+
+.logout {
+    padding: 10px 25px;
+    color: #ffffff;
+    font-weight: normal;
+    display: flex;
+    align-items: center;
+    border-radius: 20px;
+}
+
+.logout:hover {
+    background-color: #aa3129;
+    color: white;
+    border-radius: 20px;
+    padding: 10px 10px;
+    margin: 0;
+}
+
+.outer-box {
+    /* display: flex; */
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background-color: #ffffff; 
+    width: 80%; 
+    margin: 0 auto; 
+    border-radius: 20px; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+    margin-left: 16%;
+    /* margin-right: 29%; */
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+
+
+.content-box {
+    display: flex; /* ใช้ Flexbox */
+    flex-direction: row; /* จัดเรียงในแนวนอน */
+    gap: 10px; /* เพิ่มช่องว่างระหว่างกล่อง */
+    justify-content: flex-start; /* เริ่มต้นจากด้านซ้าย */
+    align-items: center;
+    /* border: 4px solid #f65c5c;  */
+    width: 95%;
+    padding: 15px;
+    border-radius: 8px; 
+    background-color: #ede9fe; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+    margin-top: 20px;
+}
+
+.total-members {
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center; 
+    height: 100%; 
+    text-align: center; 
+    width: 15%;
+    padding: 10px;
+    border-radius: 8px; 
+    background-color: #8b1616; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+    /* margin-top: 20px; */
+}
+
+.total-members h1{
+    margin: 5px;
+    font-size: 24px; 
+    color: #181268;
+}
+
+.total-members p{
+    margin: 0;
+    font-size: 12px; 
+    color: #8a8a8a;
+}
+.icon-total-member {
+    width: 50px; 
+    height: 50px; 
+    background-color: #b3c3e2; 
+    border-radius: 50%; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: relative; 
+}
+
+.icon-total-member i {
+    font-size: 20px; 
+    color: #181268; 
+    position: absolute; 
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%); /* ปรับให้ตำแหน่งอยู่กึ่งกลาง */
+}
+
+.total-members {
+    text-align: center;
+    /* padding: 20px; */
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    /* width: 300px; */
+    /* margin: 0 auto; */
+}
+
+.icon-total-member {
+    font-size: 40px;
+    color: #007bff;
+    margin-bottom: 10px;
+}
+
+.total-members h1 {
+    font-size: 2.5em;
+    margin: 0;
+    color: #333;
+}
+
+.total-members p {
+    margin: 5px 0;
+    color: #555;
+}
+
+.total-member-bysex {
+    margin-top: 15px;
+    font-size: 1.2em;
+}
+
+.total-member-bysex p {
+    display: flex;
+    align-items: center;
+    margin: 5px 0;
+}
+
+.total-member-bysex i {
+    margin-right: 8px;
+    font-size: 12px;
+    color: #ac1414;
+}
+
+.total-member-bysex p:nth-child(1) i {
+    color: #007bff; /* สีสำหรับไอคอนเพศชาย */
+}
+
+.total-member-bysex p:nth-child(2) i {
+    color: #ff69b4; /* สีสำหรับไอคอนเพศหญิง */
+}
+
+
+
+
+
+.genderPie {
+    display: flex;
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center;  
+    background-color: #418f99; /* พื้นหลังของกราฟ */
+    border-radius: 12px; /* มุมโค้งมน */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* เงา */
+    padding: 20px; /* เพิ่มระยะห่างด้านใน */
+    margin: 10px auto; /* จัดให้อยู่ตรงกลาง */
+    width: 250px; /* กำหนดความกว้าง */
+    height: 200px; /* กำหนดความสูง */
+    text-align: center; /* จัดข้อความให้อยู่ตรงกลาง */
+}
+
+#genderPieChart {
+    max-width: 80%; /* ให้กราฟปรับขนาดตาม container */
+    max-height: 80%; /* ให้กราฟปรับขนาดตาม container */
+}
+
+.genderBar {
+    display: flex;
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center;  
+    background-color: #ffffff; /* พื้นหลังของกราฟ */
+    border-radius: 12px; /* มุมโค้งมน */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* เงา */
+    padding: 20px; /* เพิ่มระยะห่างด้านใน */
+    margin: 10px auto; /* จัดให้อยู่ตรงกลาง */
+    width: 250px; /* กำหนดความกว้าง */
+    height: 200px; /* กำหนดความสูง */
+    text-align: center; /* จัดข้อความให้อยู่ตรงกลาง */
+}
+
+#genderBarChart {
+    max-width: 80%; /* ให้กราฟปรับขนาดตาม container */
+    max-height: 80%; /* ให้กราฟปรับขนาดตาม container */
+}
+
+.table-container {
+    margin-top: 16px;
+}
+
+table {
+    width: 100%;
+    border-collapse: separate; 
+    border-spacing: 0; 
+    background-color: #ffffff; 
+    border-radius: 12px; 
+    overflow: hidden; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+}
+
+thead th {
+    border: 0.5px solid #757474;
+    text-align: center; 
+    padding: 10px; 
+    background-color: #5a5a5a; 
+    color: #fff; 
+    font-size: 14px;
+    font-weight: bold;
+}
+
+tbody td {
+    border: 0.5px solid #e6e5e5;
+    padding: 10px; 
+    text-align: center; 
+    font-size: 14px; 
+    color: #000000; 
+    /* cursor: pointer; */
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f9f9f9; 
+}
+
+tbody tr:nth-child(odd) {
+    background-color: #ffffff; 
+}
+
+tbody tr:hover {
+    background-color: #d3d3d3; 
+}
+
+/* tfoot td {
+    border: 1px solid #ddd; 
+    background-color: #f0f0f0; 
+    color: #333; 
+    font-weight: bold;
+    text-align: center;
+    padding: 15px;
+} */
+
+
+.btn-actions {
+    display: flex; 
+    gap: 10px; 
+    justify-content: center; 
+    align-items: center; 
+}
+
+/* .button-delete {
+    background-color: #bdbbbb; 
+    border-radius: 50%; 
+    display: flex;
+    align-items: center; 
+    justify-content: center;
+    width: 30px; 
+    height: 30px; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+    
+} */
+
+/* .button-delete:hover {
+    background-color: #c42121; 
+    color: #ffffff;
+} */
+
+.block-btn {
+    display: inline-flex; 
+    align-items: center; 
+    justify-content: center; 
+    color: rgb(0, 0, 0); 
+    font-size: 12px; 
+    width: 100%; 
+    height: 100%; 
+    margin-left: 20%;
+}
+
+.button-edit {
+    background-color: #bdbbbb; 
+    border-radius: 50%; 
+    display: flex;
+    align-items: center; 
+    justify-content: center;
+    width: 30px; 
+    height: 30px; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+    
+}
+
+.button-edit:hover {
+    background-color: #e6ac00; 
+}
+
+.edit-btn {
+    display: inline-flex; 
+    align-items: center; 
+    justify-content: center; 
+    color: black; 
+    font-size: 12px; 
+    width: 100%; 
+    height: 100%; 
+    margin-left: 20%;
+}
+
+.button-block {
+    background-color: #bdbbbb; 
+    border-radius: 50%; 
+    display: flex;
+    align-items: center; 
+    justify-content: center;
+    width: 30px; 
+    height: 30px; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+    
+}
+
+#blockUserModal {
+    display: none; /* ซ่อน Modal เป็นค่าเริ่มต้น */
+    position: fixed;
+    z-index: 999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+#blockUserModal .modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 30%;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#blockUserModal .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#blockUserModal .close:hover,
+#blockUserModal .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+#successMessage {
+    display: none;
+    color: #155724; /* สีข้อความ */
+    background-color: #d4edda; /* พื้นหลังสีเขียวอ่อน */
+    border: 1px solid #c3e6cb; /* เส้นขอบ */
+    padding: 15px; /* ระยะห่างด้านใน */
+    border-radius: 5px; /* มุมโค้ง */
+    font-weight: bold;
+    text-align: center; /* จัดข้อความให้อยู่กึ่งกลาง */
+    width: 50%; /* ความกว้าง */
+    margin: 20px auto; /* จัดให้อยู่กลางหน้า */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* เงา */
+    animation: fadeInOut 3s ease-in-out; /* แอนิเมชัน */
+}
+
+@keyframes fadeInOut {
+    0% { opacity: 0; transform: translateY(-20px); } /* เริ่มต้นแบบเลือน */
+    20% { opacity: 1; transform: translateY(0); } /* แสดงเต็ม */
+    80% { opacity: 1; transform: translateY(0); } /* แสดงเต็ม */
+    100% { opacity: 0; transform: translateY(-20px); } /* หายไป */
+}
+
+a.block-btn {
+    text-decoration: none; /* ลบเส้นใต้ */
+    color: inherit; /* ให้สีเหมือนกับข้อความเดิม */
+}
+
+a.block-btn:hover {
+    text-decoration: none; /* ลบเส้นใต้เมื่อ hover ด้วย */
+}
+
+.modal {
+    display: none; /* ซ่อน Modal */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* สีพื้นหลังโปร่งใส */
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+/* เนื้อหา Modal */
+.modal-content {
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    width: 300px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+/* ไอคอนด้านบน */
+.modal-icon {
+    font-size: 50px;
+    color: #969696; /* สีส้ม */
+    margin-bottom: 10px;
+}
+
+/* ปุ่มใน Modal */
+.modal-buttons {
+    display: flex; /* ใช้ flexbox */
+    justify-content: center; /* จัดให้อยู่ตรงกลางในแนวนอน */
+    gap: 20px; /* ระยะห่างระหว่างปุ่ม */
+    margin-top: 20px;
+}
+
+/* ปุ่มยืนยัน */
+.modal-btn-confirm {
+    background-color: #27ae60; /* สีเขียว */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.modal-btn-confirm:hover {
+    background-color: #2ecc71; /* สีเขียวอ่อน */
+}
+
+/* ปุ่มปิด */
+.modal-btn-close {
+    background-color: #e74c3c; /* สีแดง */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.modal-btn-close:hover {
+    background-color: #c0392b; /* สีแดงเข้ม */
+}

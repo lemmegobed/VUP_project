@@ -8,37 +8,37 @@ from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path("", login_view,name='login'),
+    path("register/", register_view,name='register'),
+
+
     path('custom-admin/dashboard/', admin_dashboard, name='dashboard'),
     path('custom-admin/userdata/', userdata_admin, name='userdata'),
     path('custom-admin/report/', report_admin, name='report_admin'),
-    # path('delete-member/<int:id>/', delete_member, name='delete_member'),
+
     path('block/<int:id>/', block_user, name='block_user'),
-    # path('edit-member/<int:member_id>/', edit_member, name='edit_member'),
     path('upload-ads/', upload_ads, name='upload_ads'),
-
-    # path('calendar_and_notification/partial/', calendar_and_notification_partial, name='calendar_and_notification_partial'),
-    # path('warn_member/<int:id>/', warn_member, name='warn_member'),
     path('warn_event/<int:event_id>/', warn_event, name='warn_event'),
-    # path('event/report/<int:event_id>/', event_detail_report, name='event_report_detail'),
     path('event/report/<int:event_id>/', event_detail_report, name='event_detail_report'),
+    
+    
 
-    path("register/", register_view,name='register'),
+
+
+    
     path("feed/", home_view,name='feed'),
-    # path('report/', submit_report, name='submit_report'),
     path('report/<int:event_id>/', submit_report, name='submit_report'),
 
     path('profile/', profile_view, name='profile'),
     path('profile/<int:member_id>/',member_profile, name='member_profile'),
+
     path("check-username/", check_username, name="check_username"),
     path("check-username/register/", check_username_register, name="check_username_register"),
     
-    # path('profile/<int:member_id>/edit', profile_edit, name='edit_profile'),
     path('my-activity/', my_activity, name='my_activity'),
     path('chat/', chat_rooms_list, name='chat'),
-    # path('chatroom/<int:event_id>/', chat_room_detail, name='chat_room'),
-    # path('chatroom/<int:chat_room_id>/', views.chat_room, name='chat_room'),
-    # path('chat-room/<int:chat_room_id>/', views.chat_room, name='chat_room'),
+
     path('chat/<int:chat_room_id>/', chat_room_detail, name='chat_room'),
+    path("chat/<int:chat_room_id>/leave/", leave_chat, name="leave_chat"),
 
     path("event/<int:event_id>/review/", review_event, name="review_event"),
     # path('notification_list_json/', notification_list_json, name='notification_list_json'),
@@ -59,12 +59,10 @@ urlpatterns = [
     
     path('logout/', logout_view, name='logout'),
 
-    path('reset_password/', auth_views.PasswordResetView.as_view(), name='reset_password'),
-    path('reset_password_done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
-    path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
-    path('reset_password_complete/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
-
-   
+    path('reset_password/', auth_views.PasswordResetView.as_view(template_name='registration/reset_password.html'), name='reset_password'),
+    path('reset_password_sent/', auth_views.PasswordResetDoneView.as_view(template_name='registration/password_reset_done.html'), name='password_reset_done'),
+    path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name='registration/password_reset_confirm.html'), name='password_reset_confirm'),
+    path('reset_password_complete/', auth_views.PasswordResetCompleteView.as_view(template_name='registration/password_reset_complete.html'), name='password_reset_complete'),
 ]
 
 

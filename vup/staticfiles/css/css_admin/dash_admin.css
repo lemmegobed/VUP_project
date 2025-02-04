@@ -1,0 +1,291 @@
+    body,html{
+        font-family:"Anuphan", sans-serif;
+        background-color: #f0eeee;
+        /* margin-left: 30%; */
+    }
+
+    .container {
+        display: flex;
+        flex-direction: row; /* จัดให้อยู่ในแนวนอน */
+        align-items: flex-start; /* จัดให้อยู่ด้านบน */
+    }
+
+    .menu-container {
+        width: 200px;
+        background-color: #1d1d1d;
+        color: white;
+        height: 94vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between; 
+        align-items: center;
+        padding: 20px 0;
+        position: fixed;
+        top: 0;
+        left: 0;
+        border-radius: 0 40px 40px 0;
+    }
+
+    .profile-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .profile-image {
+        border-radius: 50%;
+        width: 70px;
+        height: 70px;
+        margin-bottom: 10px;
+        border: 2px solid #d1d1d1;
+        margin-top: 30px;
+    }
+
+    .username {
+        font-weight: bold;
+        font-size: 16px;
+        text-align: center;
+        margin: 0;
+    }
+
+
+    .menu-items {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%; 
+    }
+
+    .menu-item {
+        width: 80%; 
+        margin-left: 10px;
+        padding: 20px 15px;
+        color: white;
+        text-align: center;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        transition: background 0.3s;
+        margin-bottom: 10px;
+        border-radius: 25px 0 0 25px;
+    }
+
+
+    .menu-item.active {
+        background-color: #ffffff;
+        font-weight: bolder;
+        color: #1b1b1b;
+        border-radius: 25px 0 0 25px;
+    }
+
+    .menu-item:hover {
+        background-color: #f0eeee;
+        color: #1f1f20;
+        font-weight: bold;
+        border-radius: 25px 0 0 25px;
+        text-align: center;
+    }
+
+    i {
+        margin-right: 8px;
+    }
+
+    .profile-header {
+        display: flex;
+        align-items: center; /* จัดให้ไอเทมอยู่ตรงกลางในแนวตั้ง */
+        /* gap: 0px;  */
+        font-weight: bold;
+        font-size: 18px;
+    }
+
+    .profile-header i {
+        font-size: 20px; /* ปรับขนาดไอคอนตามที่ต้องการ */
+    }
+
+    .my_profile_head {
+        margin: 0; /* เอา margin เริ่มต้นออกจาก p tag */
+    }
+
+
+    .logout {
+        padding: 10px 25px;
+        color: #ffffff;
+        font-weight: normal;
+        display: flex;
+        align-items: center;
+        border-radius: 20px;
+    }
+
+    .logout:hover {
+        background-color: #aa3129;
+        color: white;
+        border-radius: 20px;
+        padding: 10px 10px;
+        margin: 0;
+    }
+
+    .outer-box {
+        /* display: flex; */
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        background-color: #ffffff; 
+        width: 80%; 
+        margin: 0 auto; 
+        border-radius: 20px; 
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+        margin-left: 16%;
+        /* margin-right: 29%; */
+        margin-top: 30px;
+        margin-bottom: 30px;
+    }
+
+
+
+    .content-box {
+        display: flex; /* ใช้ Flexbox */
+        flex-direction: row; /* จัดเรียงในแนวนอน */
+        gap: 10px; /* เพิ่มช่องว่างระหว่างกล่อง */
+        justify-content: flex-start; /* เริ่มต้นจากด้านซ้าย */
+        align-items: center;
+        /* border: 4px solid #f65c5c;  */
+        width: 95%;
+        padding: 15px;
+        border-radius: 8px; 
+        background-color: #ede9fe; 
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+        margin-top: 20px;
+    }
+
+    .total-members {
+        display: flex; 
+        flex-direction: column; 
+        align-items: center; 
+        justify-content: center; 
+        height: 100%; 
+        text-align: center; 
+        width: 10%;
+        padding: 10px;
+        border-radius: 8px; 
+        background-color: #ffffff; 
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+        /* margin-top: 20px; */
+    }
+
+    .total-members h1{
+        margin: 5px;
+        font-size: 24px; 
+        color: #181268;
+    }
+
+    .total-members p{
+        margin: 0;
+        font-size: 12px; 
+        color: #8a8a8a;
+    }
+    
+    .icon-total-member {
+        width: 50px; 
+        height: 50px; 
+        background-color: #b3c3e2; 
+        border-radius: 50%; 
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        position: relative; 
+    }
+    
+    .icon-total-member i {
+        font-size: 20px; 
+        color: #181268; 
+        position: absolute; 
+        top: 50%; 
+        left: 50%; 
+        transform: translate(-50%, -50%); /* ปรับให้ตำแหน่งอยู่กึ่งกลาง */
+    }
+
+    .total-events {
+        display: flex; 
+        flex-direction: column; 
+        align-items: center; 
+        justify-content: center; 
+        height: 100%; 
+        text-align: center; 
+        width: 10%;
+        padding: 10px;
+        border-radius: 8px; 
+        background-color: #ffffff; 
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+        /* margin-top: 20px; */
+    }
+
+    .total-events h1{
+        margin: 5px;
+        font-size: 24px; 
+        color: #5650ad;
+    }
+
+    .total-events p{
+        margin: 0;
+        font-size: 12px; 
+        color: #8a8a8a;
+    }
+    .icon-total-events {
+        width: 50px; 
+        height: 50px; 
+        background-color: #b3c3e2; 
+        border-radius: 50%; 
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        position: relative; 
+    }
+    
+    .icon-total-events i {
+        font-size: 20px; 
+        color: #181268; 
+        position: absolute; 
+        top: 50%; 
+        left: 50%; 
+        transform: translate(-50%, -50%); /* ปรับให้ตำแหน่งอยู่กึ่งกลาง */
+    }
+
+    .genderPie {
+        display: flex;
+        flex-direction: column; 
+        align-items: center; 
+        justify-content: center;  
+        background-color: #ffffff; /* พื้นหลังของกราฟ */
+        border-radius: 12px; /* มุมโค้งมน */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* เงา */
+        padding: 20px; /* เพิ่มระยะห่างด้านใน */
+        margin: 10px auto; /* จัดให้อยู่ตรงกลาง */
+        width: 250px; /* กำหนดความกว้าง */
+        height: 200px; /* กำหนดความสูง */
+        text-align: center; /* จัดข้อความให้อยู่ตรงกลาง */
+    }
+    
+    #genderPieChart {
+        max-width: 80%; /* ให้กราฟปรับขนาดตาม container */
+        max-height: 80%; /* ให้กราฟปรับขนาดตาม container */
+    }
+
+    .genderBar {
+        display: flex;
+        flex-direction: column; 
+        align-items: center; 
+        justify-content: center;  
+        background-color: #ffffff; /* พื้นหลังของกราฟ */
+        border-radius: 12px; /* มุมโค้งมน */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* เงา */
+        padding: 20px; /* เพิ่มระยะห่างด้านใน */
+        margin: 10px auto; /* จัดให้อยู่ตรงกลาง */
+        width: 250px; /* กำหนดความกว้าง */
+        height: 200px; /* กำหนดความสูง */
+        text-align: center; /* จัดข้อความให้อยู่ตรงกลาง */
+    }
+    
+    #genderBarChart {
+        max-width: 80%; /* ให้กราฟปรับขนาดตาม container */
+        max-height: 80%; /* ให้กราฟปรับขนาดตาม container */
+    }
+    
+    

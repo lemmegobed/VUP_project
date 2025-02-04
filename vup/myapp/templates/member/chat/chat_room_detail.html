@@ -23,21 +23,17 @@
         <div class="profile-section">
             <img src="{{ member_data.profile.url }}" alt="Profile Image" class="profile-image">
             <p class="username">{{ member_data.username }}</p>
-            <button id="openModal" class="new-event-btn">+ New Event</button>
         </div>
 
         <div class="menu-items">
             <a class="menu-item home-btt " href="{% url 'feed' %}">
-                <i class="fa-solid fa-earth-americas"></i>Feed
+                <i class="fa-solid fa-earth-americas"></i>ฟีด
             </a>
             <a class="menu-item profile-btt " href="{% url 'profile' %}">
-                <i class="fas fa-user"></i> Profile
+                <i class="fas fa-user"></i> โปรไฟล์
             </a>
             <a class="menu-item chat-btt active" href="{% url 'chat' %}">
-                <i class="fas fa-comment"></i> Chat
-            </a>
-            <a class="menu-item activity-btt " href="{% url 'my_activity' %}">
-                <i class="fa-solid fa-bolt"></i></i>Activity
+                <i class="fas fa-comment"></i> แชท
             </a>
         </div>
 
@@ -79,7 +75,27 @@
                 </div>
             </div>
         </div>
+
+        {% if request.user != chat_room.created_by_id %}
+            <button id="openLeaveChatModal" class="leave-chat-btn">
+                <i class="fas fa-sign-out-alt"></i> ออกจากแชท
+            </button>
+        {% endif %}
     
+    
+        
+        <div id="leaveChatModal" class="modal">
+            <div class="modal-content">
+                <p>คุณต้องการออกจากกิจกรรมนี้จริงหรือไม่?</p>
+                <div class="modal-buttons">
+                    <button id="confirmLeaveChat" class="confirm-btn">ออกจากแชท</button>
+                    <button id="cancelLeaveChat" class="cancel-btn">ยกเลิก</button>
+                </div>
+            </div>
+        </div>
+        
+
+        
 
         <div class="chat-container">
             <div id="chat-log">
@@ -120,7 +136,7 @@
         <!-- ฟอร์มส่งข้อความ -->
         <form method="post" action="{% url 'chat_room' chat_room.id %}" class="chat-input-form">
             {% csrf_token %}
-            <input type="text" name="message" class="chat-input" placeholder="typing here..." required>
+            <input type="text" name="message" class="chat-input" placeholder="ส่งข้อความกันเถอะ !" required>
             <button type="submit" class="send-button">
                 <i class="fas fa-paper-plane"></i>
             </button>
@@ -228,6 +244,32 @@
     };
 </script>
 
+
+
+<script>
+    document.getElementById("openLeaveChatModal").onclick = function() {
+        document.getElementById("leaveChatModal").style.display = "block";
+    };
+
+    document.getElementById("cancelLeaveChat").onclick = function() {
+        document.getElementById("leaveChatModal").style.display = "none";
+    };
+
+    document.getElementById("confirmLeaveChat").onclick = function() {
+        fetch("{% url 'leave_chat' chat_room.id %}", {
+            method: "POST",
+            headers: {
+                "X-CSRFToken": "{{ csrf_token }}",
+                "Content-Type": "application/json"
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                window.location.href = "{% url 'chat' %}";
+            }
+        });
+    };
+</script>
 
 
 

@@ -25,23 +25,20 @@
         <div class="profile-section">
             <img src="{{ member_data.profile.url }}" alt="Profile Image" class="profile-image">
             <p class="username">{{ member_data.username }}</p>
-            <button id="openModal" class="new-event-btn">+ New Event</button>
+            <!-- <button id="openModal" class="new-event-btn">+ New Event</button> -->
+            <!-- <p>{{ user.first_name }} {{ user.last_name }}</p> -->
         </div>
 
         <div class="menu-items">
             <a class="menu-item home-btt " href="{% url 'feed' %}">
-                <i class="fa-solid fa-earth-americas"></i>Feed
+                <i class="fa-solid fa-earth-americas"></i>ฟีด
             </a>
             <a class="menu-item profile-btt active" href="{% url 'profile' %}">
-                <i class="fas fa-user"></i> ข้อมูลส่วนตัว
+                <i class="fas fa-user"></i> โปรไฟล์
             </a>
-
-            <a class="menu-item chat-btt" href="{% url 'chat' %}">
-                <i class="fas fa-comment"></i> Chat
+            <a class="menu-item chat-btt " href="{% url 'chat' %}">
+                <i class="fas fa-comment"></i> แชท
             </a>
-            <!-- <a class="menu-item activity-btt " href="{% url 'my_activity' %}">
-                <i class="fa-solid fa-bolt"></i></i>Activity
-            </a> -->
         </div>
 
 
@@ -53,7 +50,7 @@
     <div class="outer-box-profile">
         <div class="profile-header">
             <i class="fa-regular fa-circle-user"></i>
-            <p class="my_profile_head">MY PROFILE</p>
+            <p class="my_profile_head">โปรไฟล์ของฉัน</p>
         </div>
                
         <div class="inner-box">
@@ -91,7 +88,7 @@
                     <div class="event-rating">
                         <h3>
                             <span class="event-summary-number">0</span><br>
-                            <span class="event-summary-text">คะแนน</span>
+                            <span class="event-summary-text">ไปตามนัด</span>
                         </h3>
                     </div>
                     <div class="event-default">
@@ -116,11 +113,11 @@
                             </div>
                         </div>
                         
-                        <p><strong>Email :</strong> {{ user.email }}</p>
-                        <p><strong>Firstname :</strong> {{ user.first_name }}</p>
-                        <p><strong>Lastname :</strong> {{ user.last_name }}</p>
-                        <p><strong>Sex :</strong> {{ user.sex }}</p>
-                        <p><strong>Birthdate :</strong> {{ user.birthdate }}</p>
+                        <p><strong>อีเมล :</strong> {{ user.email }}</p>
+                        <p><strong>ชื่อ :</strong> {{ user.first_name }}</p>
+                        <p><strong>นามสกุล :</strong> {{ user.last_name }}</p>
+                        <p><strong>เพศ :</strong> {{ user.sex }}</p>
+                        <p><strong>วันเกิด :</strong> {{ user.birthdate }}</p>
                         <!-- <p><strong>คำอธิบาย:</strong> {{ user.description|default:"ยังไม่มีคำอธิบาย" }}</p> -->
                     </div>
     
@@ -270,23 +267,7 @@
     </div>
 
 
-    <!-- <div id="profileModal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal('profileModal')">&times;</span>
-            <h2 class="modal-header">แก้ไขโปรไฟล์</h2>
-            <form method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <input type="hidden" name="update_profile" value="true">
-                <div class="modal-footer">
-                    <button type="button" onclick="closeModal('profileModal')" class="btn btn-secondary">ยกเลิก</button>
-                    <button type="submit" class="btn btn-primary">บันทึก</button>
-                </div>
-            </form>
-        </div>
-    </div> -->
 
-    
 
     <!-- ✅ MODAL ฟอร์มแก้ไขกิจกรรม -->
     {% for event in events %}
@@ -377,6 +358,7 @@
 
  
     </div>
+
 
         <div>
             {% include 'member/notification.html' %}

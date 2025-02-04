@@ -21,8 +21,9 @@ from django.utils.timezone import now, timedelta
 # from rest_framework.permissions import IsAuthenticated
 # from .serializers import ChatMessageSerializer
 # from django.core.management.base import BaseCommand
-from django.urls import reverse
-
+from django.urls import reverse,reverse_lazy
+from django.contrib.auth.views import LoginView , PasswordResetView , PasswordChangeView
+from django.contrib.messages.views import SuccessMessageMixin
 
 
 
@@ -313,7 +314,7 @@ def submit_report(request, event_id):
         'form': form,
         'event': event,
     }
-    return render(request, 'member/submit_report.html', context)
+    return render(request, 'member/event/submit_report.html', context)
 
 
 
@@ -480,7 +481,8 @@ def chat_rooms_list(request):
     # ดึงห้องแชทที่เกี่ยวข้องกับผู้ใช้ (ผู้สร้างหรือเป็นสมาชิก)
     chat_rooms = ChatRoom.objects.filter(
         Q(created_by=user) | Q(members=user),  # ผู้ใช้เป็นเจ้าของ หรือเป็นสมาชิกในห้อง
-        event__is_active=True                  # อีเว้นต์ต้อง active
+        event__is_active=True,              # อีเว้นต์ต้อง active
+        # event__eventrequest__member=user
     ).distinct().order_by('-updated_at')  # เรียงลำดับตาม updated_at จากล่าสุดไปเก่าสุด
 
     # ส่ง context ให้ template
@@ -505,6 +507,11 @@ def chat_room_detail(request, chat_room_id):
         'member_data': member_data,
     })
 
+@login_required
+def leave_chat(request, chat_room_id):
+    chat_room = get_object_or_404(ChatRoom, id=chat_room_id)
+    chat_room.members.remove(request.user)  # ลบสมาชิกออกจากห้อง
+    return JsonResponse({"status": "success"})
 
 # def chat_room_detail(request, chat_room_id):
 #     user = request.user
@@ -906,6 +913,8 @@ def handle_event_request(request, event_request_id):
         return JsonResponse({'message': f'Error: {str(e)}'}, status=500)
 
 
+
+
 @login_required
 def review_event(request, event_id):
     event = get_object_or_404(Event, id=event_id)
@@ -1129,6 +1138,17 @@ def mark_notification_as_read(request, notification_id):
 
 #     messages = chatroom.messages.all()
 #     return render(request, "chatroom.html", {"chatroom": chatroom, "messages": messages})
+
+
+# class ResetPasswordview(SuccessMessageMixin,PasswordResetView):
+#     template_name = r'Authen/password_reset.html'
+#     email_template_name = r'Authen/password_reset.html'
+#     subject_template_name = r'Authen/password_reset_subject.txt'
+#     success_message = 'เราได้ส่งลิงค์ในการ reset รหัสผ่านไปทางอีเมลที่คุณแจ้งแล้ว โปรดตรวจสอบที่emailของคุณ'
+#     success_url = reverse_lazy('myapp:Login')
+#     def form_valid(self, form):
+#         messages.success(self.request, self.success_message)
+#         return self.render_to_response(self.get_context_data(form=form))
 
 
 def logout_view(request):

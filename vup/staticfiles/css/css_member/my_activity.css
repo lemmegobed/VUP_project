@@ -1,0 +1,840 @@
+
+        
+        body,html{
+            font-family:"Anuphan", sans-serif;
+            background-color: #f0eeee;
+            /* margin-left: 30%; */
+        }
+
+        .menu-container {
+            width: 200px;
+            background-color: #2b3f65;
+            color: white;
+            height: 94vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; 
+            align-items: center;
+            padding: 20px 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            border-radius: 0 40px 40px 0;
+        }
+
+        .profile-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .profile-image {
+            border-radius: 50%;
+            width: 70px;
+            height: 70px;
+            margin-bottom: 10px;
+            border: 2px solid #d1d1d1;
+            margin-top: 30px;
+        }
+
+        .username {
+            font-weight: bold;
+            font-size: 16px;
+            text-align: center;
+            margin: 0;
+        }
+
+        /* New event button */
+        .new-event-btn {
+            background-color: #ffffff;
+            padding: 10px 15px;
+            border-radius: 30px;
+            color: black;
+            font-weight: bold;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 120px; 
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .new-event-btn:hover {
+            cursor: pointer; 
+            transform: scale(1.1); /* ขยายขนาดปุ่ม */
+        }
+
+        .menu-items {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            width: 100%; 
+        }
+
+        .menu-item {
+            width: 80%; 
+            margin-left: 10px;
+            padding: 20px 15px;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            transition: background 0.3s;
+            margin-bottom: 10px;
+            border-radius: 25px 0 0 25px;
+        }
+
+
+        .menu-item.active {
+            background-color: #ffffff;
+            font-weight: bolder;
+            color: #2b3f65;
+            border-radius: 25px 0 0 25px;
+        }
+
+        .menu-item:hover {
+            background-color: #f0eeee;
+            color: #1c2b4a;
+            font-weight: bold;
+            border-radius: 25px 0 0 25px;
+            text-align: center;
+        }
+
+        i {
+            margin-right: 8px;
+        }
+
+        .logout {
+            padding: 10px 25px;
+            color: #ffffff;
+            font-weight: normal;
+            display: flex;
+            align-items: center;
+            border-radius: 20px;
+        }
+
+        .logout:hover {
+            background-color: #aa3129;
+            color: white;
+            border-radius: 20px;
+            padding: 10px 10px;
+            margin: 0;
+        }
+
+
+
+        .button-container {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center; /
+            align-items: center; 
+            gap: 10px; 
+        }
+
+
+    .btn {
+        padding: 10px 20px;
+        border-radius: 5px;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+        gap: 0;
+    }
+
+    .btn-yes {
+        background-color: #2d7e23;
+        color: white;
+    }
+
+    .btn-no {
+        background-color:  #c0392b;
+        color: white;
+    }
+
+
+    .outer-box-profile {
+        /* display: flex; */
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        background-color: #ffffff; 
+        width: 50%; 
+        margin: 0 auto; 
+        border-radius: 20px; 
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+        margin-right: 29%;
+        margin-top: 30px;
+        margin-bottom: 30px;
+    }
+
+
+    /* กรอบครอบชั้นที่สอง */
+    .content-box {
+        width: 85%;
+        margin-left: 30px;
+        border: 1px solid #e7e7e7; 
+        padding: 15px;
+        border-radius: 8px; 
+        background-color: #f7f7f7; 
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+    }
+
+        
+        .profile-header {
+            display: flex;
+            align-items: center; 
+            justify-content: flex-start; 
+            gap: 10px; 
+            margin-left: 0; 
+            padding: 10px;
+            margin-bottom: 15px;
+        }
+
+        .my_profile_head {
+            font-size: 16px; 
+            font-weight: bold;
+            color: #000000; 
+            margin: 0; 
+        }
+
+        .profile-header i {
+            font-size: 20px; 
+            color: #000000; 
+            margin-right: 5px; 
+            /* transition: transform 0.3s, color 0.3s;  */
+        }
+
+        .menu-tabs {
+            display: flex;             /* ใช้ Flexbox */
+            justify-content: center;   /* จัดให้อยู่กึ่งกลางตามแนวนอน */
+            align-items: center;       /* จัดให้อยู่กึ่งกลางตามแนวตั้ง */
+            width: 80%;                /* กำหนดความกว้างของเมนู */
+            margin: 0 auto;            /* จัดให้เมนูอยู่ตรงกลางของกรอบครอบทั้งหมด */
+            padding: 10px;             /* เพิ่มระยะห่างด้านใน */
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 10px;
+            background-color: #e0e0e0;
+            border: none;
+            cursor: pointer;
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+            border-radius: 30px;
+            
+            
+        }
+
+        .tab-btn.active {
+            background-color: #212969;
+            color: white;
+            /* border-bottom: 3px solid #cacaca; */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            
+        }
+
+        .tab-btn:hover {
+            background-color: #112052;
+        }
+
+        /* เนื้อหาที่แสดง */
+        .content-box {
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .event-summary{
+            font-size: 12px;
+            font-weight: normal;
+            margin-left: 20px;
+            margin-bottom: -10px;
+            color: #797979;
+        }
+
+
+        .post-box{
+            display: flex;
+        }
+        .event-post {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            /* border: 1px solid #ccc; */
+            border-radius: 15px;
+            margin-bottom: 20px;
+            background-color: #fff;
+            width: 100%;
+            max-width: 650px;   
+            min-width: 650px;   
+            min-height: 200px;
+            overflow: hidden;   
+            margin: auto;
+            margin-top: 10px;
+        }
+
+        .post-left {
+            display: flex;
+            flex-direction: column;
+            gap: 0px;
+            flex-grow: 1;
+            /* border: 1px solid #ad2e2e; */
+            width: 100%;
+            max-width: 400px;
+            margin-left: 30px;
+            overflow: hidden;  
+        }
+
+        
+        .post_member {
+            display: flex;
+            gap: 10px; 
+            margin: 10px;
+            padding: 20px 0;
+            /* line-height: 15px;  */
+        }
+
+        .member-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .username-container {
+            display: flex;
+            align-items: center; 
+            gap: 5px; 
+        }
+
+        .username-post {
+            font-weight: bold;
+            font-size: 16px;
+            margin: 0;
+        }
+
+        .userid-post {
+            font-size: 14px;
+            color: #797979;
+            margin: 0;
+        }
+
+        .location-icon {
+            color:  #ec2727;
+            font-size: 14px; 
+            margin-right: 5px; 
+            margin-left: 5px;
+        }
+
+        .location {
+            font-size: 13px;
+            margin: 0;
+            color:  #888;
+            margin-top: 5px; 
+            font-weight: normal;
+        }
+
+        .location a {
+            color: red;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .location a:hover {
+            text-decoration: underline;
+        }
+        
+        .detail-post {
+            /* border: 1px solid #ca1b96; */
+            line-height: 10px;
+            color: #000;
+            margin-left: 14px;
+        }
+
+        .detail-post h2 {
+            font-size: 18px;
+            font-weight: bolder;
+            line-height: 5px;
+            margin-top: 10px;
+        }
+
+        .detail-post p {
+            font-size: 13px;
+            font-weight: normal;
+            line-height: 15px;
+            margin-top: 10px;
+        }
+
+        .filter-box-post {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            /* margin-top: 10px; */
+            /* border: 1px solid #22abd4; */
+            margin-left: 15px;
+            margin-bottom: 30px;
+            
+        }
+
+        .filter-box-post > div {
+            display: flex;
+            align-items: center;
+            padding: 0px 0px; 
+            background-color: #ffffff;
+            /* border: 1px solid #646464; */
+            border-radius: 40px;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+
+
+        .event-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 10px;
+        }
+
+ 
+        /* Left Section */
+        .post-left {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 70%;
+        }
+
+        /* Profile and Username */
+        .post_member {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .profile-image-post {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .username-post {
+            font-weight: bold;
+            margin: 0;
+            font-size: 16px;
+        }
+
+        .location {
+            font-size: 14px;
+            color: #666;
+        }
+
+        /* Filter Section */
+        .filter-box-post p {
+            margin: 0;
+            font-size: 14px;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+
+        .post-actions {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            gap: 10px;
+        }
+
+        /* Edit and Delete Buttons */
+        .edit-button, .delete-button {
+            background-color: transparent;
+            border: none;
+            color: #666;
+            cursor: pointer;
+            font-size: 16px;
+            transition: color 0.3s;
+        }
+
+        .edit-button:hover {
+            color: #4caf50; /* สีเขียวสำหรับแก้ไข */
+        }
+
+        .delete-button:hover {
+            color: #f44336; /* สีแดงสำหรับลบ */
+        }
+
+        /* Position for post container */
+        .event-box-post {
+            width: 90%;
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin: 0 auto; /* จัดกึ่งกลางแนวนอน */
+        }
+
+
+        .date, .time, .category, .participants ,.province {
+            background-color: #ffffff;
+            color: rgb(0, 0, 0);
+            /* padding: 0px;  */
+            border: 1px solid #646464;
+            border-radius: 20px;
+            text-align: center;
+            display: flex; 
+            align-items: center;
+            justify-content: center; 
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        .date {
+            width: 45%; 
+            font-weight: bold;
+        }
+
+        .time {
+            width: 15%; 
+            font-weight: bold;
+        }
+
+        .category {
+            width: 25%; 
+            font-weight: bold;
+        }
+
+        .participants {
+            width: 15%; 
+            font-weight: bold;
+        }
+
+
+        .province {
+            width:auto; 
+            padding-right: 30px;
+            font-weight: bold;
+        }
+ 
+        .profile-image-post {
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            border: 1px solid #000000;
+        }
+        .button-container {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center; /* จัดให้อยู่กึ่งกลางแนวนอน */
+            align-items: center; /* จัดให้อยู่กึ่งกลางแนวตั้ง (ถ้าจำเป็น) */
+            gap: 10px; /* ระยะห่างระหว่างปุ่ม */
+        }
+
+
+    .btn {
+        padding: 10px 20px;
+        border-radius: 5px;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+        gap: 0;
+    }
+
+    .btn-yes {
+        background-color: #2d7e23;
+        color: white;
+    }
+
+    /* .btn-yes:hover {
+        background-color: #c0392b;
+    } */
+
+        .btn-no {
+            background-color:  #c0392b;
+            color: white;
+        }
+
+        .event-box-post {
+            position: relative; 
+        }
+
+        .post-actions {
+            position: absolute;
+            top: 10px; 
+            right: 10px; 
+            display: flex;
+            gap: 10px; 
+        }
+
+        .btn-edit, .btn-delete {
+            padding: 5px 10px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .btn-edit {
+            background-color: #4CAF50; /* สีเขียว */
+            color: white;
+        }
+
+        .btn-delete {
+            background-color: #f44336; /* สีแดง */
+            color: white;
+        }
+
+        .btn-edit:hover, .btn-delete:hover {
+            opacity: 0.8;
+        }
+
+        /* ปิดป๊อปอัปตอนเริ่มต้น */
+        .hidden {
+            display: none;
+        }
+
+        /* พื้นหลังป๊อปอัป */
+        .popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* พื้นหลังมืด */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        /* เนื้อหาป๊อปอัป */
+        .popup-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 400px;
+            position: relative;
+        }
+
+        /* ปุ่มปิด */
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        /* ปุ่มบันทึก */
+        .btn-save {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn-save:hover {
+            opacity: 0.8;
+        }
+        .hidden {
+            display: none;
+        }
+
+        /* ปิด Modal เริ่มต้น */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* พื้นหลังมืด */
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        /* เปิด Modal */
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        /* กล่อง Modal */
+        .modal-box {
+            background-color: #fff;
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        /* ปุ่มใน Modal */
+        .modal-buttons {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-confirm {
+            background-color: #31942e; /* สีแดง */
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .btn-confirm:hover {
+            background-color: #10631b;
+        }
+
+        .btn-cancel {
+            background-color: #db5846; /* สีเทา */
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .btn-cancel:hover {
+            background-color: #7c2111;
+        }
+
+        .btn-delete {
+            background-color: #dc3545;
+            color: white;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn-delete:hover {
+            background-color: #c82333;
+        }
+
+        /* Container ฟอร์ม */
+.popup-edit-event {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    max-width: 500px;
+    margin: 20px auto;
+    font-family: Arial, sans-serif;
+    position: relative;
+}
+
+/* ปุ่มปิด */
+.popup-close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    color: #aaa;
+    cursor: pointer;
+}
+
+.popup-close-btn:hover {
+    color: #e74c3c;
+}
+
+/* หัวข้อ */
+.popup-title {
+    text-align: center;
+    font-size: 20px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* ฟอร์มหลัก */
+.edit-event-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 400px;
+    /* height: 300px; */
+    padding-left: 20px; /* เพิ่มช่องว่างด้านซ้าย */
+    padding-right: 20px; /* เพิ่มช่องว่างด้านขวา */
+    box-sizing: border-box;
+}
+
+/* ป้ายกำกับ */
+.edit-event-label {
+    font-size: 12px;
+    color: #747474;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+/* Input fields */
+.edit-event-input, .edit-event-select {
+    padding: 5px;
+    padding-left: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: border 0.3s;
+    border-radius: 15px;
+}
+
+.edit-event-input:focus, .edit-event-select:focus {
+    outline: none;
+    border-color: #3498db;
+}
+
+/* ปุ่มบันทึก */
+.btn-save-event {
+    /* margin-top: 15px; */
+    justify-content: center;
+    margin: auto;
+    background-color: #2f6183;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s;
+    width: 40%;
+}
+
+.btn-save-event:hover {
+    background-color: #113349;
+}
+
+ 
