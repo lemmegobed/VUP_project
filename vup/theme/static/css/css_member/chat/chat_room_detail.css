@@ -7,7 +7,13 @@ body,html{
 
 .menu-container {
     width: 200px;
-    background-color: #2b3f65;
+
+    background-image: url('/static/pic/bg4.jpg'); 
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat; 
+    height: 100vh; 
+
     color: white;
     height: 94vh;
     display: flex;
@@ -199,7 +205,7 @@ i {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background-color: #ffb6c1;  /* สีชมพู */
+    background-color: #add7e7;  /* สีชมพู */
     display: flex;
     align-items: center;
     justify-content: center;

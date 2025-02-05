@@ -647,17 +647,15 @@ margin-left: 10px;
     text-align: left;
 }
 
-/* จัดปุ่มให้อยู่ในบรรทัดเดียวกัน */
 .post-actions {
     display: flex;
     gap: 10px;
     align-items: center;
 }
 
-/* ปุ่มแก้ไข (เฉพาะกิจกรรม) */
 .btn-edit-event {
-    background-color: #c9c9c9; /* สีปุ่ม */
-    color: white; /* สีไอคอน */
+    background-color: #c9c9c9; 
+    color: white; 
     width: 35px;
     height: 35px;
     border: none;
@@ -670,7 +668,6 @@ margin-left: 10px;
     padding: 10px;
 }
 
-/* ปรับขนาดของไอคอนให้พอดีกับปุ่ม */
 .btn-edit-event i {
     font-size: 16px;
     padding: 10px;
@@ -678,12 +675,12 @@ margin-left: 10px;
 }
 
 .btn-edit-event:hover {
-    background-color: #0056b3;
+    background-color: #24476d;
 }
 
 /* ปุ่มลบ (เฉพาะกิจกรรม) */
 .btn-delete-event {
-    background-color: #dc3545;
+    background-color: #c9c9c9; 
     color: white;
     width: 35px;
     height: 35px;
@@ -694,10 +691,11 @@ margin-left: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-left: 15px;
 }
 
 .btn-delete-event:hover {
-    background-color: #c82333;
+    background-color: #b33844;
 }
 
 /* ปรับขนาดไอคอน */
@@ -1046,19 +1044,48 @@ margin-left: 10px;
 }
 
 /* อินพุต */
-.input {
+/* .input {
     width: 100%; 
-    /* padding-right: 40px;  */
+
     padding-left: 12px;
     border: 1px solid #ccc;
     border-radius: 8px;
     font-size: 16px;
     background-color: #f0f0f0;
     height: 40px;
+} */
+
+
+.profile-group {
+    margin-bottom: 15px;
 }
 
+.profile-label {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+}
+
+.profile-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+}
+
+.profile-btn:hover {
+    background-color: #0056b3;
+}
+
+.error-message {
+    color: red;
+    font-size: 12px;
+}
+/* 
 #profileModal .profile-select{
-    flex: 1; /* ขยายเต็มที่ */
+    flex: 1; 
     width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
@@ -1077,7 +1104,7 @@ margin-left: 10px;
     background-color: #fff;
 }
 
-/* ปุ่ม */
+
 #profileModal .profile-btn {
     width: 100%;
     padding: 12px;
@@ -1088,7 +1115,7 @@ margin-left: 10px;
 }
 
 #profileModal .profile-btn-primary {
-    background-color: #003366;
+    background-color: #69a2db;
     color: white;
 }
 
@@ -1101,17 +1128,7 @@ margin-left: 10px;
     background-color: #002244;
 }
 
-
-/* ทำให้ input และไอคอนอยู่ในกรอบเดียวกัน */
-.username-check {
-    position: relative;
-    display: flex;
-    align-items: center;
-    width: 100%; /* ขยายให้กว้างเต็มพื้นที่ */
-}
-
-/* ปรับขนาด input ให้ยาวขึ้นและรองรับไอคอน */
-.username-check input {
+.profile-group input {
     width: 100%; 
     padding-right: 40px; 
     padding-left: 12px;
@@ -1120,7 +1137,27 @@ margin-left: 10px;
     font-size: 16px;
     background-color: #f0f0f0;
     height: 40px;
+} */
+
+/* ทำให้ input และไอคอนอยู่ในกรอบเดียวกัน */
+.username-check {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%; 
 }
+
+/* ปรับขนาด input ให้ยาวขึ้นและรองรับไอคอน */
+/* .username-check input {
+    width: 100%; 
+    padding-right: 40px; 
+    padding-left: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    background-color: #b82f2f;
+    height: 40px;
+} */
 
 /* จัดตำแหน่งไอคอนให้อยู่ด้านใน input */
 #usernameStatusIcon {

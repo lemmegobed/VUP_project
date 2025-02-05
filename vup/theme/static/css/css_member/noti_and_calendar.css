@@ -8,7 +8,14 @@ body,html{
     min-height: 100vh; 
     /* height: 100vh;
     height: auto; */
-    background-color: #2b3f65; 
+    
+    background-image: url('/static/pic/bg4.jpg'); 
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat; 
+    height: 100vh; 
+
+
     color: white; 
     /* padding: 20px; */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
@@ -51,7 +58,9 @@ body,html{
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: #1c2b4a;
+    /* background-color: #1c2b4a; */
+
+    
     padding: 20px;
     border-radius: 15px;
     width: 300px;
@@ -67,7 +76,7 @@ body,html{
     font-size: 15px;
     font-weight: bold;
     color: white;
-    background-color: #1c2b4a;
+    /* background-color: #1c2b4a; */
     display: flex;
 }
 
@@ -419,9 +428,13 @@ body,html{
 }
 
 .btn-join-chat:hover {
-    background-color: #b12d64; /* สีเมื่อ hover */
+    background-color: #b12d64; 
 }
-
+a {
+    text-decoration: none; 
+    color: black; 
+    font-weight: bold;
+}
 
 
 

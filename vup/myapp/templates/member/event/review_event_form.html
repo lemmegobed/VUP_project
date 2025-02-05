@@ -1,0 +1,28 @@
+<h2>รีวิว {{ participant.username }} สำหรับกิจกรรม "{{ event.event_name }}"</h2>
+
+<div class="review-user-info">
+    <img src="{{ participant.profile_picture.url }}" alt="{{ participant.username }}" class="profile-pic">
+    <p><strong>ชื่อ:</strong> {{ participant.username }}</p>
+</div>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">บันทึกรีวิว</button>
+</form>
+
+<a href="{% url 'review_event' event.id %}">🔙 กลับไปที่รายชื่อสมาชิก</a>
+
+<style>
+    .review-user-info {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+    .profile-pic {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        margin-right: 15px;
+    }
+</style>

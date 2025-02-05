@@ -3,11 +3,19 @@ body,html{
     font-family:"Anuphan", sans-serif;
     background-color: #f0eeee;
     /* margin-left: 30%; */
+
 }
 
 .menu-container {
     width: 200px;
-    background-color: #2b3f65;
+    /* background-color: #2b3f65; */
+
+    background-image: url('/static/pic/bg4.jpg'); 
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat; 
+    height: 100vh; 
+
     color: white;
     height: 94vh;
     display: flex;
@@ -191,7 +199,7 @@ margin-bottom: 20px;
     width: 45px; 
     height: 45px; 
     border-radius: 50%; 
-    background-color: #f8a0af;
+    background-color: #add7e7;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); 
     margin-right: 15px; 
     margin-left: 15px;

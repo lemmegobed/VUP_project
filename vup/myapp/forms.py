@@ -1,7 +1,6 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
 from .models import *
-
+from django.contrib.auth.forms import UserCreationForm, PasswordResetForm, SetPasswordForm
 
 class AdvertisementForm(forms.ModelForm):
     class Meta:
@@ -45,6 +44,13 @@ class MemberUpdateForm(forms.ModelForm):
             'last_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Last Name'}),
             'description': forms.Textarea(attrs={'rows': 3, 'class': 'form-control', 'placeholder': 'Add a description...'}),
         }
+
+    def __init__(self, *args, **kwargs):
+        super(MemberUpdateForm, self).__init__(*args, **kwargs)
+        # ตั้งค่า default ค่าของ sex และ birthdate จากข้อมูลในฐานข้อมูล (หากมีค่า)
+        if self.instance.pk:
+            self.fields['sex'].initial = self.instance.sex  # ค่าเริ่มต้นสำหรับ sex
+            self.fields['birthdate'].initial = self.instance.birthdate  # ค่าเริ่มต้นสำหรับ birthdate
 
 PROVINCE_CHOICES = [
     ('เลือกจังหวัด', 'เลือกจังหวัด'),
@@ -145,16 +151,25 @@ class EventForm(forms.ModelForm):
         model = Event
         fields = ['event_name', 'event_title', 'event_datetime', 'location', 'category', 'max_participants', 'province']
 
-        widgets = {
-            'event_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Event Name'}),
-            'event_title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Event Title'}),
-            'event_datetime': forms.DateTimeInput(attrs={'class': 'form-control', 'type': 'datetime-local'}),
-            'location': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Location'}),
-            'category': forms.Select(choices=CATEGORY_CHOICES, attrs={'class': 'form-control'}),
-            'max_participants': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Max Participants', 'min': '1'}),
-            'province': forms.Select(choices=PROVINCE_CHOICES, attrs={'class': 'form-control'}),
+        labels = {
+            'event_name': 'ชื่อกิจกรรม',
+            'event_title': 'รายละเอียด',
+            'event_datetime': 'วันที่ทำกิจกรรม',
+            'location': 'สถานที่',
+            'category': 'หมวดหมู่',
+            'max_participants': 'จำนวนผู้เข้าร่วมสูงสุด',
+            'province': 'จังหวัด',
         }
 
+        widgets = {
+            'event_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'ชื่อกิจกรรม'}),
+            'event_title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'รายละเอียด'}),
+            'event_datetime': forms.DateTimeInput(attrs={'class': 'form-control', 'type': 'datetime-local'}), 
+            'location': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'สถานที่'}),
+            'category': forms.Select(choices=CATEGORY_CHOICES, attrs={'class': 'form-control'}),
+            'max_participants': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'จำนวนผู้เข้าร่วมสูงสุด', 'min': '1'}),
+            'province': forms.Select(choices=PROVINCE_CHOICES, attrs={'class': 'form-control'}),
+        }
 
 class UpdateEventForm(forms.ModelForm):
     class Meta:
@@ -176,10 +191,19 @@ class UpdateEventForm(forms.ModelForm):
         self.fields['event_name'].required = False
         self.fields['event_title'].required = False
 
+# class EventReviewForm(forms.ModelForm):
+#     class Meta:
+#         model = Event_Review
+#         fields = ['attendance_status', 'comment']
+
 class EventReviewForm(forms.ModelForm):
     class Meta:
-        model = EventReview
+        model = Event_Review
         fields = ['attendance_status', 'comment']
+        widgets = {
+            'attendance_status': forms.Select(attrs={'class': 'form-control'}),
+            'comment': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+        }
 
 class ReportForm(forms.ModelForm):
     class Meta:
@@ -205,3 +229,4 @@ class ChatMessageForm(forms.ModelForm):
                 'autocomplete': 'off'
             }),
         }
+

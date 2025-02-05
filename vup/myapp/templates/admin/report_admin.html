@@ -27,13 +27,13 @@
 
         <div class="menu-items">
             <a class="menu-item home-btt  " href="{% url 'dashboard' %}">
-                <i class="fa-solid fa-chart-line"></i>Dashboard
+                <i class="fa-solid fa-chart-line"></i>แดชบอร์ด
             </a>
             <a class="menu-item profile-btt " href="{% url 'userdata' %}">
-                <i class="fa-regular fa-address-card"></i> Userdata
+                <i class="fa-regular fa-address-card"></i> ข้อมูลผู้ใช้
             </a>
             <a class="menu-item chat-btt active" href="{% url 'report_admin' %}">
-                <i class="fa-solid fa-circle-exclamation"></i> Report
+                <i class="fa-solid fa-circle-exclamation"></i> รายงานปัญหา
             </a>
         </div>
 
@@ -46,12 +46,12 @@
     <div class="outer-box">
         <div class="profile-header" style="display: inline-flex; align-items: center; gap: 8px;">
             <i class="fa-solid fa-circle-exclamation"></i> 
-            <p class="my_profile_head" style="margin: 0;">Report</p>
+            <p class="my_profile_head" style="margin: 0;">รายงานปัญหา</p>
         </div>
 
-        <div class="button-container">
+        <!-- <div class="button-container">
             <a href="/upload-ads/" class="btn-upload">➕ อัปโหลดโฆษณา</a>
-        </div>
+        </div> -->
 
         <div class="content-box">
 
@@ -60,7 +60,7 @@
                     <i class="fa-solid fa-circle-exclamation"></i>
                 </div>
                 <h1> {{ total_reports }}</h1>
-                <p>Total Reports</p>
+                <p>รายงานปัญหาทั้งหมด</p>
 
                 <div class="report-types">
                     <p>

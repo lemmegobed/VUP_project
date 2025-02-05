@@ -39,7 +39,7 @@
 
 
         <a href="{% url 'logout' %}" class="logout">
-            Logout
+            ออกจากระบบ
         </a>
     </div>
 
@@ -84,15 +84,6 @@
     
     
         
-        <div id="leaveChatModal" class="modal">
-            <div class="modal-content">
-                <p>คุณต้องการออกจากกิจกรรมนี้จริงหรือไม่?</p>
-                <div class="modal-buttons">
-                    <button id="confirmLeaveChat" class="confirm-btn">ออกจากแชท</button>
-                    <button id="cancelLeaveChat" class="cancel-btn">ยกเลิก</button>
-                </div>
-            </div>
-        </div>
         
 
         
@@ -130,6 +121,16 @@
                         </div>
                     {% endif %}
                 {% endfor %}
+            </div>
+        </div>
+
+        <div id="leaveChatModal" class="modal">
+            <div class="modal-content">
+                <p>คุณต้องการออกจากกิจกรรมนี้จริงหรือไม่?</p>
+                <div class="modal-buttons">
+                    <button id="confirmLeaveChat" class="confirm-btn">ออกจากแชท</button>
+                    <button id="cancelLeaveChat" class="cancel-btn">ยกเลิก</button>
+                </div>
             </div>
         </div>
     

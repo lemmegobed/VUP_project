@@ -115,7 +115,7 @@ class Event_Request(models.Model):
         ordering = ['-request_time']
 
 
-class EventReview(models.Model):
+class Event_Review(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name="reviews")
     reviewer = models.ForeignKey(Member, on_delete=models.CASCADE, related_name="given_reviews")
     participant = models.ForeignKey(Member, on_delete=models.CASCADE, related_name="received_reviews")

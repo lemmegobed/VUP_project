@@ -26,50 +26,6 @@
 
   
 
-    <!-- Notification Section -->
-    <!-- <div class="notification-container">
-        <h1><i class="fas fa-bell"></i> Notification</h1>
-        <div class="notification-content">
-            <ul>
-                {% for notification in notifications %}
-                    <li class="{% if not notification.is_read %}unread{% endif %}">
-                        <div class="icon-noti">
-                            <i class="fa-solid fa-circle"></i>
-                        </div>
-                        <p>{{ notification.message }}</p>
-                        {% if notification.related_event %}
-                            <p>เกี่ยวข้องกับกิจกรรม: {{ notification.related_event.event_name }}</p>
-                        {% endif %}
-                    </li>
-                {% empty %}
-                    <li>ไม่มีการแจ้งเตือน</li>
-                {% endfor %}
-            </ul>
-        </div>
-    </div> -->
-    
-    
-
-    <!-- <div class="notification-container">
-        <h1><i class="fas fa-bell"></i> Notification</h1>
-        <div class="notification-content">
-            <ul>
-                {% for notification in notifications %}
-                    <li class="{% if not notification.is_read %}unread{% endif %}">
-                        <div class="icon-noti">
-                            <i class="fa-solid fa-circle"></i>
-                        </div>
-                        <p>{{ notification.message }}</p>
-                        {% if notification.related_event %}
-                            <p>เกี่ยวข้องกับกิจกรรม: {{ notification.related_event.event_name }}</p>
-                        {% endif %}
-                    </li>
-                {% empty %}
-                    <li>ไม่มีการแจ้งเตือน</li>
-                {% endfor %}
-            </ul>
-        </div>
-    </div> -->
     
     <div class="notification-container">
         <h1><i class="fas fa-bell"></i> การแจ้งเตือน</h1>
@@ -86,7 +42,7 @@
                                 <li class="{% if not notification.is_read %}unread{% endif %}">
                                     <div class="message-noti">
                                         <i class="fa-solid fa-circle"></i>
-                                        <p class="notification-text">{{ notification.message }}</p>
+                                        <p class="notification-text">{{ notification.message|safe}}</p>
                                     </div>
                                     <div class="button-action-noti">
                                         {% with notification.related_request as event_request %}

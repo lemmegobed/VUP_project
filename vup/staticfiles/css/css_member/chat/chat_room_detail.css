@@ -224,6 +224,12 @@ i {
     /* display: flex; */
     align-items: center;
     /* gap: 8px;   */
+
+
+    display: flex;
+    justify-content: space-between; /* ให้ชื่อห้องและปุ่มอยู่คนละด้าน */
+    align-items: center; /* จัดให้อยู่ในระดับเดียวกัน */
+
 }
 
 .chat-room-members {
@@ -233,6 +239,23 @@ i {
     display: flex;
     align-items: center;
 }
+
+
+.leave-chat-btn {
+    background-color: #423a3a;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-left: 10px; 
+}
+
+.leave-chat-btn:hover {
+    background-color: #cc0000;
+}
+
 
 .chat-container {
     display: flex;
@@ -401,27 +424,6 @@ i {
     background-color: #9c1755;
 }
 
-/* ไอคอนในปุ่มส่ง */
-/* .send-button i {
-    font-size: 18px;
-} */
-
-
-/* ปุ่มออกจากแชท */
-.leave-chat-btn {
-    background-color: #ff4d4d;
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-    margin-top: 10px;
-}
-
-.leave-chat-btn:hover {
-    background-color: #cc0000;
-}
 
 /* Modal */
 .modal {

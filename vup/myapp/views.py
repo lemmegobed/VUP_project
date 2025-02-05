@@ -21,9 +21,7 @@ from django.utils.timezone import now, timedelta
 # from rest_framework.permissions import IsAuthenticated
 # from .serializers import ChatMessageSerializer
 # from django.core.management.base import BaseCommand
-from django.urls import reverse,reverse_lazy
-from django.contrib.auth.views import LoginView , PasswordResetView , PasswordChangeView
-from django.contrib.messages.views import SuccessMessageMixin
+from django.urls import reverse
 
 
 
@@ -507,62 +505,28 @@ def chat_room_detail(request, chat_room_id):
         'member_data': member_data,
     })
 
+# ออกจากแชท = กิจกรรม
 @login_required
+
 def leave_chat(request, chat_room_id):
+
     chat_room = get_object_or_404(ChatRoom, id=chat_room_id)
-    chat_room.members.remove(request.user)  # ลบสมาชิกออกจากห้อง
+
+    chat_room.members.remove(request.user)  
+
+    Chat_Message.objects.create(
+        chatroom=chat_room,  
+        sender=None, 
+        message=f"{request.user.username} ได้ออกจากกิจกรรม '{chat_room.event.event_name}'แล้ว", 
+        created_at=now(),  
+        is_system_message=True,  
+    )
     return JsonResponse({"status": "success"})
 
-# def chat_room_detail(request, chat_room_id):
-#     user = request.user
+# def leave_chat(request, chat_room_id):
 #     chat_room = get_object_or_404(ChatRoom, id=chat_room_id)
-#     messages = Chat_Message.objects.filter(chatroom=chat_room).order_by('created_at')
-
-#     if request.method == 'POST':
-#         form = ChatMessageForm(request.POST)
-#         if form.is_valid():
-#             chat_message = form.save(commit=False)
-#             chat_message.sender = user
-#             chat_message.chatroom = chat_room
-#             chat_message.created_at = now()
-#             chat_message.is_system_message = False
-#             chat_message.save()
-
-#             return JsonResponse({
-#                 "id": chat_message.id,
-#                 "sender": chat_message.sender.username if chat_message.sender else "System",
-#                 "sender_profile": chat_message.sender.profile.url if chat_message.sender else "/static/images/system_icon.png",
-#                 "message": chat_message.message,
-#                 "created_at": chat_message.created_at.strftime("%H:%M, %d %b %Y"),
-#                 "is_sender": chat_message.sender == request.user if chat_message.sender else False
-#             })
-
-#     # ถ้าเป็น AJAX Request ให้ส่ง JSON
-#     if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-#         messages_data = [
-#             {
-#                 "id": message.id,
-#                 "sender": message.sender.username if message.sender else "System",
-#                 "sender_profile": message.sender.profile.url if message.sender else "/static/images/system_icon.png",
-#                 "message": message.message,
-#                 "created_at": message.created_at.strftime("%H:%M, %d %b %Y"),
-#                 "is_system_message": message.is_system_message,
-#                 "is_sender": message.sender == request.user if message.sender else False
-#             }
-#             for message in messages
-#         ]
-#         return JsonResponse({"messages": messages_data})
-
-#     # โหลดหน้าเว็บปกติ
-#     form = ChatMessageForm()
-#     context = {
-#         'chat_room': chat_room,
-#         'messages': messages,
-#         'chat_room_id': chat_room.id,
-#         'form': form,
-#     }
-#     return render(request, 'member/chat/chat_room_detail.html', context)
-
+#     chat_room.members.remove(request.user)  # ลบสมาชิกออกจากห้อง
+#     return JsonResponse({"status": "success"})
 
 @receiver(post_save, sender=Event)
 def update_chatroom_name(sender, instance, **kwargs):
@@ -641,43 +605,6 @@ def update_event(request):
         'events': events,
     })
 
-# def profile_edit(request):
-#     member_data = Member.objects.get(username=request.user.username) 
-#     events = Event.objects.all()
-#     form = EventForm()
-#     user = request.user
-#     user_events = Event.objects.filter(created_by=request.user)
-
-    
-#     if request.method == 'POST':
-#         form = MemberUpdateForm(request.POST, request.FILES, instance=member_data)
-#         if form.is_valid():
-#             form.save()  
-#             return redirect('profile')  
-#     else:
-#         form = MemberUpdateForm(instance=member_data)  # กรณีไม่ใช่ POST ให้สร้างฟอร์มจากข้อมูลผู้ใช้ที่ล็อกอิน
-    
-#     context = {
-#         'user': user,
-#         'events': events, 
-#         'member_data': member_data,
-#         'events': events,
-#         'form': form,
-#         'events': user_events
-#     }
-#     return render(request, 'member/profile_edit.html', context)
-
-# def chat_view(request):
-#     member_data = Member.objects.get(username=request.user.username)
-#     return render(request, 'member/chat.html', {'member_data': member_data})
-
-# def chat_list(request):
-#     # ดึงห้องแชทที่เกี่ยวข้องกับผู้ใช้ (เป็นเจ้าของหรือเป็นสมาชิก)
-#     chat_rooms = ChatRoom.objects.filter(
-#         models.Q(created_by=request.user) | models.Q(members=request.user)
-#     ).distinct()
-
-#     return render(request, 'chat.html', {'chat_rooms': chat_rooms})
 
 # สร้างอีเว้น
 @login_required
@@ -689,16 +616,16 @@ def new_event_view(request):
             event.created_by = request.user
             event.save()
 
-            # ✅ สร้างแจ้งเตือนหลังจากสร้าง Event
-            create_event_notifications(event)  # 🔥 เพิ่มบรรทัดนี้
+            #สร้างแจ้งเตือนหลังจากสร้าง
+            create_event_notifications(event)  
 
-            # ✅ สร้าง ChatRoom สำหรับ Event
+            #ChatRoom
             chat_room = ChatRoom.objects.create(
                 name=event.event_name,
                 event=event,
                 created_by=request.user
             )
-            chat_room.members.add(request.user)  # เพิ่มผู้สร้างเป็นสมาชิกคนแรก
+            chat_room.members.add(request.user)  
 
             return JsonResponse({'success': True})
         else:
@@ -745,18 +672,21 @@ def new_event_view(request):
  
 # ค้นหาอีเว้น
 def search_events(request):
-    member_data = Member.objects.get(username=request.user.username) 
+    member_data = Member.objects.get(username=request.user.username)
     query = request.GET.get('query', '')
-    
-# กรองเฉพาะอีเว้นท์ที่ตรงกับคำค้นหาและไม่ถูกแบน
+
+    # เฉพาะอีเว้นท์ที่ตรงกับคำค้นหาและไม่ถูกแบน
     events = Event.objects.filter(
-        is_active=True,  # เฉพาะอีเว้นท์ที่ยัง active
-        created_by__is_banned=False,  # ผู้สร้างอีเว้นท์ไม่ถูกแบน
-        created_by__is_active=True,  # ผู้สร้างอีเว้นท์ยัง active
+        is_active=True,  
+        created_by__is_banned=False,  
+        created_by__is_active=True,  
     ).filter(
-        Q(event_name__icontains=query) |  # ค้นหาชื่ออีเว้นท์
-        Q(event_title__icontains=query) |  # ค้นหาชื่อเรื่องของอีเว้นท์
-        Q(location__icontains=query)  # ค้นหาสถานที่ของอีเว้นท์
+        Q(event_name__icontains=query) |  # ค้นหาจากชื่อกิจกรรม
+        Q(event_title__icontains=query) |  # ค้นหาจากชื่อเรื่อง
+        Q(location__icontains=query) |  # ค้นหาจากสถานที่
+        Q(category__icontains=query) |  # ค้นหาจากหมวดหมู่
+        Q(province__icontains=query) |  # ค้นหาจากจังหวัด
+        Q(created_by__username__icontains=query)  # ค้นหาจากชื่อผู้สร้างโพสต์
     )
 
     context = {
@@ -766,23 +696,6 @@ def search_events(request):
     }
     return render(request, 'member/feed.html', context)
    
-
-# def filter_events(request):
-#     member_data = Member.objects.get(username=request.user.username) 
-#     category = request.GET.get('category', None)
-#     max_participants = request.GET.get('max_participants', None)
-#     province = request.GET.get('province', None)
-
-#     events = Event.objects.all()  
-
-#     if category:
-#         events = events.filter(category=category)
-#     if max_participants:
-#         events = events.filter(max_participants__gte=max_participants) 
-#     if province:
-#         events = events.filter(province=province)
-
-#     return render(request, 'member/home.html', {'events': events,'member_data': member_data})
 
 def filter_events(request):
     province_choices = EventForm.base_fields['province'].choices
@@ -831,13 +744,17 @@ def send_join_request(request, event_id):
         response_status='pending'
     )
 
-    # สร้าง Notification พร้อมเชื่อมโยงกับ Event_Request
-    message = f"{sender.username} ต้องการเข้าร่วมกิจกรรม '{event.event_name}' ของคุณ"
+    # สร้างลิงก์ไปยังโปรไฟล์ของ sender
+    sender_profile_url = request.build_absolute_uri(reverse('member_profile', args=[sender.id]))
+
+    # สร้างข้อความที่มีลิงก์
+    message = f"<a href='{sender_profile_url}'>{sender.username}</a> ต้องการเข้าร่วมกิจกรรม '{event.event_name}' ของคุณ"
+    
     Notification.objects.create(
         user=receiver,
         message=message,
         related_event=event,
-        related_request=event_request,  # เชื่อมกับคำขอ
+        related_request=event_request, 
         notification_type='request'
     )
 
@@ -852,52 +769,47 @@ def handle_event_request(request, event_request_id):
             event_request_instance = get_object_or_404(Event_Request, id=event_request_id)
 
             if action == 'accept':
-                # เปลี่ยนสถานะคำขอเป็น 'accepted'
                 event_request_instance.response_status = 'accepted'
                 event_request_instance.save()
 
-                # ดึงห้องแชทตาม Event หรือสร้างใหม่ถ้ายังไม่มี
+                # สร้างห้องแชทพร้อมอีเว้น
                 chat_room, created = ChatRoom.objects.get_or_create(event=event_request_instance.event)
                 
-                # เพิ่มผู้ส่ง (sender) เข้าร่วมห้องแชท
                 chat_room.members.add(event_request_instance.sender)
 
-                # สร้างลิงก์ห้องแชทโดยใช้ ChatRoom.id
                 chat_room_url = f"/chat/{chat_room.id}/"
 
-                # สร้างการแจ้งเตือนพร้อมลิงก์ห้องแชท
                 message = f"""
                     คำขอเข้าร่วมกิจกรรม '{event_request_instance.event.event_name}' ของคุณได้รับการอนุมัติแล้ว
                     <a href='{chat_room_url}' class='btn-join-chat'>แชทเลย!</a>
                 """
                 Notification.objects.create(
-                    user=event_request_instance.sender,  # แจ้งเตือนไปยัง sender
+                    user=event_request_instance.sender,  
                     message=message,
                     related_event=event_request_instance.event,
                     related_request=event_request_instance, 
                     notification_type='response',
                 )
 
-                # เพิ่มข้อความระบบในห้องแชท
                 chat_room, created = ChatRoom.objects.get_or_create(event=event_request_instance.event)
+                
+                # แสดงว่าใครเขาร่วม
                 Chat_Message.objects.create(
-                    chatroom=chat_room,  # ใช้ chatroom แทน chat_room
-                    sender=None,  # ข้อความระบบ ไม่มีผู้ส่ง
+                    chatroom=chat_room,  
+                    sender=None,  
                     message=f"{event_request_instance.sender.username} เข้าร่วมกิจกรรม '{event_request_instance.event.event_name}' เรียบร้อยแล้ว!",  # ใช้ message แทน content
-                    created_at=now(),  # ใช้ created_at แทน timestamp
-                    is_system_message=True,  # ระบุว่าเป็นข้อความระบบ
+                    created_at=now(),  
+                    is_system_message=True,  
                 )
                 return JsonResponse({'message': 'คำขอได้รับการอนุมัติแล้ว!', 'chat_room_url': chat_room_url})
 
             elif action == 'reject':
-                # เปลี่ยนสถานะคำขอเป็น 'rejected'
                 event_request_instance.response_status = 'rejected'
                 event_request_instance.save()
 
-                # สร้างการแจ้งเตือน
                 message = f"คำขอเข้าร่วมกิจกรรม '{event_request_instance.event.event_name}' ของคุณถูกปฏิเสธ"
                 Notification.objects.create(
-                    user=event_request_instance.sender,  # แจ้งเตือนไปยัง sender
+                    user=event_request_instance.sender, 
                     message=message,
                     related_event=event_request_instance.event,
                      related_request=event_request_instance, 
@@ -916,44 +828,80 @@ def handle_event_request(request, event_request_id):
 
 
 @login_required
-def review_event(request, event_id):
+def event_review_list(request, event_id):
     event = get_object_or_404(Event, id=event_id)
+    
+    # ดึงสมาชิกจาก ChatRoom ของ Event
+    chat_room = ChatRoom.objects.filter(event=event).first()
+    if not chat_room:
+        members = []
+    else:
+        members = chat_room.members.all()
 
-    # ดึงผู้เข้าร่วมกิจกรรมจาก EventRequest โดยเช็คว่าเป็น "accepted"
-    participants = Member.objects.filter(id__in=Event_Request.objects.filter(event=event, response_status='accepted').values('receiver_id'))
+    # ดึงข้อมูลรีวิวที่มีอยู่แล้ว
+    reviewed_members = Event_Review.objects.filter(event=event, reviewer=request.user).values_list('participant_id', flat=True)
 
-    if request.method == "POST":
-        for participant in participants:
-            status = request.POST.get(f"status_{participant.id}", "attended")
-            comment = request.POST.get(f"comment_{participant.id}", "")
+    return render(request, 'member/event/review_event_list.html', {
+        'event': event,
+        'members': members,
+        'reviewed_members': reviewed_members
+    })
 
-            EventReview.objects.create(
-                event=event,
-                reviewer=request.user,  # ผู้รีวิว
-                participant=participant,  # ผู้ถูกรีวิว
-                attendance_status=status,
-                comment=comment
-            )
-        return redirect('previous_page')  # กลับไปยังหน้าก่อนหน้านี้
+def event_review_form(request, event_id, member_id):
+    event = get_object_or_404(Event, id=event_id)
+    participant = get_object_or_404(Member, id=member_id)
 
-    context = {"event": event, "participants": participants}
-    return render(request, "member/event/review_event.html", context)
+    if request.method == 'POST':
+        form = EventReviewForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.event = event
+            review.reviewer = request.user
+            review.participant = participant
+            review.save()
+            return redirect('review_event', event_id=event.id)  # กลับไปหน้ารายการสมาชิก
+    else:
+        form = EventReviewForm()
 
+    return render(request, 'member/event/review_event_form.html', {
+        'form': form,
+        'event': event,
+        'participant': participant
+    })
+
+
+# def review_event(request, event_id):
+#     event = get_object_or_404(Event, id=event_id)
+
+#     # ดึงผู้เข้าร่วมกิจกรรมจาก EventRequest โดยเช็คว่าเป็น "accepted"
+#     participants = Member.objects.filter(id__in=Event_Request.objects.filter(event=event, response_status='accepted').values('receiver_id'))
+
+#     if request.method == "POST":
+#         for participant in participants:
+#             status = request.POST.get(f"status_{participant.id}", "attended")
+#             comment = request.POST.get(f"comment_{participant.id}", "")
+
+#             EventReview.objects.create(
+#                 event=event,
+#                 reviewer=request.user,  # ผู้รีวิว
+#                 participant=participant,  # ผู้ถูกรีวิว
+#                 attendance_status=status,
+#                 comment=comment
+#             )
+#         return redirect('previous_page')  # กลับไปยังหน้าก่อนหน้านี้
+
+#     context = {"event": event, "participants": participants}
+#     return render(request, "member/event/review_event.html", context)
+
+# ปฏิทิน
 @login_required
 def user_events_api(request):
     user = request.user  # ดึง user ที่ล็อกอิน
 
-    # ดึงกิจกรรมที่ user เป็นเจ้าของ
-    owned_events = Event.objects.filter(created_by=user, is_active=True)
+    chat_rooms = ChatRoom.objects.filter(members=user)
 
-    # ดึงกิจกรรมที่ user ขอเข้าร่วมและถูกอนุมัติ
-    accepted_requests = Event_Request.objects.filter(sender=user, response_status='accepted').values_list('event', flat=True)
-    joined_events = Event.objects.filter(id__in=accepted_requests, is_active=True)
+    relevant_events = [chat_room.event for chat_room in chat_rooms if chat_room.event.is_active]
 
-    # รวมกิจกรรมที่เกี่ยวข้อง
-    relevant_events = owned_events | joined_events
-
-    # แปลงกิจกรรมเป็น JSON
     category_colors = {
         'การศึกษา': '#3498db',
         'กีฬา': '#ff5733',
@@ -1028,127 +976,6 @@ def mark_notification_as_read(request, notification_id):
     notification.is_read = True
     notification.save()
     return JsonResponse({'message': 'Notification marked as read.'}, status=200)
-
-# def notification_context(request):
-#     if request.user.is_authenticated:  # ตรวจสอบว่าผู้ใช้ล็อกอินอยู่
-#         notifications = request.user.notifications.all()
-
-#         # เพิ่มคำขอ pending ให้แต่ละการแจ้งเตือน
-#         for notification in notifications:
-#             if notification.related_event:
-#                 pending_requests = notification.related_event.event_requests.filter(response_status="pending")
-#                 notification.pending_request = pending_requests.first() if pending_requests.exists() else None
-
-#         return {'notifications': notifications}
-#     return {} 
-
-# def notification_view(request):
-#     notifications = Notification.objects.filter(user=request.user).select_related('related_event')
-
-#     # เพิ่ม ChatRoom ที่เกี่ยวข้องลงใน Context
-#     for notification in notifications:
-#         if notification.related_event:
-#             notification.chat_room = ChatRoom.objects.filter(event=notification.related_event).first()
-
-#     return render(request, 'member/notification.html', {'notifications': notifications})
-# def handle_event_request(request, event_request_id):
-#     try:
-#         if request.method == 'POST':
-#             action = request.POST.get('action')  
-#             event_request_instance = get_object_or_404(Event_Request, id=event_request_id)
-
-#             if action == 'accept':
-#                 event_request_instance.response_status = 'accepted'
-#                 event_request_instance.save()
-
-#                 # ดึงห้องแชทตาม Event
-#                 chat_room = ChatRoom.objects.get(event=event_request_instance.event)
-                
-#                 # เพิ่มผู้ส่ง (sender) เข้าร่วมห้องแชท
-#                 chat_room.members.add(event_request_instance.sender)
-
-#                 # สร้างลิงก์ห้องแชทโดยใช้ ChatRoom.id
-#                 chat_room_url = f"/chatroom/{chat_room.id}/"
-
-#                 # สร้างการแจ้งเตือน
-#                 message = f"กิจกรรม '{event_request_instance.event.event_name}' ของคุณได้รับการอนุมัติ!"
-#                 Notification.objects.create(
-#                     user=event_request_instance.sender,  # แจ้งเตือนไปยัง sender
-#                     message=message,
-#                     related_event=event_request_instance.event,
-#                     notification_type='response',
-#                 )
-#                 return JsonResponse({'message': 'คำขอได้รับการอนุมัติแล้ว!'})
-
-#             elif action == 'reject':
-#                 event_request_instance.response_status = 'rejected'
-#                 event_request_instance.save()
-
-#                 # สร้างการแจ้งเตือน
-#                 message = f"คำขอเข้าร่วมกิจกรรม '{event_request_instance.event.event_name}' ของคุณถูกปฏิเสธ"
-#                 Notification.objects.create(
-#                     user=event_request_instance.sender,  # แจ้งเตือนไปยัง sender
-#                     message=message,
-#                     related_event=event_request_instance.event,
-#                     notification_type='response',
-#                 )
-#                 return JsonResponse({'message': 'คำขอถูกปฏิเสธแล้ว!'})
-
-#             else:
-#                 return JsonResponse({'message': 'Invalid action'}, status=400)
-#         else:
-#             return JsonResponse({'message': 'Method not allowed'}, status=405)
-#     except Exception as e:
-#         return JsonResponse({'message': f'Error: {str(e)}'}, status=500)
-
-# เข้าร่วมแชท
-# def approve_join_request(request, event_id, member_id):
-#     event = get_object_or_404(Event, id=event_id)
-#     member = get_object_or_404(Member, id=member_id)
-
-#     if event.created_by == request.user:  # ตรวจสอบว่าเป็นเจ้าของกิจกรรม
-#         chat_room = ChatRoom.objects.get(event=event)
-#         chat_room.members.add(member)  # เพิ่มสมาชิกเข้าห้องแชท
-
-#         # ส่งลิงก์แจ้งเตือน
-#         chat_room_url = f"/chat/{chat_room.id}/"
-#         # คุณสามารถใช้ระบบแจ้งเตือนของคุณที่นี่
-
-#         return JsonResponse({'success': True, 'message': 'User approved and added to chat room.'})
-
-#     return JsonResponse({'success': False, 'message': 'Permission denied.'})
-
-# def check_participant_status(request, event_id):
-#     try:
-#         # ค้นหาผู้เข้าร่วมกิจกรรมตาม event_id และผู้ใช้ปัจจุบัน
-#         participant = Participant.objects.get(event_id=event_id, user=request.user)
-#         return JsonResponse({'is_approved': participant.is_approved})
-#     except Participant.DoesNotExist:
-#         return JsonResponse({'is_approved': False}) 
-    
-
-
-# @login_required
-# def chatroom_view(request, event_id):
-#     chatroom = get_object_or_404(ChatRoom, event__id=event_id)
-
-#     if request.method == "POST":
-#         content = request.POST.get("content")
-#         Message.objects.create(chatroom=chatroom, sender=request.user, content=content)
-
-#     messages = chatroom.messages.all()
-#     return render(request, "chatroom.html", {"chatroom": chatroom, "messages": messages})
-
-
-# class ResetPasswordview(SuccessMessageMixin,PasswordResetView):
-#     template_name = r'Authen/password_reset.html'
-#     email_template_name = r'Authen/password_reset.html'
-#     subject_template_name = r'Authen/password_reset_subject.txt'
-#     success_message = 'เราได้ส่งลิงค์ในการ reset รหัสผ่านไปทางอีเมลที่คุณแจ้งแล้ว โปรดตรวจสอบที่emailของคุณ'
-#     success_url = reverse_lazy('myapp:Login')
-#     def form_valid(self, form):
-#         messages.success(self.request, self.success_message)
-#         return self.render_to_response(self.get_context_data(form=form))
 
 
 def logout_view(request):

@@ -679,26 +679,26 @@ margin-left: 10px;
 }
 
 .join-btn {
-    /* display: flex; */
-    /* flex-direction: column; */
-    /* align-items: center; */
-    /* justify-content: center; */
-    background-color: #4CAF50;
-    color: white;
-    /* padding: 10px; */
-    border: 1px solid #adadad;
+    font-family:"Anuphan", sans-serif;
+
+    background-image: url('/static/pic/btn2.jpg'); 
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat; 
+    height: 100vh; 
+
+    color: rgb(26, 26, 26);
+    border: 1px solid #d4aaaa;
     border-radius: 50%;
     width: 140px;
     height: 140px;
     cursor: pointer;
-    /* text-align: center; */
-    /* line-height: 5px; */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    /* font-size: 12px; */
+    padding: 20px;
 }
 
 .join-btn:hover {
-    background-color: #1d8522;
+    background-color: #202020;
 }
 
 .join-btn p{

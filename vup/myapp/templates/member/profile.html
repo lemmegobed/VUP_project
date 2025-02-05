@@ -43,7 +43,7 @@
 
 
         <a href="{% url 'logout' %}" class="logout">
-            Logout
+            ออกจากระบบ
         </a>
     </div>
 
@@ -124,8 +124,10 @@
                 </div>
             </div>
 
-            <h2 class="text-2xl font-semibold text-gray-700 mt-6">กิจกรรมของฉัน ({{ total_events }})</h2>
-        
+            <!-- <h2 class="text-xl font-semibold text-gray-700 mt-6">กิจกรรมทั้งหมด ({{ total_events }})</h2> -->
+            <div>
+                <p>กิจกรรมทั้งหมด : </p>
+            </div>
 
                 <div class="event-container">
                     {% for event in events %}
@@ -208,55 +210,70 @@
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal('profileModal')">&times;</span>
             <h2 class="modal-header">แก้ไขโปรไฟล์</h2>
-            
+
             <form method="post" enctype="multipart/form-data" class="profile-form">
                 {% csrf_token %}
                 <div class="profile-group">
-                    <label class="profile-label">รูปโปรไฟล์</label>{{ form.profile }}
+                    <label class="profile-label">รูปโปรไฟล์</label>{{ form.profile }}</label>
+                    <input type="file" name="profile" class="form-control" accept="image/*">
                 </div>
-
+            
+            <!-- <form method="post" enctype="multipart/form-data" class="profile-form">
+                {% csrf_token %}
+                <div class="profile-group">
+                    <label class="profile-label">รูปโปรไฟล์</label>
+                    <input type="file" name="profile" class="form-control" accept="image/*">
+                </div> -->
+    
+                <!-- ชื่อผู้ใช้ -->
                 <div class="profile-group">
                     <label class="profile-label">ชื่อผู้ใช้</label>
                     <div class="username-check">
-                        {{ form.username }}
+                        <input type="text" name="username" class="form-control" value="{{ form.username.value }}" required>
                         <i id="usernameStatusIcon" class="fa-solid fa-circle-check username-default"></i>
                     </div>
-                    
                 </div>
-                <p id="usernameErrorMessage" class="error-message"></p> 
-
-                
-
+                <p id="usernameErrorMessage" class="error-message"></p>
+    
+                <!-- อีเมล -->
                 <div class="profile-group">
                     <label class="profile-label">อีเมล</label>
-                    {{ form.email }}
+                    <input type="email" name="email" class="form-control" value="{{ form.email.value }}" required>
                 </div>
-
+    
+                <!-- ชื่อ -->
                 <div class="profile-group">
                     <label class="profile-label">ชื่อ</label>
-                    {{ form.first_name }}
+                    <input type="text" name="first_name" class="form-control" value="{{ form.first_name.value }}" required>
                 </div>
-
+    
+                <!-- นามสกุล -->
                 <div class="profile-group">
                     <label class="profile-label">นามสกุล</label>
-                    {{ form.last_name }}
+                    <input type="text" name="last_name" class="form-control" value="{{ form.last_name.value }}" required>
                 </div>
-
+    
+                <!-- เพศ -->
                 <div class="profile-group">
                     <label class="profile-label">เพศ</label>
-                    {{ form.sex }}
+                    <select name="sex" class="form-control">
+                        <option value="ชาย" {% if form.sex.value == 'ชาย' %}selected{% endif %}>ชาย</option>
+                        <option value="หญิง" {% if form.sex.value == 'หญิง' %}selected{% endif %}>หญิง</option>
+                    </select>
                 </div>
-
+    
+                <!-- วันเกิด -->
                 <div class="profile-group">
                     <label class="profile-label">วันเกิด</label>
-                    {{ form.birthdate }}
+                    <input class="form-control" type="date" name="birthdate" value="{{ user.birthdate|date:'Y-m-d' }}" required>
                 </div>
-
+    
+                <!-- คำอธิบาย -->
                 <div class="profile-group">
                     <label class="profile-label">คำอธิบาย</label>
-                    {{ form.description }}
+                    <textarea name="description" class="form-control" rows="3" required>{{ form.description.value }}</textarea>
                 </div>
-
+    
                 <input type="hidden" name="update_profile" value="true">
                 <div class="profile-footer">
                     <!-- <button type="button" onclick="closeModal('profileModal')" class="profile-btn profile-btn-secondary">ยกเลิก</button> -->
@@ -274,35 +291,35 @@
     <div id="eventModal-{{ event.id }}" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal('eventModal-{{ event.id }}')">&times;</span>
-            <h2 class="modal-header">แก้ไขกิจกรรม</h2>
+            <h2 class="modal-header"><i class="fa-regular fa-pen-to-square"></i> แก้ไขกิจกรรม</h2>
             <form method="POST" class="edit-event-form">
                 {% csrf_token %}
                 <input type="hidden" name="event_id" value="{{ event.id }}">
     
                 <div class="form-group">
-                    <label class="edit-event-label">Event Name</label>
+                    <label class="edit-event-label">ชื่อกิจกรรม :</label>
                     <input class="edit-event-input" type="text" name="event_name" value="{{ event.event_name }}" required>
                 </div>
     
                 <div class="form-group">
-                    <label class="edit-event-label">Event Title</label>
+                    <label class="edit-event-label">รายละเอียด :</label>
                     <input class="edit-event-input" type="text" name="event_title" value="{{ event.event_title }}" required>
                 </div>
     
                 <div class="form-group">
-                    <label class="edit-event-label">Event Datetime</label>
+                    <label class="edit-event-label">วันที่ทำกิจกรรม :</label>
                     <input class="edit-event-input" type="datetime-local" name="event_datetime" value="{{ event.event_datetime|date:'Y-m-d\TH:i' }}" required>
                 </div>
     
                 <div class="form-group">
-                    <label class="edit-event-label">Location</label>
+                    <label class="edit-event-label">สถานที่ :</label>
                     <input class="edit-event-input" type="text" name="location" value="{{ event.location }}" required>
                 </div>
     
                 <div class="form-group">
-                    <label class="edit-event-label">Category</label>
+                    <label class="edit-event-label">หมวดหมู่ :</label>
                     <select class="edit-event-select" name="category" required>
-                        <option value="" disabled selected>เลือกจังหวัด</option>
+                        <option value="" disabled selected>เลือกหมวดหมู่</option>
                         <option value="การศึกษา" {% if event.category == "การศึกษา" %}selected{% endif %}>การศึกษา</option>
                         <option value="กีฬา" {% if event.category == "กีฬา" %}selected{% endif %}>กีฬา</option>
                         <option value="ท่องเที่ยว" {% if event.category == "ท่องเที่ยว" %}selected{% endif %}>ท่องเที่ยว</option>
@@ -314,12 +331,12 @@
                 </div>
     
                 <div class="form-group">
-                    <label class="edit-event-label">Max Participants</label>
+                    <label class="edit-event-label">จำนวนการเข้าร่วมสูงสุด :</label>
                     <input class="edit-event-input" type="number" name="max_participants" value="{{ event.max_participants }}" required>
                 </div>
     
                 <div class="form-group">
-                    <label class="edit-event-label">Province</label>
+                    <label class="edit-event-label">จังหวัด :</label>
                     <select class="edit-event-select" name="province" required>
                         <option value="" disabled selected>เลือกจังหวัด</option>
                         {% for province in provinces %}
