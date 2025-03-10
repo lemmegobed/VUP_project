@@ -9,7 +9,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
 
 
-    <link href="{% static 'css/css_admin/report_event_detail.css' %}" rel="stylesheet">
+    <!-- <link href="{% static 'css/css_admin/report_event_detail.css' %}" rel="stylesheet"> -->
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
@@ -19,91 +19,587 @@
     <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@100..700&display=swap" rel="stylesheet">
    
 </head>
-<body>
-    <div class="detail-post-report">
-        <h1>Report</h1>    
-    </div>
 
-    <div class="event-container">
-        <!-- รายการโพสต์อีเวนต์ -->
-        <div class="event-post">
-            <!-- ข้อมูลผู้โพสต์ -->
-            <div class="post-left">
-                <div class="post_member">
-                    <img src="{{ event.created_by.profile.url }}" alt="Profile Image" class="profile-image-post">
-                    <div class="member-info">
-                        <p class="username-post">{{ event.created_by.username }}</p>
-                        <p class="location">
-                            <strong>กำลังจะไปที่...</strong>
-                            <i class="fa-solid fa-location-dot location-icon"></i>
-                            <a href="https://www.google.com/maps/search/?api=1&query={{ event.location }}" target="_blank">{{ event.location }}</a>
-                        </p>
+<style>
+    body {
+        font-family:"Anuphan", sans-serif;
+        background-color: #f4f4f4;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        /* height: 100vh; */
+        /* margin: 0; */
+        animation: fadeIn 0.8s ease-in-out;
+        
+    }
+
+    .outer-box {
+        margin-top: 30px;
+        background: white;
+        border: 1px solid #cccccc;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        width: 800px;
+        /* transform: translateY(-20px); */
+        animation: slideDown 0.8s ease-in-out forwards; 
+        margin-bottom: 30px;
+    }
+
+    .icon-circle {
+        width: 60px;
+        height: 60px;
+        background: #ff4d4d;
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 30px;
+        margin: 0 auto 10px;
+    }
+
+    .report-list {
+        /* margin-top: 10px; */
+        width: 80%; /* ลดความกว้างลง */
+        max-width: 800px; /* จำกัดความกว้างสูงสุด */
+        margin-left: auto;
+        margin-right: auto; /* ทำให้กึ่งกลาง */
+        font-size: 15px;
+    }
+
+    .report-item {
+        background-color: #e5e6e7;
+        padding: 15px;
+        border-radius: 6px;
+        /* margin-bottom: 5px; */
+        border-left: 5px solid red;
+        text-align: left; /* จัดข้อความชิดซ้าย */
+    }
+
+    .head-report{
+        margin: 10px 0;
+        font-size: 16px;
+        color: #333;
+        text-align: center;
+    }
+    .event-container {
+        margin-top: 20px;
+    }
+
+    .post-box{
+        display: flex;
+    }
+    .event-post {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        /* padding: 10px; */
+        /* border: 1px solid #ccc; */
+        border-radius: 15px;
+        margin-bottom: 20px;
+        background-color: #fff;
+        border: 1px solid #cccccc;
+        width: 100%;
+        max-width: 650px;   
+        min-width: 650px;   
+        min-height: 200px;
+        overflow: hidden;   
+        margin: auto;
+        margin-top: 20px;
+    }
+
+    .post-left {
+        display: flex;
+        flex-direction: column;
+        gap: 0px;
+        flex-grow: 1;
+        /* border: 1px solid #ad2e2e; */
+        width: 100%;
+        max-width: 400px;
+        margin-left: 30px;
+        overflow: hidden;  
+    }
+
+
+    .post_member {
+        display: flex;
+        gap: 10px; 
+        margin: 10px;
+        padding: 20px 0;
+        /* line-height: 15px;  */
+    }
+
+    .member-info {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .username-container {
+        display: flex;
+        align-items: center; 
+        gap: 5px; 
+    }
+
+    .username-post {
+        font-weight: bold;
+        font-size: 16px;
+        margin: 0;
+    }
+
+    .userid-post {
+        font-size: 14px;
+        color: #797979;
+        margin: 0;
+    }
+
+    .location-icon {
+        color:  #ec2727;
+        font-size: 14px; 
+        margin-right: 5px; 
+        margin-left: 5px;
+    }
+
+    .location {
+        font-size: 13px;
+        margin: 0;
+        color:  #888;
+        margin-top: 5px; 
+        font-weight: normal;
+    }
+
+    .location a {
+        color: red;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .location a:hover {
+        text-decoration: underline;
+    }
+
+    .detail-post {
+        /* border: 1px solid #ca1b96; */
+        line-height: 10px;
+        color: #000;
+        margin-left: 14px;
+    }
+
+    .detail-post h2 {
+        font-size: 18px;
+        font-weight: bolder;
+        line-height: 5px;
+        margin-top: 10px;
+    }
+
+    .detail-post p {
+        font-size: 13px;
+        font-weight: normal;
+        line-height: 15px;
+        margin-top: 10px;
+    }
+
+    .filter-box-post {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        /* margin-top: 10px; */
+        /* border: 1px solid #22abd4; */
+        margin-left: 15px;
+        margin-bottom: 30px;
+        
+    }
+
+    .filter-box-post > div {
+        display: flex;
+        align-items: center;
+        padding: 0px 0px; 
+        background-color: #ffffff;
+        /* border: 1px solid #646464; */
+        border-radius: 40px;
+        font-weight: bold;
+        font-size: 12px;
+    }
+
+    /* ไอคอนสำหรับแต่ละ dropdown */
+    .filter-item i {
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #000;
+        font-size: 18px;
+    }
+
+
+    /* Arrow icon for dropdown */
+    .filter-dropdown::after {
+        content: '\25BC';
+        font-size: 12px;
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        pointer-events: none;
+    }
+    .post-right {
+        display: flex;
+        flex-direction: column;  
+        justify-content: flex-start;  
+        height: 30vh;  
+        width: 40%;
+        /* border: 1px solid #d33636; */
+        padding: 0px  0px  30px 0px; 
+    } 
+    .dropdown {
+        position: relative; 
+        display: flex; 
+        justify-content: flex-end;
+        align-items: center; 
+        margin-right: 30px;
+    }
+
+    .dropdown-menu {
+        display: none; 
+        position: absolute; 
+        background-color: white; 
+        /* z-index: 1000;  */
+        min-width: 50px; 
+        right: 0; 
+        top: 100%; 
+    }
+
+
+
+
+
+    .time-since-created {
+        display: flex;
+        align-items: center;
+        width: 100%; 
+        margin-left: 130px;
+        padding-bottom: 10px;
+        margin-top: -5px;
+    }
+
+    .time-since-created .time-text {
+        font-size: 12px; 
+        color: #575757; 
+        opacity: 0.8;
+    }
+
+
+    .date, .time, .category, .participants ,.province {
+        background-color: #ffffff;
+        color: rgb(0, 0, 0);
+        /* padding: 0px;  */
+        border: 1px solid #646464;
+        border-radius: 20px;
+        text-align: center;
+        display: flex; 
+        align-items: center;
+        justify-content: center; 
+        font-weight: bold;
+        font-size: 13px;
+    }
+
+    .date {
+        width: 45%; 
+        font-weight: bold;
+    }
+
+    .time {
+        width: 15%; 
+        font-weight: bold;
+    }
+
+    .category {
+        width: 25%; 
+        font-weight: bold;
+    }
+
+    .participants {
+        width: 15%; 
+        font-weight: bold;
+    }
+
+
+    .province {
+        background-color: #ffffff;
+        color: rgb(0, 0, 0);
+        border: 1px solid #646464;
+        border-radius: 20px;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 13px;
+        padding: 10px 10px;
+        /* gap: 8px;  */
+    }
+
+    .province i {
+        margin-left: 10px; 
+    }
+
+    .province p {
+        margin-right: 10px; 
+    }
+
+    .profile-image-post {
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        border: 1px solid #000000;
+    }
+
+
+
+    /* .button-report{
+        background-color: #1d8522;
+        color: #000;
+    } */
+
+    .modal {
+        display: none; 
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.4); 
+    }
+
+    .modal-content {
+        background-color: white;
+        padding: 20px;
+        max-width: 600px;
+        width: 100%;
+        margin: 15% auto;
+
+        /* background-color: #fff;
+        margin: 15% auto;
+        padding: 20px; */
+        border-radius: 10px;
+    /*  
+        width: 50%; */
+        text-align: center;
+    }
+
+    /* .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+    } */
+
+    /* .modal-content {
+        margin: 15% auto;
+        background-color: white;
+        padding: 20px;
+        max-width: 500px;
+        width: 100%;
+    } */
+
+    .modal button {
+        font-weight: bold;
+        padding: 10px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .btn-confirm {
+        border: none;
+        background-color: #4CAF50;
+        color: white;
+    }
+
+    .btn-confirm:hover {
+        background-color: #45a049;
+    }
+
+    .btn-cancel {
+        border: none;
+        background-color: #f44336;
+        color: white;
+    }
+
+    .btn-cancel:hover {
+        background-color: #d32f2f;
+    }
+
+    .btn-actions {
+        display: flex;
+        justify-content: center; 
+        align-items: center;
+        gap: 10px;
+    }
+
+    .button-report button,
+    .button-reject button {
+        font-family: "Anuphan", sans-serif;
+        font-weight: normal;
+        padding: 10px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        color: #000;
+        /* border: 1px solid #fafafa; */
+        margin-top: 20px; 
+        border: none;
+        font-size: 16px;
+    }
+
+    /* Report button styling */
+    .btn-warn {
+        background-color: #f1c40f;
+    }
+
+    .btn-warn:hover {
+        background-color: #e68900;
+    }
+
+    /* Reject button styling */
+    .btn-reject {
+        background-color: #bbbbbb;
+    }
+
+    .btn-reject:hover {
+        background-color: #999999;
+    }
+
+    /* Styling for the back button */
+    .btn-back {
+        display: inline-block;
+        font-family: "Anuphan", sans-serif;
+        color: rgb(94, 93, 93);
+        cursor: pointer;
+        text-decoration: none;
+        text-align: center;
+        margin-top: 20px; 
+    }
+
+
+    .btn-back:hover {
+        color: #474747;
+    }
+
+
+
+</style>
+
+<body>
+
+    <div class="outer-box">
+
+        <a href="{% url 'report_admin' %}" class="btn-back"><i class="fa-solid fa-angle-left"></i> ย้อนกลับ</a>
+        <div class="head-report">
+            <div class="icon-circle">
+                <i class="fa-solid fa-circle-exclamation"></i>
+            </div>
+            <h1>รายงานปัญหา</h1> 
+            {% for report in reports %}
+            <p><strong>วันที่รายงาน :</strong> {{ report.created_at|date:"d M Y, H:i" }}</p>
+            {% endfor %}           
+        </div>
+
+        <div class="report-list">
+            {% for report in reports %}
+                <div class="report-item">
+                    <p><strong>ผู้รายงาน :</strong> {{ report.reporter.username }}</p>
+                    <p><strong>รายละเอียดปัญหา :</strong> {{ report.description }}</p>  
+                    <p><strong>ประเภทปัญหา :</strong> {{ report.get_report_type_display }}</p>
+                </div>
+            {% endfor %}
+        </div>
+
+
+        <div class="report-content">
+            <div class="event-container">
+                <!-- รายการโพสต์อีเวนต์ -->
+                <div class="event-post">
+                    <!-- ข้อมูลผู้โพสต์ -->
+                    <div class="post-left">
+                        <div class="post_member">
+                            <img src="{{ event.created_by.profile.url }}" alt="Profile Image" class="profile-image-post">
+                            <div class="member-info">
+                                <p class="username-post">{{ event.created_by.username }}</p>
+                                <p class="location">
+                                    <strong>กำลังจะไปที่...</strong>
+                                    <i class="fa-solid fa-location-dot location-icon"></i>
+                                    <a href="https://www.google.com/maps/search/?api=1&query={{ event.location }}" target="_blank">{{ event.location }}</a>
+                                </p>
+                            </div>
+                        </div>
+                        <!-- รายละเอียดอีเวนต์ -->
+                        <div class="detail-post">
+                            <h2 class="event-name">{{ event.event_name }}</h2>
+                            <p class="event-title">{{ event.event_title }}</p>
+                        </div>
+                        <!-- รายละเอียดเพิ่มเติม -->
+                        <div class="filter-box-post">
+                            <div class="date"><i class="fa-solid fa-calendar-days"></i><p>: {{ event.event_datetime }}</p></div>
+                            <div class="participants"><i class="fa-solid fa-user"></i><p>: {{ event.max_participants }}</p></div>
+                            <div class="category"><i class="fa-solid fa-shapes"></i><p>: {{ event.category }}</p></div>
+                            <div class="province"><i class="fa-solid fa-location-dot"></i><p>: {{ event.province }}</p></div>
+                        </div>
+                    </div>
+            
+                    <div class="post-right">
+                        <div class="time-since-created">
+                            <span class="time-text">{{ event.time_since }}</span>
+                        </div>
+                    </div>
+
+                </div>
+
+        
+                <div class="btn-actions">
+                    <div class="button-report">
+                        <button onclick="openModal()" class="btn-warn"> <i class="fa-solid fa-triangle-exclamation"></i> รายงานกิจกรรมนี้</button>   
+                    </div>
+        
+                    <div class="button-reject">
+                        <button onclick="openRejectModal()" class="btn-reject">ปฏิเสธการรายงาน</button>
                     </div>
                 </div>
-                <!-- รายละเอียดอีเวนต์ -->
-                <div class="detail-post">
-                    <h2 class="event-name">{{ event.event_name }}</h2>
-                    <p class="event-title">{{ event.event_title }}</p>
-                </div>
-                <!-- รายละเอียดเพิ่มเติม -->
-                <div class="filter-box-post">
-                    <div class="date"><i class="fa-solid fa-calendar-days"></i><p>: {{ event.event_datetime }}</p></div>
-                    <div class="participants"><i class="fa-solid fa-user"></i><p>: {{ event.max_participants }}</p></div>
-                    <div class="category"><i class="fa-solid fa-shapes"></i><p>: {{ event.category }}</p></div>
-                    <div class="province"><i class="fa-solid fa-location-dot"></i><p>: {{ event.province }}</p></div>
-                </div>
-            </div>
-    
-            <!-- ส่วนของปุ่ม Join -->
-            <div class="post-right">
-                <!-- <div class="dropdown">
-                    <a class="btn-report" href="#">
-                        <i class="fa-solid fa-circle-exclamation"></i>
-                    </a>
-                </div> -->
-                <div class="join-btn-container">
-                    <button class="join-btn" onclick="showJoinModal({{ event.id }}, '{{ event.name|escapejs }}')">
-                        <p>I want to</p>
-                        <h1>JOIN</h1>
-                        <p>{{ event.participants }}/{{ event.max_participants }}</p>
-                    </button>
-                </div>
-            </div>
-        </div>
 
-
-
-        <div class="btn-actions">
-            <div class="button-report">
-                <button onclick="openModal()" class="btn-warn">Report</button>   
             </div>
 
-            <div class="button-reject">
-                <button onclick="openRejectModal()" class="btn-reject">ปฏิเสธการรายงาน</button>
-            </div>
-            
 
-
-
-
-            <!-- <form method="POST">
-                {% csrf_token %}
-                <button type="submit" name="action" value="warn" class="btn-warn">รายงานกิจกรรมนี้</button> 
-                <button type="submit" name="action" value="reject" class="btn-reject">ปฏิเสธการรายงาน</button>
-            </form> -->
         
-            <a href="{% url 'report_admin' %}" class="btn-back">ย้อนกลับ</a>
         </div>
 
+    
+            
+        </div>
+        
+
+    </div>
+
+    
 
     <!-- Modal -->
     <div id="confirmModal" class="modal">
         <div class="modal-content">
-            <h3>Are you sure you want to report the event "<strong>{{ event.event_name }}</strong>"?</h3>
+            <h3>คุณต้องการรายงานกิจกรรม "<strong>{{ event.event_name }}</strong>" ใช่หรือไม่ ?</h3>
             <form method="POST">
                 {% csrf_token %}
-                <button type="submit" name="action" value="warn" class="btn-confirm">Yes</button>
-                <button type="button" onclick="closeModal()" class="btn-cancel">No</button>
+                <button type="submit" name="action" value="warn" class="btn-confirm">
+                    <i class="fa-solid fa-check"></i> ใช่
+                </button>
+                <button type="button" onclick="closeModal()" class="btn-cancel">
+                    <i class="fa-solid fa-times"></i> ไม่
+                </button>
             </form>
         </div>
     </div>
@@ -111,11 +607,15 @@
     <!-- Modal ยืนยันการปฏิเสธ -->
 <div id="rejectModal" class="modal">
     <div class="modal-content">
-        <h3>Are you sure you want to reject this report?</h3>
+        <h3>คุณต้องการปฏิเสธการรายงานปัญหากิจกรรมนี้ใช่หรือไม่ ?</h3>
         <form method="POST">
             {% csrf_token %}
-            <button type="submit" name="action" value="reject" class="btn-confirm-reject">Yes, Reject</button>
-            <button type="button" onclick="closeRejectModal()" class="btn-cancel-reject">No, Cancel</button>
+            <button type="submit" name="action" value="reject" class="btn-confirm">
+                <i class="fa-solid fa-check"></i> ใช่
+            </button>
+            <button type="button" onclick="closeRejectModal()" class="btn-cancel">
+                <i class="fa-solid fa-times"></i> ไม่
+            </button>
         </form>
     </div>
 </div>

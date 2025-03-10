@@ -2,10 +2,7 @@ from django import forms
 from .models import *
 from django.contrib.auth.forms import UserCreationForm, PasswordResetForm, SetPasswordForm
 
-class AdvertisementForm(forms.ModelForm):
-    class Meta:
-        model = Advertisement
-        fields = ['image','keyword']
+
 
 class MemberRegistrationForm(UserCreationForm):
 
@@ -37,12 +34,13 @@ class MemberUpdateForm(forms.ModelForm):
         model = Member
         fields = ('profile', 'username', 'email', 'first_name', 'last_name', 'sex', 'birthdate', 'description')
         widgets = {
-            'profile': forms.ClearableFileInput(attrs={'class': 'form-control'}),
-            'username': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Username'}),
-            'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Email'}),
-            'first_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'First Name'}),
-            'last_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Last Name'}),
-            'description': forms.Textarea(attrs={'rows': 3, 'class': 'form-control', 'placeholder': 'Add a description...'}),
+            # 'profile': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+            'profile': forms.ClearableFileInput(attrs={'class': 'form-input', 'clear': False}),
+            'username': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'description': forms.TextInput(attrs={'class': 'form-control'}),
         }
 
     def __init__(self, *args, **kwargs):
@@ -201,8 +199,12 @@ class EventReviewForm(forms.ModelForm):
         model = Event_Review
         fields = ['attendance_status', 'comment']
         widgets = {
-            'attendance_status': forms.Select(attrs={'class': 'form-control'}),
-            'comment': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+            'attendance_status': forms.RadioSelect(attrs={'class': 'form-control'}),  # ใช้ Radio Select สำหรับสถานะ
+            'comment': forms.Textarea(attrs={
+                'class': 'form-control',
+                'rows': 3,  
+                'placeholder': 'กรอกความคิดเห็นของคุณที่นี่'  
+            }),
         }
 
 class ReportForm(forms.ModelForm):

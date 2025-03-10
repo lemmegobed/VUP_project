@@ -21,8 +21,8 @@
 
     <div class="menu-container">
         <div class="profile-section">
-            <img src="{{ member_data.profile.url }}" alt="Profile Image" class="profile-image">
-            <p class="username">{{ member_data.username }}</p>
+            <img src="{% static 'pic/profile.jpg' %}" alt="Profile Image" class="profile-image">
+            <p class="username">Admin</p>
         </div>
 
         <div class="menu-items">
@@ -39,7 +39,7 @@
 
 
         <a href="{% url 'logout' %}" class="logout">
-            Logout
+            ออกจากระบบ
         </a>
     </div>
 
@@ -62,7 +62,7 @@
                 <h1> {{ total_reports }}</h1>
                 <p>รายงานปัญหาทั้งหมด</p>
 
-                <div class="report-types">
+                <!-- <div class="report-types">
                     <p>
                         <i class="fa-solid fa-screwdriver-wrench"></i> ความผิดพลาดของระบบ : {{ system_issues }}
                     </p>
@@ -72,24 +72,24 @@
                     <p>
                         <i class="fa-solid fa-ellipsis-vertical"></i> อื่นๆ : {{ other_issues }}
                     </p>
-                </div>
+                </div> -->
                 
             </div>
 
-            <div class="total-members">
+            <!-- <div class="total-members">
                 <div class="icon-total-member">
                     <i class="fa-solid fa-circle-exclamation"></i>
-                </div>
+                </div> -->
                 <!-- <h1> {{ total_reports }}</h1>
                 <p>Total Reports</p> -->
 
-                <div class="report-types">
+                <!-- <div class="report-types">
                     <p><i class="fa-solid fa-clock"></i> รอดำเนินการ: {{ total_waiting }}</p>
                     <p><i class="fa-solid fa-check"></i> แจ้งเตือนแล้ว: {{ total_warned }}</p>
                     <p><i class="fa-solid fa-times"></i> ปฏิเสธแล้ว: {{ total_rejected }}</p>
-                </div>
+                </div> -->
                 
-            </div>
+            <!-- </div> -->
 
             <div class="total-members">
                 <div class="icon-total-member">

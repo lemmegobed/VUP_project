@@ -152,7 +152,7 @@ body,html{
   }
 
   .calendar-box-detail {
-    background: #ffe6f1; 
+    background: #d1deeb; 
     display: inline-block;
     border: 1px solid #b9b8b8;
     padding: 0px 10px;
@@ -228,14 +228,14 @@ body,html{
   
   /* กำหนดสไตล์ของปุ่มเปลี่ยนมุมมอง */
   .fc-button {
-    background: #777a7e !important;
+    background: #4894a7 !important;
     color: #fff !important;
     border-radius: 5px !important;
     padding: 5px 5px !important;
   }
   
   .fc-button:hover {
-    background: #0056b3 !important;
+    background: #274d75 !important;
   }
   
   /* ปรับขนาดตัวอักษรของวันที่ */
@@ -304,7 +304,7 @@ body,html{
 
 
 .notification-content ul li.unread {
-    /* background: #c4c3c3; */
+    background: #ffffff;
     border: 1px solid #aaa9a9;
     /* font-weight: bold; */
     padding: 5px;
@@ -417,7 +417,7 @@ body,html{
     padding: 5px 5px;
     text-align: center;
     width: 60px;
-    background-color: #da5fa2; /* สีพื้นหลัง */
+    background-color: #4894a7; /* สีพื้นหลัง */
     color: white; /* สีตัวอักษร */
     text-decoration: none; /* เอาเส้นใต้ของลิงก์ออก */
     border-radius: 5px; /* มุมโค้งมน */
@@ -428,7 +428,7 @@ body,html{
 }
 
 .btn-join-chat:hover {
-    background-color: #b12d64; 
+    background-color: #1a567e; 
 }
 a {
     text-decoration: none; 

@@ -6,19 +6,19 @@ from django.utils import timezone
 from django.utils.timezone import now
 
 
-class Advertisement(models.Model):
-    image = models.ImageField(upload_to='ads/')
-    keyword = models.CharField(max_length=255)
+# class Advertisement(models.Model):
+#     image = models.ImageField(upload_to='ads/')
+#     keyword = models.CharField(max_length=255)
 
-    def __str__(self):
-        return f"Ad: {self.keyword}"
+#     def __str__(self):
+#         return f"Ad: {self.keyword}"
 
 class Member(AbstractUser):
     is_banned = models.BooleanField(default=False)
     profile = models.ImageField(upload_to='profiles/', blank=True, null=True, default='profiles/default_profile_image.png')
     sex = models.CharField(max_length=10)
     birthdate = models.DateField(blank=True, null=True) 
-    description = models.CharField(max_length=30, blank=True, null=True,default='เพิ่มคำอธิบายของคุณ')
+    description = models.CharField(max_length=50, blank=True, null=True,default='เพิ่มคำอธิบายของคุณ')
     
     @property
     def age(self):
@@ -37,31 +37,14 @@ class Member(AbstractUser):
     def __str__(self):
         return self.username
 
-class User(models.Model):
-    member = models.ForeignKey(
-        settings.AUTH_USER_MODEL, 
-        on_delete=models.SET_NULL,  # เมื่อ Member ถูกลบ, เก็บค่าเป็น NULL
-        null=True,
-        blank=True
-    )
-
-    # คัดลอกข้อมูลจาก Member
-    username = models.CharField(max_length=150)
-    profile = models.ImageField(upload_to='profiles/', blank=True, null=True, default='profiles/default_profile_image.png')
-    sex = models.CharField(max_length=10, blank=True, null=True)
-    birthdate = models.DateField(blank=True, null=True)
-    description = models.CharField(max_length=30, blank=True, null=True, default='เพิ่มคำอธิบายของคุณ')
-
-    def __str__(self):
-        return self.username
 
 class Event(models.Model):
-    event_name = models.CharField(max_length=100)
+    event_name = models.CharField(max_length=50)
     event_title = models.CharField(max_length=100)
     event_datetime = models.DateTimeField()
-    location = models.CharField(max_length=100)
-    category = models.CharField(max_length=50)
-    province = models.CharField(max_length=100,)
+    location = models.CharField(max_length=50)
+    category = models.CharField(max_length=15)
+    province = models.CharField(max_length=20,)
     created_at = models.DateTimeField(default=timezone.now) 
     created_by = models.ForeignKey(Member, on_delete=models.CASCADE, related_name="events")
     max_participants = models.PositiveIntegerField(default=0)
@@ -103,7 +86,7 @@ class Event_Request(models.Model):
     sender = models.ForeignKey(Member, on_delete=models.CASCADE, related_name="sent_requests")  
     receiver = models.ForeignKey(Member, on_delete=models.CASCADE, related_name="received_requests")  
     request_time = models.DateTimeField(auto_now_add=True) 
-    response_status = models.CharField(max_length=10,choices=STATUS_CHOICES,default='pending',)
+    response_status = models.CharField(max_length=12,choices=STATUS_CHOICES,default='pending',)
 
     class Meta:
         indexes = [models.Index(fields=['event', 'receiver', 'response_status']),]
@@ -124,20 +107,13 @@ class Event_Review(models.Model):
         choices=[('มาตามนัด', 'มาตามนัด'), ('ผิดนัด', 'ผิดนัด')],
         default='มาตามนัด'
     )
-    comment = models.TextField(blank=True, null=True)
+    comment = models.CharField(max_length=100,)
     reviewed_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"Review for {self.participant.username} on {self.event.event_name}"
 
 
-# class Participant(models.Model):
-#     event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='participants')
-#     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='participations')
-#     is_approved = models.BooleanField(default=False)  # บันทึกสถานะการอนุมัติ
-
-#     def __str__(self):
-#         return f"{self.user.username} - {self.event.event_name}"
 
 class Notification(models.Model):
     NOTIFICATION_TYPES = [
@@ -152,7 +128,7 @@ class Notification(models.Model):
     notification_type = models.CharField(max_length=20, choices=NOTIFICATION_TYPES, default='other')  # ประเภทของการแจ้งเตือน
     is_read = models.BooleanField(default=False)  
     is_scheduled = models.BooleanField(default=False)  
-    scheduled_time = models.DateTimeField(null=True, blank=True)  
+    # scheduled_time = models.DateTimeField(null=True, blank=True)  
     created_at = models.DateTimeField(auto_now_add=True)  
     related_request = models.ForeignKey(
         'Event_Request',  
@@ -161,12 +137,12 @@ class Notification(models.Model):
         blank=True
     )
 
-    def schedule_notification(self):
-        """ ตั้งค่าให้แจ้งเตือนถูกส่งหลังจากกิจกรรมจบ """
-        if self.related_event and self.related_event.event_datetime:
-            self.scheduled_time = self.related_event.event_datetime + timezone.timedelta(hours=1)  # แจ้งเตือน 1 ชม. หลังจบ
-            self.is_scheduled = True
-            self.save()
+    # def schedule_notification(self):
+    #     """ ตั้งค่าให้แจ้งเตือนถูกส่งหลังจากกิจกรรมจบ """
+    #     if self.related_event and self.related_event.event_datetime:
+    #         self.scheduled_time = self.related_event.event_datetime + timezone.timedelta(hours=1)  # แจ้งเตือน 1 ชม. หลังจบ
+    #         self.is_scheduled = True
+    #         self.save()
             
     def __str__(self):
         return f"การแจ้งเตือนสำหรับ {self.user.username} - {self.notification_type}"
@@ -175,10 +151,10 @@ class Notification(models.Model):
     class Meta:
         ordering = ['-created_at']
 
-    def mark_as_read(self):
-        """เปลี่ยนสถานะการแจ้งเตือนเป็นอ่านแล้ว"""
-        self.is_read = True
-        self.save()
+    # def mark_as_read(self):
+    #     """เปลี่ยนสถานะการแจ้งเตือนเป็นอ่านแล้ว"""
+    #     self.is_read = True
+    #     self.save()
 
     @property
     def is_event_active(self):
@@ -232,7 +208,7 @@ class ChatRoom(models.Model):
 class Chat_Message(models.Model):
     chatroom = models.ForeignKey(ChatRoom, on_delete=models.CASCADE, related_name="messages")
     sender = models.ForeignKey(Member, on_delete=models.CASCADE, null=True, blank=True)
-    message = models.CharField(max_length=200)
+    message = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
     is_system_message = models.BooleanField(default=False)
 

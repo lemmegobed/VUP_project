@@ -1,7 +1,210 @@
-<h2>แก้ไขข้อมูลสมาชิก: {{ member.username }}</h2>
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">บันทึก</button>
-</form>
-<a href="{% url 'userdata' %}">ย้อนกลับ</a>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Detail</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+
+
+    <!-- <link href="{% static 'css/css_admin/report_event_detail.css' %}" rel="stylesheet"> -->
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@100..700&display=swap" rel="stylesheet">
+   
+</head>
+<style>
+body {
+    font-family:"Anuphan", sans-serif;
+    background-color: #f4f4f4;
+}
+/* Style for the entire form container */
+.profile-form {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Style for the title */
+.form-title {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Style for each form field group */
+.profile-group {
+    margin-bottom: 15px;
+}
+
+/* Style for each label */
+.profile-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    display: block;
+    margin-bottom: 5px;
+}
+
+/* Style for input fields */
+.form-input {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #fff;
+    box-sizing: border-box;
+}
+
+/* Style for select dropdown */
+.form-select {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    box-sizing: border-box;
+}
+
+/* Style for textarea */
+textarea.form-input {
+    resize: vertical;
+}
+
+/* Style for error messages */
+.error-message {
+    font-size: 12px;
+    color: red;
+}
+
+/* Style for the submit button */
+.submit-btn {
+    font-family:"Anuphan", sans-serif;
+    display: block;  /* ทำให้ปุ่มเป็น block element */
+    margin: 0 auto;  /* จัดปุ่มให้อยู่กลาง */
+    width: 30%;  /* กำหนดความกว้างของปุ่ม */
+    padding: 12px;
+    background-color: #0f3268;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+
+.submit-btn:hover {
+    background-color: #0b254d;
+}
+
+/* Style for the back link */
+.back-link {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.back-link a {
+    text-decoration: none;
+    font-size: 14px;
+    color: #414a55;
+}
+
+.back-link a:hover {
+    text-decoration: underline;
+}
+
+.profile-image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #fff;
+    box-sizing: border-box;
+}
+</style>
+<body>
+
+    
+
+    <form method="post" enctype="multipart/form-data" class="profile-form">
+        <h2 class="form-title"><i class="fa-solid fa-user"></i> ข้อมูลผู้ใช้</h2>
+        {% csrf_token %}
+        
+        <div class="profile-group">
+            <label class="profile-label">รูปโปรไฟล์</label>
+            {{ form.profile }}
+        </div>
+        
+    
+        <div class="profile-group">
+            <label class="profile-label">ชื่อผู้ใช้</label>
+            <input type="text" name="username" class="form-input" value="{{ form.username.value }}" required>
+        </div>
+    
+        <p id="usernameErrorMessage" class="error-message"></p>
+    
+        <div class="profile-group">
+            <label class="profile-label">อีเมล</label>
+            <input type="email" name="email" class="form-input" value="{{ form.email.value }}" required>
+        </div>
+    
+        <div class="profile-group">
+            <label class="profile-label">ชื่อ</label>
+            <input type="text" name="first_name" class="form-input" value="{{ form.first_name.value }}" required>
+        </div>
+    
+        <div class="profile-group">
+            <label class="profile-label">นามสกุล</label>
+            <input type="text" name="last_name" class="form-input" value="{{ form.last_name.value }}" required>
+        </div>
+    
+        <div class="profile-group">
+            <label class="profile-label">เพศ</label>
+            <select name="sex" class="form-select">
+                <option value="ชาย" {% if form.sex.value == 'ชาย' %}selected{% endif %}>ชาย</option>
+                <option value="หญิง" {% if form.sex.value == 'หญิง' %}selected{% endif %}>หญิง</option>
+            </select>
+        </div>
+    
+        <div class="profile-group">
+            <label class="profile-label">วันเกิด</label>
+            <input class="form-input" type="date" name="birthdate" value="{{ user.birthdate|date:'Y-m-d' }}" required>
+        </div>
+    
+        <div class="profile-group">
+            <label class="profile-label">คำอธิบาย</label>
+            <textarea name="description" class="form-input" rows="3" required>{{ form.description.value }}</textarea>
+        </div>
+    
+        <input type="hidden" name="update_profile" value="true">
+    
+        <div class="profile-footer">
+            <button type="submit" class="submit-btn">บันทึก</button>
+        </div>
+        <div class="back-link">
+            <a href="{% url 'userdata' %}"><i class="fa-solid fa-angle-left"></i> ย้อนกลับ</a>
+        </div>
+    </form>
+    
+
+    
+</body>
+</html>

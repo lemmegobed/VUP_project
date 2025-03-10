@@ -799,7 +799,7 @@ margin-left: 10px;
     top: 10px; 
     right: 10px; 
     display: flex;
-    gap: 10px; 
+    /* gap: 10px;  */
 }
 
 /* modal.css */
@@ -1083,63 +1083,9 @@ margin-left: 10px;
     color: red;
     font-size: 12px;
 }
-/* 
-#profileModal .profile-select{
-    flex: 1; 
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 16px;
-    background-color: #fff;
-}
 
 
-#profileModal .profile-textarea {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 16px;
-    background-color: #fff;
-}
 
-
-#profileModal .profile-btn {
-    width: 100%;
-    padding: 12px;
-    font-size: 18px;
-    border-radius: 30px;
-    cursor: pointer;
-    border: none;
-}
-
-#profileModal .profile-btn-primary {
-    background-color: #69a2db;
-    color: white;
-}
-
-#profileModal .profile-btn-secondary {
-    background-color: #ccc;
-    color: black;
-}
-
-#profileModal .profile-btn-primary:hover {
-    background-color: #002244;
-}
-
-.profile-group input {
-    width: 100%; 
-    padding-right: 40px; 
-    padding-left: 12px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 16px;
-    background-color: #f0f0f0;
-    height: 40px;
-} */
-
-/* ทำให้ input และไอคอนอยู่ในกรอบเดียวกัน */
 .username-check {
     position: relative;
     display: flex;
@@ -1148,7 +1094,7 @@ margin-left: 10px;
 }
 
 /* ปรับขนาด input ให้ยาวขึ้นและรองรับไอคอน */
-/* .username-check input {
+.username-check input {
     width: 100%; 
     padding-right: 40px; 
     padding-left: 12px;
@@ -1157,7 +1103,7 @@ margin-left: 10px;
     font-size: 16px;
     background-color: #b82f2f;
     height: 40px;
-} */
+}
 
 /* จัดตำแหน่งไอคอนให้อยู่ด้านใน input */
 #usernameStatusIcon {

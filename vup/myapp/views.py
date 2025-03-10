@@ -22,7 +22,8 @@ from django.utils.timezone import now, timedelta
 # from .serializers import ChatMessageSerializer
 # from django.core.management.base import BaseCommand
 from django.urls import reverse
-
+from django.db.models.functions import TruncMonth
+import json
 
 
 def login_view(request):
@@ -35,7 +36,6 @@ def login_view(request):
             
             if user is not None:
                 if user.is_banned:  
-                    # เพิ่มข้อความเพียงครั้งเดียว
                     form.add_error(None, 'บัญชีของคุณถูกระงับ โปรดติดต่อผู้ดูแลระบบ')
                 else:
                     login(request, user)
@@ -58,54 +58,30 @@ def register_view(request):
         form = MemberRegistrationForm()
     return render(request, 'registration/register.html', {'form': form})
 
-@receiver(post_save, sender=Member)
-def create_or_update_user(sender, instance, created, **kwargs):
-    if created:
-        # สร้าง User ใหม่เมื่อ Member ถูกสร้าง
-        User.objects.create(
-            member=instance,
-            username=instance.username,
-            profile=instance.profile,
-            sex=instance.sex,
-            birthdate=instance.birthdate,
-            description=instance.description
-        )
-    else:
-        # อัปเดต User ที่เกี่ยวข้องเมื่อ Member ถูกแก้ไข
-        user = User.objects.filter(member=instance).first()
-        if user:
-            user.username = instance.username
-            user.profile = instance.profile
-            user.sex = instance.sex
-            user.birthdate = instance.birthdate
-            user.description = instance.description
-            user.save()
+# @receiver(post_save, sender=Member)
+# def create_or_update_user(sender, instance, created, **kwargs):
+#     if created:
+#         # สร้าง User ใหม่เมื่อ Member ถูกสร้าง
+#         User.objects.create(
+#             member=instance,
+#             username=instance.username,
+#             profile=instance.profile,
+#             sex=instance.sex,
+#             birthdate=instance.birthdate,
+#             description=instance.description
+#         )
+#     else:
+#         # อัปเดต User ที่เกี่ยวข้องเมื่อ Member ถูกแก้ไข
+#         user = User.objects.filter(member=instance).first()
+#         if user:
+#             user.username = instance.username
+#             user.profile = instance.profile
+#             user.sex = instance.sex
+#             user.birthdate = instance.birthdate
+#             user.description = instance.description
+#             user.save()
 
-
-
-
-def upload_ads(request):
-    if not request.user.is_superuser:  
-        return redirect('feed')
-
-    if request.method == "POST":
-        form = AdvertisementForm(request.POST, request.FILES)
-        if form.is_valid():
-            if Advertisement.objects.count() < 5:  
-                form.save()
-            return redirect('upload_ads')  
-    else:
-        form = AdvertisementForm()
-
-    advertisements = Advertisement.objects.all()
-    return render(request, 'admin/upload_ads.html', {'form': form, 'advertisements': advertisements})
-
-def show_ads(request):
-    advertisements = Advertisement.objects.all()
-    events = Event.objects.all()
-    return render(request, 'member/feed.html', {'advertisements': advertisements, 'events': events})
-
-# @staff_member_required
+@staff_member_required
 def admin_dashboard(request):
 
     members = Member.objects.filter(is_banned=False,is_superuser=False)
@@ -115,17 +91,38 @@ def admin_dashboard(request):
     total_users = users.count()
     total_delete_member = total_users - total_members
 
-    male_members = Member.objects.filter(sex='M').count() 
-    female_members = Member.objects.filter(sex='F').count()  
+    male_members = Member.objects.filter(sex='ชาย').count() 
+    female_members = Member.objects.filter(sex='หญิง').count()  
 
     reports = Report.objects.all()
     total_warned_event = reports.filter(is_warned='เตือน').count()
     report_event_by_category = Report.objects.values('report_type').annotate(report_event_by_category=Count('id')).order_by('report_type')
-    
+
+
     total_events = Event.objects.count()
     events_by_category = Event.objects.values('category').annotate(event_count=Count('id'))
 
-    recent_events = Event.objects.order_by('-event_datetime')[:5]
+    # แปลงเดือนให้อยู่ในรูปแบบภาษาไทย
+    month_labels = {
+        '01': 'ม.ค.', '02': 'ก.พ.', '03': 'มี.ค.', '04': 'เม.ย.', '05': 'พ.ค.', 
+        '06': 'มิ.ย.', '07': 'ก.ค.', '08': 'ส.ค.', '09': 'ก.ย.', '10': 'ต.ค.', 
+        '11': 'พ.ย.', '12': 'ธ.ค.'
+    }
+
+
+    monthly_signups = (
+        Member.objects.filter(is_banned=False, is_superuser=False)
+        .annotate(month=TruncMonth('date_joined'))  # ใช้ date_joined แทน created_at
+        .values('month')
+        .annotate(count=Count('id'))  # นับจำนวนสมาชิกที่สมัคร
+        .order_by('month')
+    )
+
+    # สร้าง list ของข้อมูลเดือนและจำนวนสมาชิกที่สมัคร
+    months = [month_labels[entry['month'].strftime('%m')] for entry in monthly_signups]
+    members_count = [entry['count'] for entry in monthly_signups]
+
+    new_users_today = Member.objects.filter(date_joined__date=timezone.now().date()).count()
 
     context = {
         'total_members': total_members,
@@ -135,15 +132,66 @@ def admin_dashboard(request):
         'female_members': female_members,
         'total_events': total_events,
         'events_by_category': events_by_category,
-        'recent_events': recent_events,
         'users': users,  
         'members': members,  
         'reports': reports,  
         'total_warned_event': total_warned_event,  
         'report_event_by_category':report_event_by_category,
+        'months': json.dumps(months),  # แปลงเป็น JSON เพื่อส่งไป JavaScript
+        'members_count': json.dumps(members_count),
+        "new_users_today": new_users_today,
         }
     return render(request, 'admin/dashboard.html',context)
 
+# def admin_dashboard(request):
+#     # นับจำนวนอีเวนต์ทั้งหมด
+#     total_events = Event.objects.count()
+#     active_events = Event.objects.filter(is_active=True).count()
+#     ended_events = Event.objects.filter(has_ended=True).count()
+
+#     # นับคำขอเข้าร่วมอีเวนต์
+#     total_requests = Event_Request.objects.count()
+#     pending_requests = Event_Request.objects.filter(response_status="pending").count()
+#     accepted_requests = Event_Request.objects.filter(response_status="accepted").count()
+#     rejected_requests = Event_Request.objects.filter(response_status="rejected").count()
+
+#     # นับรีวิวที่มีการให้คะแนน
+#     total_reviews = Event_Review.objects.count()
+
+#     # นับจำนวนแจ้งเตือนที่ยังไม่ได้อ่าน
+#     unread_notifications = Notification.objects.filter(is_read=False).count()
+
+#     # นับจำนวนห้องแชท และข้อความทั้งหมด
+#     total_chat_rooms = ChatRoom.objects.count()
+#     total_chat_messages = Chat_Message.objects.count()
+
+#     # นับจำนวนรายงานทั้งหมด
+#     total_reports = Report.objects.count()
+#     pending_reports = Report.objects.filter(is_warned="รอดำเนินการ").count()
+#     warned_reports = Report.objects.filter(is_warned="เตือนผู้ใช้งาน").count()
+#     rejected_reports = Report.objects.filter(is_warned="ปฏิเสธการรายงาน").count()
+
+#     # สร้าง context ส่งไปยัง template
+#     context = {
+#         "total_events": total_events,
+#         "active_events": active_events,
+#         "ended_events": ended_events,
+#         "total_requests": total_requests,
+#         "pending_requests": pending_requests,
+#         "accepted_requests": accepted_requests,
+#         "rejected_requests": rejected_requests,
+#         "total_reviews": total_reviews,
+#         "unread_notifications": unread_notifications,
+#         "total_chat_rooms": total_chat_rooms,
+#         "total_chat_messages": total_chat_messages,
+#         "total_reports": total_reports,
+#         "pending_reports": pending_reports,
+#         "warned_reports": warned_reports,
+#         "rejected_reports": rejected_reports,
+#     }
+#     return render(request, 'admin/dashboard.html',context)
+
+@staff_member_required
 def userdata_admin(request):
     members = Member.objects.filter(is_banned=False,is_superuser=False)
     members = members.annotate(activity_count=Count('events'))  
@@ -154,8 +202,8 @@ def userdata_admin(request):
 
     total_banned_member = total_users - total_members
 
-    male_members = members.filter(sex='M').count() 
-    female_members = members.filter(sex='F').count()
+    male_members = members.filter(sex='ชาย').count() 
+    female_members = members.filter(sex='หญิง').count()
 
     total_events = Event.objects.count()
     events_by_category = Event.objects.values('category').annotate(event_count=Count('id'))
@@ -173,31 +221,31 @@ def userdata_admin(request):
     }
     return render(request, 'admin/userdata_admin.html', context)
 
-
+@staff_member_required
 def block_user(request, id):
     if request.method == 'POST':
         try:
-            # ตรวจสอบว่ามีผู้ใช้ในระบบหรือไม่
-            member = get_object_or_404(Member, id=id)
-            member.is_banned = True  # เปลี่ยนสถานะผู้ใช้เป็น "ถูกแบน"
+            member = get_object_or_404(Member, id=id) # ตรวจสอบว่ามีผู้ใช้ในระบบหรือไม่
+            member.is_banned = True   
             member.is_active = False 
             member.save()
             return JsonResponse({'status': 'success', 'message': f'{member.username} ถูกแบนแล้ว'})
+        
         except Exception as e:
-            # จับข้อผิดพลาดและส่งข้อความกลับ
             return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
     else:
         return JsonResponse({'status': 'error', 'message': 'Method not allowed'}, status=405)
 
-def warn_event(request, report_id):
-    report = get_object_or_404(Report, id=report_id)
+# def warn_event(request, report_id):
+#     report = get_object_or_404(Report, id=report_id)
 
-    report.is_warned = True
-    report.save()
+#     report.is_warned = True
+#     report.save()
 
-    messages.success(request, f"Warning sent for event '{report.event.event_name}'.")
-    return redirect('report_admin')
+#     messages.success(request, f"Warning sent for event '{report.event.event_name}'.")
+#     return redirect('report_admin')
 
+@staff_member_required
 def edit_member(request, member_id):
     # member_data = Member.objects.get(username=request.user.username) 
     member_data = get_object_or_404(Member, id=member_id)  
@@ -206,10 +254,10 @@ def edit_member(request, member_id):
         # form = MemberUpdateForm(request.POST, request.FILES, instance=member)
         form = MemberUpdateForm(request.POST, request.FILES, instance=member_data)
         if form.is_valid():
-            form.save()  # บันทึกข้อมูลใหม่
-            return redirect('userdata')  # เปลี่ยนเส้นทางหลังจากแก้ไขเสร็จ
+            form.save()  
+            return redirect('userdata')  
     else:
-        form = MemberUpdateForm(instance=member_data)  # โหลดข้อมูลเดิมในแบบฟอร์ม
+        form = MemberUpdateForm(instance=member_data)  
 
     context = {
         'form': form,
@@ -217,6 +265,7 @@ def edit_member(request, member_id):
     }
     return render(request, 'admin/edit_member.html', context)
 
+@staff_member_required
 def report_admin(request):
     reports = Report.objects.all()
 
@@ -225,28 +274,30 @@ def report_admin(request):
     unique_reports = waiting_reports.values('event', 'report_type').distinct()
 
     total_reports = reports.count()
-    total_waiting = unique_reports.count()  # นับเฉพาะการเตือนที่ไม่ซ้ำ
+    total_waiting = unique_reports.count() 
     total_warned = reports.filter(is_warned='เตือน').count()
     total_rejected = reports.filter(is_warned='ปฏิเสธการรายงาน').count()
 
-    # นับประเภทการรายงาน (เฉพาะรอดำเนินการ)
+   
     system_issues = unique_reports.filter(report_type='ความผิดพลาดของระบบ').count()
     inappropriate_behavior = unique_reports.filter(report_type='พฤติกรรมไม่เหมาะสม').count()
     other_issues = unique_reports.filter(report_type='Other').count()
 
-    return render(request, 'admin/report_admin.html', {
-        'total_reports': total_reports,         # รายงานทั้งหมด
-        'total_waiting': total_waiting,         # รอดำเนินการ (ไม่ซ้ำ)
-        'total_warned': total_warned,           # รายงานที่เตือนแล้ว
-        'total_rejected': total_rejected,       # รายงานที่ปฏิเสธแล้ว
-        'system_issues': system_issues,         # ปัญหาของระบบ
-        'inappropriate_behavior': inappropriate_behavior,  # พฤติกรรมไม่เหมาะสม
-        'other_issues': other_issues,           # อื่น ๆ
-        'waiting_reports': waiting_reports,     # รายงานที่ยังรอดำเนินการ
-    })
+    context = {
+        'total_reports': total_reports,        
+        'total_waiting': total_waiting,     
+        'total_warned': total_warned,          
+        'total_rejected': total_rejected,       
+        'system_issues': system_issues,        
+        'inappropriate_behavior': inappropriate_behavior, 
+        'other_issues': other_issues,           
+        'waiting_reports': waiting_reports, 
+    }
 
+    return render(request, 'admin/report_admin.html', context)
+
+@staff_member_required
 def event_detail_report(request, event_id):
-
     event = get_object_or_404(Event, id=event_id)
     reports = Report.objects.filter(event=event)
 
@@ -254,8 +305,7 @@ def event_detail_report(request, event_id):
         action = request.POST.get("action")  
 
         if action == "warn":
-            # ตรวจสอบว่ามีรายงานหรือไม่
-            if reports.exists():
+            if reports.exists():# ตรวจสอบว่ามีรายงานหรือไม่
                 reports.update(is_warned="เตือน")
 
                 event.is_active = False
@@ -268,16 +318,15 @@ def event_detail_report(request, event_id):
                     related_event=event  # เชื่อมโยงกับอีเว้นท์ที่เกี่ยวข้อง
                 )
 
-                messages.success(request, f"The event '{event.event_name}' has been warned and hidden.")
-            else:
-                messages.error(request, "No reports found for this event.")
+            #     messages.success(request, f"The event '{event.event_name}' has been warned and hidden.")
+            # else:
+            #     messages.error(request, "No reports found for this event.")
 
         elif action == "reject":
             if reports.exists():
                 reports.update(is_warned="ปฏิเสธการรายงาน")
-                messages.success(request, f"The report for the event '{event.event_name}' has been rejected.")
             else:
-                messages.error(request, "No reports found for this event.")
+                messages.error(request, "ไม่พบรายงานสำหรับกิจกรรมนี้")
 
         return redirect('report_admin')
     
@@ -288,12 +337,9 @@ def event_detail_report(request, event_id):
 
     return render(request, 'admin/event_report_detail.html', context)
 
-
+@login_required
 def submit_report(request, event_id):
     event = get_object_or_404(Event, id=event_id)
-    if not hasattr(event, 'created_by') or event.created_by is None:
-        messages.error(request, "Event does not have an owner. Cannot submit report.")
-        return redirect('feed')
 
     if request.method == 'POST':
         form = ReportForm(request.POST)
@@ -301,9 +347,9 @@ def submit_report(request, event_id):
             report = form.save(commit=False)
             report.reporter = request.user
             report.event = event
-            report.event_owner = event.created_by  # ใช้ event.created_by อย่างปลอดภัย
+            report.event_owner = event.created_by  
+            report.description = form.cleaned_data['description']
             report.save()
-            messages.success(request, "Your report has been submitted successfully.")
             return redirect('feed')
     else:
         form = ReportForm()
@@ -372,14 +418,14 @@ def profile_view(request):
                 form.save()  
                 return redirect('profile')  
 
-        elif 'event_submit' in request.POST:  # ตรวจสอบว่ามาจากการสร้างหรือแก้ไขกิจกรรม
-            event_id = request.POST.get('event_id', None)
+        elif 'event_submit' in request.POST:  
+            event_id = request.POST.get('event_id')
             if event_id:  
                 event = get_object_or_404(Event, id=event_id, created_by=request.user)
                 event_form = EventForm(request.POST, instance=event)
-            else:  
-                event_form = EventForm(request.POST)
-                event_form.instance.created_by = request.user
+            # else:  # ตรวจสอบว่ามาจากการสร้างหรือแก้ไขกิจกรรม
+            #     event_form = EventForm(request.POST)
+            #     event_form.instance.created_by = request.user
 
             if event_form.is_valid():
                 event_form.save()
@@ -406,9 +452,21 @@ def profile_view(request):
 # เช็คในลงทะเบียน
 def check_username_register(request):
     username = request.GET.get("username", None)
-    exists = User.objects.filter(username=username).exists()
+    exists = Member.objects.filter(username=username).exists()
     return JsonResponse({"exists": exists})
 
+# def check_email_register(request):
+#     email = request.GET.get("email", None)
+#     email_exists = Member.objects.filter(email=email).exists()
+#     return JsonResponse({"email_exists": email_exists})
+
+def check_email_register(request):
+    email = request.GET.get("email", None)
+    email_exists = Member.objects.filter(email=email).exists()
+
+    return JsonResponse({
+        "email_exists": email_exists  
+    })
 # เช็คในฟอร์ม
 @login_required
 def check_username(request):
@@ -417,9 +475,10 @@ def check_username(request):
     if username == request.user.username:
         return JsonResponse({"exists": False})  
 
-    exists = User.objects.filter(username=username).exists()
+    exists = Member.objects.filter(username=username).exists()
     return JsonResponse({"exists": exists})
 
+@login_required
 def member_profile(request, member_id):
     member = get_object_or_404(Member, id=member_id)
     user_login = Member.objects.get(username=request.user.username)
@@ -439,11 +498,7 @@ def member_profile(request, member_id):
     } 
     return render(request, 'member/member_profile.html', context)
 
-def delete_event(request, event_id):
-    event = get_object_or_404(Event, id=event_id)
-    if request.method == 'POST':
-        event.delete()  
-        return redirect('profile')  
+
 
 # def profile_view(request):
 #     member_data = Member.objects.get(username=request.user.username) 
@@ -470,7 +525,7 @@ def delete_event(request, event_id):
 
     
 
-    
+@login_required    
 def chat_rooms_list(request):
     # ดึงข้อมูลของผู้ใช้
     member_data = Member.objects.get(username=request.user.username)
@@ -483,7 +538,6 @@ def chat_rooms_list(request):
         # event__eventrequest__member=user
     ).distinct().order_by('-updated_at')  # เรียงลำดับตาม updated_at จากล่าสุดไปเก่าสุด
 
-    # ส่ง context ให้ template
     context = {
         'member_data': member_data,
         'chat_rooms': chat_rooms,
@@ -492,22 +546,22 @@ def chat_rooms_list(request):
     return render(request, 'member/chat/chat.html', context)
 
 
-
 @login_required
 def chat_room_detail(request, chat_room_id):
     member_data = Member.objects.get(username=request.user.username)
     chat_room = get_object_or_404(ChatRoom, id=chat_room_id)
     messages = Chat_Message.objects.filter(chatroom=chat_room).order_by('created_at')
 
-    return render(request, 'member/chat/chat_room_detail.html', {
+    context = {
         'chat_room': chat_room,
         'messages': messages,
         'member_data': member_data,
-    })
+    }
+
+    return render(request, 'member/chat/chat_room_detail.html',context)
 
 # ออกจากแชท = กิจกรรม
 @login_required
-
 def leave_chat(request, chat_room_id):
 
     chat_room = get_object_or_404(ChatRoom, id=chat_room_id)
@@ -528,83 +582,89 @@ def leave_chat(request, chat_room_id):
 #     chat_room.members.remove(request.user)  # ลบสมาชิกออกจากห้อง
 #     return JsonResponse({"status": "success"})
 
-@receiver(post_save, sender=Event)
-def update_chatroom_name(sender, instance, **kwargs):
-    # อัปเดตชื่อห้องแชทเมื่อ Event ถูกบันทึก
-    chat_rooms = ChatRoom.objects.filter(event=instance)
-    for chat_room in chat_rooms:
-        chat_room.event_name = instance.event_name  # ตั้งชื่อห้องแชทให้ตรงกับ Event
-        chat_room.save()
+# @receiver(post_save, sender=Event)
+# def update_chatroom_name(sender, instance, **kwargs):
+#     # อัปเดตชื่อห้องแชทเมื่อ Event ถูกบันทึก
+#     chat_rooms = ChatRoom.objects.filter(event=instance)
+#     for chat_room in chat_rooms:
+#         chat_room.event_name = instance.event_name  # ตั้งชื่อห้องแชทให้ตรงกับ Event
+#         chat_room.save()
 
-def my_activity(request):
-    events = Event.objects.filter(created_by=request.user, is_active=True)
-    member_data = Member.objects.get(username=request.user.username) 
-    form = EventForm()  
-    total_events = events.count()
+# def my_activity(request):
+#     events = Event.objects.filter(created_by=request.user, is_active=True)
+#     member_data = Member.objects.get(username=request.user.username) 
+#     form = EventForm()  
+#     total_events = events.count()
 
-    if request.method == 'POST':
-        if 'event_submit' in request.POST:
-            event_id = request.POST.get('event_id', None)
-            if event_id:  
-                event = get_object_or_404(Event, id=event_id, created_by=request.user)
-                form = EventForm(request.POST, instance=event)
-            else:  
-                form = EventForm(request.POST)
-                form.instance.created_by = request.user
+#     if request.method == 'POST':
+#         if 'event_submit' in request.POST:
+#             event_id = request.POST.get('event_id', None)
+#             if event_id:  
+#                 event = get_object_or_404(Event, id=event_id, created_by=request.user)
+#                 form = EventForm(request.POST, instance=event)
+#             else:  
+#                 form = EventForm(request.POST)
+#                 form.instance.created_by = request.user
 
-            if form.is_valid():
-                form.save()
-                return redirect('my_activity')
+#             if form.is_valid():
+#                 form.save()
+#                 return redirect('my_activity')
 
-        elif 'delete_event' in request.POST:
-            event_id = request.POST.get('event_id')
-            event = get_object_or_404(Event, id=event_id, created_by=request.user)
-            event.delete()
-            return redirect('my_activity')
+#         elif 'delete_event' in request.POST:
+#             event_id = request.POST.get('event_id')
+#             event = get_object_or_404(Event, id=event_id, created_by=request.user)
+#             event.delete()
+#             return redirect('my_activity')
 
-    context = {
-        'events': events,
-        'form': form,
-        'member_data': member_data,
-        'total_events': total_events,
-    }
-    return render(request, 'member/my_activity.html', context)
+#     context = {
+#         'events': events,
+#         'form': form,
+#         'member_data': member_data,
+#         'total_events': total_events,
+#     }
+#     return render(request, 'member/my_activity.html', context)
 
 
-def update_event(request):
-    member_data = Member.objects.get(username=request.user.username)
+# def update_event(request):
+#     member_data = Member.objects.get(username=request.user.username)
     
-    # ดึงกิจกรรมที่ผู้ใช้สร้าง
-    events = Event.objects.filter(created_by=request.user)
+#     # ดึงกิจกรรมที่ผู้ใช้สร้าง
+#     events = Event.objects.filter(created_by=request.user)
 
-    if request.method == 'POST':
-        # ตรวจสอบว่ามีการส่งข้อมูลฟอร์มเพื่ออัปเดตกิจกรรมหรือไม่
-        event_id = request.POST.get('event_id')  # รับค่า id ของกิจกรรมที่ต้องการแก้ไข
-        if event_id:
-            event = Event.objects.get(id=event_id)  # ดึงกิจกรรมตาม id ที่เลือก
-            form = EventForm(request.POST, request.FILES, instance=event)  # ผูกฟอร์มกับข้อมูลเดิม
-        else:
-            form = EventForm(request.POST, request.FILES)  # ฟอร์มเปล่าหากเป็นการสร้างกิจกรรมใหม่
+#     if request.method == 'POST':
+#         # ตรวจสอบว่ามีการส่งข้อมูลฟอร์มเพื่ออัปเดตกิจกรรมหรือไม่
+#         event_id = request.POST.get('event_id')  # รับค่า id ของกิจกรรมที่ต้องการแก้ไข
+#         if event_id:
+#             event = Event.objects.get(id=event_id)  # ดึงกิจกรรมตาม id ที่เลือก
+#             form = EventForm(request.POST, request.FILES, instance=event)  # ผูกฟอร์มกับข้อมูลเดิม
+#         else:
+#             form = EventForm(request.POST, request.FILES)  # ฟอร์มเปล่าหากเป็นการสร้างกิจกรรมใหม่
         
-        if form.is_valid():
-            form.save()  # อัปเดตกิจกรรมหรือสร้างกิจกรรมใหม่
+#         if form.is_valid():
+#             form.save()  # อัปเดตกิจกรรมหรือสร้างกิจกรรมใหม่
 
-            ChatRoom.objects.filter(event=event).update(name=event.event_name)
-            return redirect('my_activity')  # เมื่อบันทึกแล้วจะกลับไปที่หน้า profile
-    else:
-        event_id = request.GET.get('event_id')  # รับค่าจาก URL query string สำหรับการแก้ไข
-        if event_id:
-            event = Event.objects.get(id=event_id)  # ดึงข้อมูลกิจกรรมตาม id
-            form = EventForm(instance=event)  # แสดงข้อมูลเก่าในฟอร์ม
-        else:
-            form = EventForm()  # ฟอร์มเปล่าในการสร้างกิจกรรมใหม่
+#             ChatRoom.objects.filter(event=event).update(name=event.event_name)
+#             return redirect('my_activity')  # เมื่อบันทึกแล้วจะกลับไปที่หน้า profile
+#     else:
+#         event_id = request.GET.get('event_id')  # รับค่าจาก URL query string สำหรับการแก้ไข
+#         if event_id:
+#             event = Event.objects.get(id=event_id)  # ดึงข้อมูลกิจกรรมตาม id
+#             form = EventForm(instance=event)  # แสดงข้อมูลเก่าในฟอร์ม
+#         else:
+#             form = EventForm()  # ฟอร์มเปล่าในการสร้างกิจกรรมใหม่
 
-    return render(request, 'member/my_activity.html', {
-        'form': form,
-        'member_data': member_data,
-        'events': events,
-    })
+#     return render(request, 'member/my_activity.html', {
+#         'form': form,
+#         'member_data': member_data,
+#         'events': events,
+#     })
 
+@login_required
+def delete_event(request, event_id):
+    event = get_object_or_404(Event, id=event_id)
+    if request.method == 'POST':
+        event.delete()  
+        return redirect('profile')  
 
 # สร้างอีเว้น
 @login_required
@@ -615,9 +675,6 @@ def new_event_view(request):
             event = form.save(commit=False)
             event.created_by = request.user
             event.save()
-
-            #สร้างแจ้งเตือนหลังจากสร้าง
-            create_event_notifications(event)  
 
             #ChatRoom
             chat_room = ChatRoom.objects.create(
@@ -633,7 +690,7 @@ def new_event_view(request):
 
     else:
         form = EventForm()
-    return render(request, 'member/home.html', {'form': form})
+    return render(request, 'member/feed.html', {'form': form})
 
 
 # def new_event_view(request):
@@ -671,6 +728,7 @@ def new_event_view(request):
 
  
 # ค้นหาอีเว้น
+@login_required
 def search_events(request):
     member_data = Member.objects.get(username=request.user.username)
     query = request.GET.get('query', '')
@@ -696,34 +754,35 @@ def search_events(request):
     }
     return render(request, 'member/feed.html', context)
    
+# @login_required
+# def filter_events(request):
+#     province_choices = EventForm.base_fields['province'].choices
+#     category_choices = EventForm.base_fields['category'].choices
 
-def filter_events(request):
-    province_choices = EventForm.base_fields['province'].choices
-    category_choices = EventForm.base_fields['category'].choices
+#     max_participants_range = range(1, 21)  
 
-    max_participants_range = range(1, 21)  
-
-    events = Event.objects.all()
+#     events = Event.objects.all()
     
-    province = request.GET.get('province', None)
-    category = request.GET.get('category', None)
-    max_participants = request.GET.get('max_participants', None)
+#     province = request.GET.get('province', None)
+#     category = request.GET.get('category', None)
+#     max_participants = request.GET.get('max_participants', None)
 
-    if province:
-        events = events.filter(province=province)
-    if category:
-        events = events.filter(category=category)
-    if max_participants:
-        events = events.filter(max_participants__gte=max_participants)
+#     if province:
+#         events = events.filter(province=province)
+#     if category:
+#         events = events.filter(category=category)
+#     if max_participants:
+#         events = events.filter(max_participants__gte=max_participants)
 
-    return render(request, 'member/feed.html', {
-        'events': events,
-        'province_choices': province_choices,
-        'category_choices': category_choices,
-        'max_participants_range': max_participants_range,
-    })
+#     return render(request, 'member/feed.html', {
+#         'events': events,
+#         'province_choices': province_choices,
+#         'category_choices': category_choices,
+#         'max_participants_range': max_participants_range,
+#     })
 
 # ส่งคำขอเข้าร่วมอีเว้น
+
 def send_join_request(request, event_id):
     if request.method != 'POST':
         return JsonResponse({'message': 'Invalid request method'}, status=400)
@@ -762,6 +821,7 @@ def send_join_request(request, event_id):
 
 
 # ตอบรับ/ปฏิเสธ คำขอ
+@login_required
 def handle_event_request(request, event_request_id):
     try:
         if request.method == 'POST':
@@ -791,7 +851,7 @@ def handle_event_request(request, event_request_id):
                     notification_type='response',
                 )
 
-                chat_room, created = ChatRoom.objects.get_or_create(event=event_request_instance.event)
+                # chat_room, created = ChatRoom.objects.get_or_create(event=event_request_instance.event)
                 
                 # แสดงว่าใครเขาร่วม
                 Chat_Message.objects.create(
@@ -801,7 +861,7 @@ def handle_event_request(request, event_request_id):
                     created_at=now(),  
                     is_system_message=True,  
                 )
-                return JsonResponse({'message': 'คำขอได้รับการอนุมัติแล้ว!', 'chat_room_url': chat_room_url})
+                return JsonResponse({'message': 'คำขอได้รับการอนุมัติแล้ว!'})
 
             elif action == 'reject':
                 event_request_instance.response_status = 'rejected'
@@ -841,15 +901,17 @@ def event_review_list(request, event_id):
     # ดึงข้อมูลรีวิวที่มีอยู่แล้ว
     reviewed_members = Event_Review.objects.filter(event=event, reviewer=request.user).values_list('participant_id', flat=True)
 
-    return render(request, 'member/event/review_event_list.html', {
+    return render(request, 'member/review/review_event_list.html', {
         'event': event,
         'members': members,
         'reviewed_members': reviewed_members
     })
 
+@login_required
 def event_review_form(request, event_id, member_id):
     event = get_object_or_404(Event, id=event_id)
     participant = get_object_or_404(Member, id=member_id)
+    
 
     if request.method == 'POST':
         form = EventReviewForm(request.POST)
@@ -863,7 +925,7 @@ def event_review_form(request, event_id, member_id):
     else:
         form = EventReviewForm()
 
-    return render(request, 'member/event/review_event_form.html', {
+    return render(request, 'member/review/review_event_form.html', {
         'form': form,
         'event': event,
         'participant': participant
@@ -894,9 +956,8 @@ def event_review_form(request, event_id, member_id):
 #     return render(request, "member/event/review_event.html", context)
 
 # ปฏิทิน
-@login_required
 def user_events_api(request):
-    user = request.user  # ดึง user ที่ล็อกอิน
+    user = request.user  
 
     chat_rooms = ChatRoom.objects.filter(members=user)
 
@@ -930,41 +991,41 @@ def user_events_api(request):
     ]
     return JsonResponse(data, safe=False)
 
-def notification_list(request):
-    """ดึงแจ้งเตือนที่ถึงเวลาแล้วเท่านั้น"""
-    notifications = Notification.objects.filter(
-        user=request.user,
-        is_scheduled=False  # ✅ แสดงแจ้งเตือนที่เปิดเผยแล้ว
-    ).order_by('-created_at')
+# def notification_list(request):
+#     """ดึงแจ้งเตือนที่ถึงเวลาแล้วเท่านั้น"""
+#     notifications = Notification.objects.filter(
+#         user=request.user,
+#         is_scheduled=False  
+#     ).order_by('-created_at')
 
-    return render(request, 'member/notifications.html', {'notifications': notifications})
+#     return render(request, 'member/notifications.html', {'notifications': notifications})
 
-def create_event_notifications(event):
-    """สร้างแจ้งเตือนล่วงหน้า สำหรับเจ้าของ Event และผู้เข้าร่วม"""
-    participants = list(Event_Request.objects.filter(
-        event=event, response_status="accepted"
-    ).values_list('sender', flat=True))
+# def create_event_notifications(event):
+#     """สร้างแจ้งเตือนล่วงหน้า สำหรับเจ้าของ Event และผู้เข้าร่วม"""
+#     participants = list(Event_Request.objects.filter(
+#         event=event, response_status="accepted"
+#     ).values_list('sender', flat=True))
 
-    recipients = [event.created_by.id] + participants  
+#     recipients = [event.created_by.id] + participants  
 
-    for user_id in recipients:
-        message = f"กิจกรรม {event.event_name} ของคุณเป็นยังไงบ้าง? มารีวิวกันเถอะ!"
+#     for user_id in recipients:
+#         message = f"กิจกรรม {event.event_name} ของคุณเป็นยังไงบ้าง? มารีวิวกันเถอะ!"
 
-        review_link = reverse('review_event', kwargs={'event_id': event.id})  
+#         review_link = reverse('review_event', kwargs={'event_id': event.id})  
 
-        full_message = f"{message} <a href='{review_link}'>คลิกที่นี่</a>"
+#         full_message = f"{message} <a href='{review_link}'>คลิกที่นี่</a>"
 
-        print(f"🔔 กำลังสร้างแจ้งเตือนให้ User ID: {user_id}") 
+#         print(f"🔔 กำลังสร้างแจ้งเตือนให้ User ID: {user_id}") 
 
-        Notification.objects.create(
-            user_id=user_id,
-            message=full_message,
-            related_event=event,
-            notification_type="อื่น ๆ",
-            is_scheduled=True,  
-            scheduled_time=event.event_datetime,
-            is_read=False
-        )
+#         Notification.objects.create(
+#             user_id=user_id,
+#             message=full_message,
+#             related_event=event,
+#             notification_type="อื่น ๆ",
+#             is_scheduled=True,  
+#             scheduled_time=event.event_datetime,
+#             is_read=False
+#         )
 
 
 def mark_notification_as_read(request, notification_id):
@@ -977,7 +1038,7 @@ def mark_notification_as_read(request, notification_id):
     notification.save()
     return JsonResponse({'message': 'Notification marked as read.'}, status=200)
 
-
+@login_required
 def logout_view(request):
     logout(request) 
     return redirect('login')  

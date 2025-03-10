@@ -18,6 +18,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@100..700&display=swap" rel="stylesheet">
 </head>
 
+
+
 <body>
 
     <!-- เมนู -->
@@ -193,7 +195,11 @@
                                 {% csrf_token %}
                             </form>
                         </div>
-                    
+
+                        <!-- <div class="time-since-created">
+                            <span class="time-text">{{ event.time_since }}</span>
+                        </div>
+                     -->
                     
                         <!-- ปุ่มแก้ไขและลบ -->
                         
@@ -213,17 +219,26 @@
 
             <form method="post" enctype="multipart/form-data" class="profile-form">
                 {% csrf_token %}
-                <div class="profile-group">
-                    <label class="profile-label">รูปโปรไฟล์</label>{{ form.profile }}</label>
-                    <input type="file" name="profile" class="form-control" accept="image/*">
-                </div>
-            
-            <!-- <form method="post" enctype="multipart/form-data" class="profile-form">
-                {% csrf_token %}
-                <div class="profile-group">
+                <!-- <div class="profile-group">
                     <label class="profile-label">รูปโปรไฟล์</label>
+                    <div class="profile-image-container">
+                        <img src="{{ member_data.profile.url }}" alt="Profile Image" class="profile-image">
+                    </div>
                     <input type="file" name="profile" class="form-control" accept="image/*">
                 </div> -->
+                
+            <!-- <form method="post" enctype="multipart/form-data" class="profile-form">
+                <!-- {% csrf_token %} -->
+              <div class="profile-group">
+                    <label class="profile-label">รูปโปรไฟล์</label>
+                    <input type="file" name="profile" class="form-control" accept="image/*">
+                </div> 
+
+                <!-- <div class="profile-group">
+                    <label class="profile-label">รูปโปรไฟล์</label>
+                    {{ form.profile }}
+                </div> -->
+                
     
                 <!-- ชื่อผู้ใช้ -->
                 <div class="profile-group">
@@ -271,7 +286,7 @@
                 <!-- คำอธิบาย -->
                 <div class="profile-group">
                     <label class="profile-label">คำอธิบาย</label>
-                    <textarea name="description" class="form-control" rows="3" required>{{ form.description.value }}</textarea>
+                    <input name="description" class="form-control" type="text" value="{{ form.description.value }}">
                 </div>
     
                 <input type="hidden" name="update_profile" value="true">

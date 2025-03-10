@@ -1,4 +1,5 @@
-body,html{
+
+    body,html{
     font-family:"Anuphan", sans-serif;
     background-color: #f0eeee;
     /* margin-left: 30%; */
@@ -6,14 +7,11 @@ body,html{
 
 .menu-container {
     width: 200px;
-    /* background-color: #2b3f65; */
-
     background-image: url('/static/pic/bg4.jpg'); 
     background-size: cover; 
     background-position: center; 
     background-repeat: no-repeat; 
     height: 100vh; 
-    
     color: white;
     height: 94vh;
     display: flex;
@@ -654,17 +652,15 @@ margin-left: 10px;
     text-align: left;
 }
 
-/* จัดปุ่มให้อยู่ในบรรทัดเดียวกัน */
 .post-actions {
     display: flex;
-    gap: 10px;
+    /* gap: 5px; */
     align-items: center;
 }
 
-/* ปุ่มแก้ไข (เฉพาะกิจกรรม) */
 .btn-edit-event {
-    background-color: #c9c9c9; /* สีปุ่ม */
-    color: white; /* สีไอคอน */
+    background-color: #c9c9c9; 
+    color: white; 
     width: 35px;
     height: 35px;
     border: none;
@@ -677,7 +673,6 @@ margin-left: 10px;
     padding: 10px;
 }
 
-/* ปรับขนาดของไอคอนให้พอดีกับปุ่ม */
 .btn-edit-event i {
     font-size: 16px;
     padding: 10px;
@@ -685,12 +680,12 @@ margin-left: 10px;
 }
 
 .btn-edit-event:hover {
-    background-color: #0056b3;
+    background-color: #24476d;
 }
 
 /* ปุ่มลบ (เฉพาะกิจกรรม) */
 .btn-delete-event {
-    background-color: #dc3545;
+    background-color: #c9c9c9; 
     color: white;
     width: 35px;
     height: 35px;
@@ -701,16 +696,18 @@ margin-left: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
+    /* margin-left: 20px; */
 }
 
 .btn-delete-event:hover {
-    background-color: #c82333;
+    background-color: #b33844;
 }
 
 /* ปรับขนาดไอคอน */
 .btn-edit-event i,
 .btn-delete-event i {
     font-size: 16px;
+    margin-left: 7px;
 }
 
 /* Edit and Delete Buttons */
@@ -756,6 +753,30 @@ margin-left: 10px;
     font-weight: bold;
     font-size: 13px;
 }
+
+.province {
+    background-color: #ffffff;
+    color: rgb(0, 0, 0);
+    border: 1px solid #646464;
+    border-radius: 20px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 13px;
+    padding: 10px 10px;
+    /* gap: 8px;  */
+}
+
+.province i {
+    margin-left: 10px; 
+}
+
+.province p {
+    margin-right: 10px; 
+}
+
 
 .date {
     width: 45%; 
@@ -1053,9 +1074,9 @@ margin-left: 10px;
 }
 
 /* อินพุต */
-.input {
+.profile-group input, .profile-group select, .profile-group textarea {
     width: 100%; 
-    /* padding-right: 40px;  */
+
     padding-left: 12px;
     border: 1px solid #ccc;
     border-radius: 8px;
@@ -1064,57 +1085,42 @@ margin-left: 10px;
     height: 40px;
 }
 
-#profileModal .profile-select{
-    flex: 1; /* ขยายเต็มที่ */
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 16px;
-    background-color: #fff;
+
+.profile-group {
+    margin-bottom: 15px;
 }
 
-
-#profileModal .profile-textarea {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 16px;
-    background-color: #fff;
+.profile-label {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
 }
 
-/* ปุ่ม */
-#profileModal .profile-btn {
-    width: 100%;
-    padding: 12px;
-    font-size: 18px;
-    border-radius: 30px;
-    cursor: pointer;
+.profile-btn {
+    padding: 10px 20px;
     border: none;
-}
-
-#profileModal .profile-btn-primary {
-    background-color: #003366;
+    border-radius: 5px;
+    background-color: #007bff;
     color: white;
+    cursor: pointer;
 }
 
-#profileModal .profile-btn-secondary {
-    background-color: #ccc;
-    color: black;
+.profile-btn:hover {
+    background-color: #0056b3;
 }
 
-#profileModal .profile-btn-primary:hover {
-    background-color: #002244;
+.error-message {
+    color: red;
+    font-size: 12px;
 }
 
 
-/* ทำให้ input และไอคอนอยู่ในกรอบเดียวกัน */
+
 .username-check {
     position: relative;
     display: flex;
     align-items: center;
-    width: 100%; /* ขยายให้กว้างเต็มพื้นที่ */
+    width: 100%; 
 }
 
 /* ปรับขนาด input ให้ยาวขึ้นและรองรับไอคอน */
@@ -1125,7 +1131,7 @@ margin-left: 10px;
     border: 1px solid #ccc;
     border-radius: 8px;
     font-size: 16px;
-    background-color: #f0f0f0;
+    background-color: #ffffff;
     height: 40px;
 }
 
@@ -1171,3 +1177,4 @@ margin-left: 10px;
     margin-top: 5px;
     display: none; /* ซ่อนข้อความเป็นค่าเริ่มต้น */
 }
+

@@ -7,11 +7,13 @@
     {% load static %}
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@100..700&display=swap" rel="stylesheet">
+   
     <!-- CSS อยู่ในส่วนนี้ -->
     <style>
         body {
             background-color: #1c2b4a;
-            font-family: 'Montserrat', sans-serif;
+            font-family:"Anuphan", sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -95,6 +97,7 @@
         }
 
         button {
+            font-family:"Anuphan", sans-serif;
             display: block;              /* เปลี่ยน display เป็น block */
             background-color: #08204b;
             color: #fff;
@@ -178,7 +181,8 @@
             align-items: center; 
             font-size: 18px;          
             color: #08204b;  
-            margin-right: 10px;        
+            margin-right: 10px;  
+            margin-top: -10px;      
         }
 
  /* ทำให้ input และไอคอนอยู่ในกรอบเดียวกัน */
@@ -250,7 +254,7 @@
 
         <div class="Create-Account">
             <i class="fa-solid fa-user-plus"></i>
-            <h2>Create Account</h2>
+            <h2>สมัครสมาชิก</h2>
             
         </div>
 
@@ -307,12 +311,13 @@
                         <i id="usernameStatusIcon" class="fa-solid fa-circle-check username-default"></i>
                     </div>
             </div>
-            <p id="usernameErrorMessage" class="error-message"></p> <!-- ข้อความแจ้งเตือน -->
+            <p id="usernameErrorMessage" class="error-message"></p> 
             
             <div class="form-group">
                 <label for="email">อีเมล</label>
                 <input type="email" name="email" required>
             </div>
+            <p id="emailErrorMessage" class="error-message"></p>
 
             <div class="form-group">
                 <label for="password1">รหัสผ่าน</label>
@@ -387,9 +392,6 @@
             })
             .catch(error => console.error("Error checking username:", error));
     });
-    </script>
+</script>
     
-    
-    
-
 </html>

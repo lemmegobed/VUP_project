@@ -4,44 +4,208 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Submit Report</title>
+    <title>รายงานปัญหา</title>
 
-    <link href="{% static 'css/css_member/report_event.css' %}" rel="stylesheet">
+    <!-- <link href="{% static 'css/css_member/event_report.css' %}" rel="stylesheet"> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@100..700&display=swap" rel="stylesheet">
+</head>
+
+<style>
+        /* ตั้งค่าพื้นหลังและให้กล่องอยู่กลางจอ */
+        body,html{
+            font-family:"Anuphan", sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            animation: fadeIn 0.8s ease-in-out;
+        }
+
+        .outer-box {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            width: 400px;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(-20px);
+            animation: slideDown 0.8s ease-in-out forwards;
+        }
+
+        /* ไอคอนอยู่ในวงกลม */
+        .icon-circle {
+            width: 60px;
+            height: 60px;
+            background: #ff4d4d;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 30px;
+            margin: 0 auto 10px;
+        }
+
+        .head-report h1 {
+            margin: 10px 0;
+            font-size: 22px;
+            color: #333;
+        }
+
+        .event-info {
+            border-left: 5px solid red;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: left;
+            margin-bottom: 15px;
+        }
+
+        .event-info p {
+            margin: 5px 0;
+        }
+
+        /* ปุ่มย้อนกลับ */
+        .btn-back {
+            display: inline-block;
+            margin: 10px 0;
+            color: #53687e;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .btn-back:hover {
+            text-decoration: underline;
+        }
+
+
+
+        .btn-submit:hover {
+            background: #cc0000;
+        }
+
+        /* เอฟเฟกต์เคลื่อนไหว */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        form {
+    width: 100%;
+}
+
+select{
+    font-family:"Anuphan", sans-serif;
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    background-color: #ffffff;
+    margin-bottom: 10px;
+    transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+textarea {
+    font-family:"Anuphan", sans-serif;
+    min-width: 370px;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    background-color: #ffffff;
+    transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+select:focus, textarea:focus {
+    border-color: #ff4d4d;
+    box-shadow: 0 0 5px rgba(255, 77, 77, 0.5);
+    outline: none;
+}
+
+.btn-submit {
+    font-family:"Anuphan", sans-serif;
+    width: 30%;
+    padding: 10px ;
+    background-color: #ff4d4d;
+    color: white;
+    font-size: 18px;
+    border: none;
+    border-radius: 8px;
+    margin-top: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
+}
+
+.btn-submit:hover {
+    background-color: #e60000;
+    transform: scale(1.05);
+}
+
+    </style>
 </head>
 <body>
 
     <div class="outer-box">
-
-        <div>
+        <!-- ไอคอนแจ้งเตือน -->
+        <div class="icon-circle">
             <i class="fa-solid fa-circle-exclamation"></i>
         </div>
 
-        <div class="head-REPORT">
-            <a href="javascript:history.back()" class="btn-back">ย้อนกลับ</a>
+        <div class="head-report">
+            
             <h1>รายงานปัญหา</h1>            
         </div>
 
+        <div class="report-content">
+            <!-- ข้อมูลอีเวนต์ -->
+            <div class="event-info">
+                <p><strong>ชื่อกิจกรรม :</strong> {{ event.event_name }}</p>
+                <p><strong>เจ้าของกิจกรรม :</strong>  {{ event.created_by.username }}</p>
+                <p><strong>ผู้รายงาน :</strong> {{ request.user.username }}</p>
+            </div>
 
-        
 
-        <!-- ข้อมูลอีเวนต์ -->
-        <div class="event-info">
-            <p><strong>ชื่อกิจกรรม :</strong> {{ event.event_name }}</p>
-            <p><strong>เจ้าของกิจกรรม :</strong> {{ event.created_by.username }}</p>
-            <p><strong>ผู้รายงาน :</strong> {{ request.user.username }}</p>
+            <form method="POST" action="">
+                {% csrf_token %}
+
+                <!-- <label for="report_type"><strong>ประเภทปัญหา:</strong></label> -->
+    
+                <select name="report_type" id="report_type">
+                    <option value="" disabled selected>เลือกประเภทปัญหา</option>
+                    <option value="ความผิดพลาดของระบบ">ความผิดพลาดของระบบ</option>
+                    <option value="พฤติกรรมไม่เหมาะสม">พฤติกรรมไม่เหมาะสม</option>
+                    <option value="อื่นๆ">อื่นๆ</option>
+                </select>
+            
+                <textarea name="description" rows="4" placeholder="กรอกรายละเอียดปัญหาที่พบ"></textarea>
+
+                <button type="submit" class="btn-submit" >รายงาน</button>
+            </form>
+            <a href="javascript:history.back()" class="btn-back"><i class="fa-solid fa-angle-left"></i> ย้อนกลับ</a>
         </div>
-
-        <!-- ฟอร์มรายงาน -->
-        <form method="POST" action="">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="btn-submit">รายงาน</button>
-        </form>
-
     </div>
 
 </body>
-
 </html>

@@ -1,0 +1,119 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Detail</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+
+
+    <link href="{% static 'css/css_member/review/review_list.css' %}" rel="stylesheet">
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@100..700&display=swap" rel="stylesheet">
+   
+</head>
+
+<body>
+    <div class="outer-box">
+        <h2><i class="fa-solid fa-star"></i> รีวิวสมาชิกในกิจกรรม: {{ event.event_name }}</h2>
+        <div class="event-review-content">
+            <ul>
+                {% for member in members %}
+                    {% if member != request.user %}
+                        <li class="member-item">
+                            <div class="member-info">
+                                <img src="{{ member.profile.url }}" alt="{{ member.username }}'s profile picture" class="member-avatar">
+                                <div class="member-details">
+                                    {% if member.id in reviewed_members %}
+                                        <span>{{ member.username }} <i class="fa-solid fa-circle-check"></i> รีวิวแล้ว</span>
+                                    {% else %}
+                                        <a href="{% url 'event_review_form' event.id member.id %}">{{ member.username }}</a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+        
+        
+
+        <div class="event-container">
+            <div class="event-post">
+                <!-- Profile and Event Details -->
+                <div class="post-left">
+                    <!-- รายละเอียดผู้โพสต์ -->
+                    <div class="post_member">
+                        <img src="{{ event.created_by.profile.url }}" alt="Profile Image" class="profile-image-post">
+                        <div class="member-info">
+                            <div class="username-container">
+                                <a href="{% if event.created_by.id == request.user.id %}{% url 'profile' %}{% else %}{% url 'member_profile' event.created_by.id %}{% endif %}" class="username-post">
+                                    {{ event.created_by.username }}
+                                </a>
+                            </div>
+                            
+                            <p class="location">
+                                <strong>กำลังจะไปที่... </strong>
+                                <i class="fa-solid fa-location-dot location-icon"></i>
+                                <a href="https://www.google.com/maps/search/?api=1&query={{ event.location }}" target="_blank">{{ event.location }}</a>
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- รายละเอียดอีเวนต์ -->
+                    <div class="detail-post">
+                        <h2>{{ event.event_name }}</h2>
+                        <p>{{ event.event_title }}</p>
+                    </div>
+
+                    <!-- รายละเอียดเพิ่มเติม (วัน, หมวดหมู่, จังหวัด) -->
+                    <div class="filter-box-post">
+                        <div class="date">
+                            <i class="fa-solid fa-calendar-days"></i>
+                            <p>: {{ event.event_datetime }}</p>
+                        </div>
+                        <div class="participants">
+                            <i class="fa-solid fa-user"></i>
+                            <p>: {{ event.max_participants }}</p>
+                        </div>
+                        <div class="category">
+                            <i class="fa-solid fa-shapes"></i>
+                            <p>: {{ event.category }}</p>
+                        </div>
+                        <div class="province">
+                            <i class="fa-solid fa-location-dot"></i>
+                            <p>: {{ event.province }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ข้อมูลโพสต์ (เนื้อหากิจกรรม) -->
+                <div class="post-content">
+                    <p>{{ event.post_content }}</p>
+                </div>
+
+                <!-- post-right -->
+                <div class="post-right">
+                    <div class="time-since-created">
+                        <!-- <i class="fa-solid fa-clock"></i> -->
+                        <span class="time-text">{{ event.time_since }}</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <a href="{% url 'feed' %}">กลับหน้าฟีด</a>
+    </div>
+
+</body>
+

@@ -120,6 +120,7 @@ body,html{
 }
 
 .login-button {
+    font-family:"Anuphan", sans-serif;
     width: 50%;
     padding: 15px;
     margin-top: 20px;

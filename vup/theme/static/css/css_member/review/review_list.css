@@ -1,0 +1,355 @@
+body {
+    font-family:"Anuphan", sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    /* justify-content: center; */
+    /* align-items: center; */
+    /* height: 100vh; */
+    /* margin: 0; */
+    animation: fadeIn 0.8s ease-in-out;
+    
+}
+
+.outer-box {
+    margin-top: 30px;
+    background: rgb(255, 255, 255);
+    border: 1px solid #cccccc;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    width: 800px;
+    /* transform: translateY(-20px); */
+    animation: slideDown 0.8s ease-in-out forwards; 
+    margin-bottom: 30px;
+}
+
+
+
+.event-review-content {
+    background: rgb(174, 206, 243);
+    border: 1px solid #cccccc;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    width: 600px;
+    margin: 0 auto;
+    margin-bottom: 30px;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.member-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.member-info {
+    display: flex;
+    /* align-items: center; */
+    width: 100%;
+}
+
+.member-avatar {
+    width: 40px;  /* ขนาดรูป */
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px; /* ระยะห่างระหว่างรูปและข้อความ */
+}
+
+.member-details {
+    display: flex;
+    /* align-items: center; */
+    justify-content: space-between;
+    width: 100%;
+}
+
+.member-details a {
+    color: #2d3a88;
+    text-decoration: none;
+}
+
+.member-details span {
+    color: #4caf50;  /* สีเขียวสำหรับ "รีวิวแล้ว" */
+}
+
+
+
+.event-container {
+    margin-top: 20px;
+}
+
+.post-box{
+    display: flex;
+}
+.event-post {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* padding: 10px; */
+    /* border: 1px solid #ccc; */
+    border-radius: 15px;
+    margin-bottom: 20px;
+    background-color: #fff;
+    border: 1px solid #cccccc;
+    width: 100%;
+    max-width: 650px;   
+    min-width: 650px;   
+    min-height: 200px;
+    overflow: hidden;   
+    margin: auto;
+    margin-top: 20px;
+}
+
+.post-left {
+    display: flex;
+    flex-direction: column;
+    gap: 0px;
+    flex-grow: 1;
+    /* border: 1px solid #ad2e2e; */
+    width: 100%;
+    max-width: 400px;
+    margin-left: 30px;
+    overflow: hidden;  
+}
+
+
+.post_member {
+    display: flex;
+    gap: 10px; 
+    margin: 10px;
+    padding: 20px 0;
+    /* line-height: 15px;  */
+}
+
+.member-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.username-container {
+    display: flex;
+    align-items: center; 
+    gap: 5px; 
+}
+
+.username-post {
+    font-weight: bold;
+    font-size: 16px;
+    margin: 0;
+}
+
+.userid-post {
+    font-size: 14px;
+    color: #797979;
+    margin: 0;
+}
+
+.location-icon {
+    color:  #ec2727;
+    font-size: 14px; 
+    margin-right: 5px; 
+    margin-left: 5px;
+}
+
+.location {
+    font-size: 13px;
+    margin: 0;
+    color:  #888;
+    margin-top: 5px; 
+    font-weight: normal;
+}
+
+.location a {
+    color: red;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.location a:hover {
+    text-decoration: underline;
+}
+
+.detail-post {
+    /* border: 1px solid #ca1b96; */
+    line-height: 10px;
+    color: #000;
+    margin-left: 14px;
+}
+
+.detail-post h2 {
+    font-size: 18px;
+    font-weight: bolder;
+    line-height: 5px;
+    margin-top: 10px;
+}
+
+.detail-post p {
+    font-size: 13px;
+    font-weight: normal;
+    line-height: 15px;
+    margin-top: 10px;
+}
+
+.filter-box-post {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    /* margin-top: 10px; */
+    /* border: 1px solid #22abd4; */
+    margin-left: 15px;
+    margin-bottom: 30px;
+    
+}
+
+.filter-box-post > div {
+    display: flex;
+    align-items: center;
+    padding: 0px 0px; 
+    background-color: #ffffff;
+    /* border: 1px solid #646464; */
+    border-radius: 40px;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+/* ไอคอนสำหรับแต่ละ dropdown */
+.filter-item i {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #000;
+    font-size: 18px;
+}
+
+
+/* Arrow icon for dropdown */
+.filter-dropdown::after {
+    content: '\25BC';
+    font-size: 12px;
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+.post-right {
+    display: flex;
+    flex-direction: column;  
+    justify-content: flex-start;  
+    height: 30vh;  
+    width: 40%;
+    /* border: 1px solid #d33636; */
+    padding: 0px  0px  30px 0px; 
+} 
+.dropdown {
+    position: relative; 
+    display: flex; 
+    justify-content: flex-end;
+    align-items: center; 
+    margin-right: 30px;
+}
+
+.dropdown-menu {
+    display: none; 
+    position: absolute; 
+    background-color: white; 
+    /* z-index: 1000;  */
+    min-width: 50px; 
+    right: 0; 
+    top: 100%; 
+}
+
+
+
+
+
+.time-since-created {
+    display: flex;
+    align-items: center;
+    width: 100%; 
+    margin-left: 130px;
+    padding-bottom: 10px;
+    margin-top: -5px;
+}
+
+.time-since-created .time-text {
+    font-size: 12px; 
+    color: #575757; 
+    opacity: 0.8;
+}
+
+
+.date, .time, .category, .participants ,.province {
+    background-color: #ffffff;
+    color: rgb(0, 0, 0);
+    /* padding: 0px;  */
+    border: 1px solid #646464;
+    border-radius: 20px;
+    text-align: center;
+    display: flex; 
+    align-items: center;
+    justify-content: center; 
+    font-weight: bold;
+    font-size: 13px;
+}
+
+.date {
+    width: 45%; 
+    font-weight: bold;
+}
+
+.time {
+    width: 15%; 
+    font-weight: bold;
+}
+
+.category {
+    width: 25%; 
+    font-weight: bold;
+}
+
+.participants {
+    width: 15%; 
+    font-weight: bold;
+}
+
+
+.province {
+    background-color: #ffffff;
+    color: rgb(0, 0, 0);
+    border: 1px solid #646464;
+    border-radius: 20px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 13px;
+    padding: 10px 10px;
+    /* gap: 8px;  */
+}
+
+.province i {
+    margin-left: 10px; 
+}
+
+.province p {
+    margin-right: 10px; 
+}
+
+.profile-image-post {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    border: 1px solid #000000;
+}
+

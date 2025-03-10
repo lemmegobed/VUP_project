@@ -6,7 +6,11 @@
     <title>Login</title>
     {% load static %}
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-    <link href="{% static 'css/css_registration\login.css' %}" rel="stylesheet">
+    
+    <link href="{% static 'css/css_registration\login_page.css' %}" rel="stylesheet">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@100..700&display=swap" rel="stylesheet">
+   
 
 </head>
 <body>
@@ -25,7 +29,7 @@
 
             {% if form.non_field_errors %}
             <div class="error-message">
-                <p>{{ form.non_field_errors|first }}</p> 
+                <p>{{ form.non_field_errors|first }}</p>
             </div>
             {% endif %}
         

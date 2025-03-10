@@ -12,7 +12,11 @@
 
     .menu-container {
         width: 200px;
-        background-color: #1d1d1d;
+        background-image: url('/static/pic/bg4.jpg'); 
+        background-size: cover; 
+        background-position: center; 
+        background-repeat: no-repeat; 
+        height: 100vh; 
         color: white;
         height: 94vh;
         display: flex;

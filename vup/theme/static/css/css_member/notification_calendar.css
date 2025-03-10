@@ -8,7 +8,14 @@ body,html{
     min-height: 100vh; 
     /* height: 100vh;
     height: auto; */
-    background-color: #2b3f65; 
+    
+    background-image: url('/static/pic/bg4.jpg'); 
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat; 
+    height: 100vh; 
+
+
     color: white; 
     /* padding: 20px; */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
@@ -51,7 +58,9 @@ body,html{
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: #1c2b4a;
+    /* background-color: #1c2b4a; */
+
+    
     padding: 20px;
     border-radius: 15px;
     width: 300px;
@@ -67,7 +76,7 @@ body,html{
     font-size: 15px;
     font-weight: bold;
     color: white;
-    background-color: #1c2b4a;
+    /* background-color: #1c2b4a; */
     display: flex;
 }
 
@@ -143,7 +152,7 @@ body,html{
   }
 
   .calendar-box-detail {
-    background: #ffe6f1; 
+    background: #2574c4; 
     display: inline-block;
     border: 1px solid #b9b8b8;
     padding: 0px 10px;
@@ -219,14 +228,14 @@ body,html{
   
   /* กำหนดสไตล์ของปุ่มเปลี่ยนมุมมอง */
   .fc-button {
-    background: #aec1da !important;
+    background: #4894a7 !important;
     color: #fff !important;
     border-radius: 5px !important;
     padding: 5px 5px !important;
   }
   
   .fc-button:hover {
-    background: #0056b3 !important;
+    background: #274d75 !important;
   }
   
   /* ปรับขนาดตัวอักษรของวันที่ */
@@ -281,7 +290,7 @@ body,html{
 }
 
 .message-noti i {
-    font-size: 10px;
+    font-size: 8px;
     color: #322969;
     margin-left: 5px;
 }
@@ -295,7 +304,7 @@ body,html{
 
 
 .notification-content ul li.unread {
-    /* background: #c4c3c3; */
+    background: #ffffff;
     border: 1px solid #aaa9a9;
     /* font-weight: bold; */
     padding: 5px;
@@ -321,7 +330,7 @@ body,html{
     flex-direction: column; 
     align-items: flex-start; 
     /* justify-content: space-between;  */
-    background: #f2f9ff;
+    background: #e6e5e5;
     padding: 5px;
     border-radius: 5px;
     margin-bottom: 7px;
@@ -356,24 +365,24 @@ body,html{
 }
 
 .btn-yes {
-    background-color: #56b462; /* สีเขียว */
+    background-color: #2e7738; /* สีเขียว */
     color: white;
     cursor: pointer;
 }
 
 .btn-yes:hover {
-    background-color: #339738;
+    background-color: #3bbb42;
     transform: scale(1.05); 
 }
 
 .btn-no {
-    background-color: #bd514a; /* สีแดง */
+    background-color: #a53c34; /* สีแดง */
     color: white;
     cursor: pointer;
 }
 
 .btn-no:hover {
-    background-color: #ad2d2b;
+    background-color: #e53935;
     transform: scale(1.05); 
 }
 
@@ -408,7 +417,7 @@ body,html{
     padding: 5px 5px;
     text-align: center;
     width: 60px;
-    background-color: #5fb3da; /* สีพื้นหลัง */
+    background-color: #4894a7; /* สีพื้นหลัง */
     color: white; /* สีตัวอักษร */
     text-decoration: none; /* เอาเส้นใต้ของลิงก์ออก */
     border-radius: 5px; /* มุมโค้งมน */
@@ -419,9 +428,13 @@ body,html{
 }
 
 .btn-join-chat:hover {
-    background-color: #2067a0; /* สีเมื่อ hover */
+    background-color: #1a567e; 
 }
-
+a {
+    text-decoration: none; 
+    color: black; 
+    font-weight: bold;
+}
 
 
 

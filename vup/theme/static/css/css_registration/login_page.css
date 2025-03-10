@@ -1,31 +1,33 @@
 
-body {
+body,html{
     font-family:"Anuphan", sans-serif;
+    background-color: #1c2b4a;
     /* display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     margin: 0; */
     /* background-color: #c5c7c9;  */
-    background-image: url('/static/pic/bg4.jpg'); 
-    background-size: cover; 
-    background-position: center; 
-    background-repeat: no-repeat; 
-    height: 100vh; 
+    /* background-image: url('/static/pic/bg4.jpg');  */
+    /* background-size: cover;  */
+    /* background-position: center;  */
+    /* background-repeat: no-repeat;  */
+    /* height: 100vh;   */
 }
 
 .container {
+    
     display: flex;
     width: 100%;
     height: 100vh; 
     overflow: hidden; 
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     /* background-color: #1c2b4a; */
-    /* background-image: url('/static/pic/bg4.jpg'); 
-    background-size: cover; 
-    background-position: center; 
-    background-repeat: no-repeat; 
-    height: 100vh;  */
+    /* background-image: url('/static/pic/bg4.jpg');  */
+    /* background-size: cover;  */
+    /* background-position: center;  */
+    /* background-repeat: no-repeat;  */
+    /* height: 100vh;  */
 }
 
 .left {
@@ -50,13 +52,11 @@ body {
     transform: scale(1.); 
 }
 .WELCOME-text {
-    font-family:"Anuphan", sans-serif;
     font-size: 30px;
     margin-bottom: 20px;
 }
 
 .WELCOME-under{
-    font-family:"Anuphan", sans-serif;
     font-size: 16px;
     font-weight: normal;
     text-align: center;
@@ -69,6 +69,7 @@ body {
     background-color: white; 
     padding: 40px;
     width: 50%; 
+    height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -78,7 +79,6 @@ body {
 }
 
 .login-text {
-    font-family:"Anuphan", sans-serif;
     font-size: 40px;
     font-weight: bolder;
     text-align: center;
@@ -87,7 +87,6 @@ body {
 }
 
 .right input {
-    font-family:"Anuphan", sans-serif;
     width: 100%; 
     padding: 10px;
     border-radius: 30px;
@@ -104,7 +103,6 @@ body {
 }
 
 .forgot {
-    font-family:"Anuphan", sans-serif;
     text-align: right;
     width: 100%;
 }

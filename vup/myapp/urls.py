@@ -17,8 +17,7 @@ urlpatterns = [
     path('edit-member/<int:member_id>/', edit_member, name='edit_member'),
 
     path('block/<int:id>/', block_user, name='block_user'),
-    path('upload-ads/', upload_ads, name='upload_ads'),
-    path('warn_event/<int:event_id>/', warn_event, name='warn_event'),
+    # path('warn_event/<int:event_id>/', warn_event, name='warn_event'),
     path('event/report/<int:event_id>/', event_detail_report, name='event_detail_report'),
     
     
@@ -34,8 +33,9 @@ urlpatterns = [
 
     path("check-username/", check_username, name="check_username"),
     path("check-username/register/", check_username_register, name="check_username_register"),
+    path('check-email-register/', check_email_register, name='check_email_register'),
     
-    path('my-activity/', my_activity, name='my_activity'),
+    # path('my-activity/', my_activity, name='my_activity'),
     path('chat/', chat_rooms_list, name='chat'),
 
     path('chat/<int:chat_room_id>/', chat_room_detail, name='chat_room'),
@@ -59,7 +59,7 @@ urlpatterns = [
     
     path('delete-event/<int:event_id>/', delete_event, name='delete_event'),
     path('search/', search_events, name='search_events'),
-    path('filter/', filter_events, name='filter_events'),
+    # path('filter/', filter_events, name='filter_events'),
     
     path('logout/', logout_view, name='logout'),
 

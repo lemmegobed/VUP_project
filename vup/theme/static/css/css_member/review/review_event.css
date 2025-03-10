@@ -1,0 +1,153 @@
+body {
+    font-family:"Anuphan", sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* height: 100vh; */
+    /* margin: 0; */
+    animation: fadeIn 0.8s ease-in-out;
+    
+}
+.outer-box {
+    margin-top: 30px;
+    background: rgb(255, 255, 255);
+    border: 1px solid #cccccc;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    width: 800px;
+    /* transform: translateY(-20px); */
+    animation: slideDown 0.8s ease-in-out forwards; 
+    margin-bottom: 30px;
+}
+
+.head-info {
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    font-size: 25px;
+    font-weight: normal;
+    color: #333;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .head-info p {
+    display: flex;
+    align-items: center;
+    margin: 0;
+  }
+
+  .head-info strong {
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+
+
+  
+  .icon-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px; 
+    height: 30px;
+    border-radius: 50%; 
+    background-color: #ff9800; 
+    margin-right: 10px; 
+  }
+  
+  .icon-container i {
+    color: white; /* สีของไอคอน */
+    font-size: 18px; /* ขนาดของไอคอน */
+  }
+
+  .review-form{
+    background: rgb(219, 245, 252);
+    border: 1px solid #cccccc;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    width: 700px;
+    margin: 0 auto;
+    margin-bottom: 30px;
+}
+
+  .status-selection {
+    display: flex;
+    gap: 20px; /* ระยะห่างระหว่างตัวเลือก */
+    /* justify-content: center; */
+    margin-top: 10px;
+}
+
+.form-group {
+    margin-bottom: 10px;
+    padding: 10px;
+    margin-left: 25px;
+}
+
+label {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.review-user-info-head{
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    font-size: 25px;
+    font-weight: normal;
+    color: #333;
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+}
+
+.profile-pic {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-right: 15px;
+}
+
+
+
+
+textarea.form-control {
+    width: 90%; /* ให้กว้างเต็มพื้นที่ */
+    padding: 10px;
+    border: 1px solid #ccc; /* เส้นขอบของช่องกรอก */
+    border-radius: 12px; /* ขอบมน */
+    resize: vertical; /* ให้ขยายได้ในแนวดิ่ง */
+    font-size: 16px; /* ขนาดตัวอักษร */
+    background-color: #f9f9f9; /* สีพื้นหลัง */
+}
+
+textarea.form-control:focus {
+    border-color: #007bff; /* เปลี่ยนสีขอบเมื่อฟอร์มถูกคลิก */
+    outline: none;
+    background-color: #ffffff; /* เปลี่ยนพื้นหลังเป็นขาวเมื่อฟอร์มถูกคลิก */
+}
+
+.btn-save {
+    background-color: #2d3a88;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 12px;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: ๅ0px;
+    display: block; /* ทำให้ปุ่มเป็น block element */
+    margin-left: auto; /* จัดให้อยู่กลาง */
+    margin-right: auto; /* จัดให้อยู่กลาง */
+}
+
+
+.btn-save:hover {
+    background-color: #4b5aa7;
+}
+

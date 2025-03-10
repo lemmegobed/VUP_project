@@ -43,26 +43,6 @@ body,html{
     margin: 0;
 }
 
-/* New event button */
-.new-event-btn {
-    background-color: #ffffff;
-    padding: 10px 15px;
-    border-radius: 30px;
-    color: black;
-    font-weight: bold;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 120px; 
-    transition: all 0.3s ease;
-    margin-top: 20px;
-}
-
-.new-event-btn:hover {
-    cursor: pointer; 
-    transform: scale(1.1); /* ขยายขนาดปุ่ม */
-}
 
 .menu-items {
     display: flex;
@@ -190,7 +170,7 @@ margin-bottom: 20px;
     width: 45px; 
     height: 45px; 
     border-radius: 50%; 
-    background-color: #f8a0af;
+    background-color: #abd5f8;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); 
     margin-right: 15px; 
     margin-left: 15px;

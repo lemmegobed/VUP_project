@@ -6,7 +6,7 @@
     <title>Calendar and Notification</title>
 
     {% load static %}
-    <link href="{% static 'css/css_member/noti_and_calendar.css' %}" rel="stylesheet">
+    <link href="{% static 'css/css_member/notification.css' %}" rel="stylesheet">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
@@ -33,71 +33,71 @@
         
         <ul>
             {% with user.notifications.all|dictsortreversed:"created_at" as notifications %}
-            {% if notifications %}
-                {% for notification in notifications %}
-                    {% if not notification.is_scheduled %}
-                        <!-- การแจ้งเตือนประเภท request -->
-                        {% if notification.notification_type == "request" %}
-                            {% if notification.related_event and notification.related_event.is_active and notification.related_event.created_by.is_banned == False %}
-                                <li class="{% if not notification.is_read %}unread{% endif %}">
-                                    <div class="message-noti">
-                                        <i class="fa-solid fa-circle"></i>
-                                        <p class="notification-text">{{ notification.message|safe}}</p>
-                                    </div>
-                                    <div class="button-action-noti">
-                                        {% with notification.related_request as event_request %}
-                                            {% if event_request %}
-                                                {% if event_request.response_status == "pending" %}
-                                                    <div class="action-buttons">
-                                                        <button class="btn-yes" onclick="handleAction({{ event_request.id }}, 'accept')">อนุมัติ</button>
-                                                        <button class="btn-no" onclick="handleAction({{ event_request.id }}, 'reject')">ปฏิเสธ</button>
-                                                    </div>
-                                                {% elif event_request.response_status == "accepted" %}
-                                                    <button class="btn-approved" disabled>อนุมัติแล้ว</button>
-                                                {% elif event_request.response_status == "rejected" %}
-                                                    <button class="btn-rejected" disabled>ปฏิเสธแล้ว</button>
+                {% if notifications %}
+                    {% for notification in notifications %}
+                        {% if not notification.is_scheduled %}
+                            {% if notification.notification_type == "request" %}
+                                <!-- การแจ้งเตือนประเภท request -->
+                                {% if notification.related_event and notification.related_event.is_active and notification.related_event.created_by.is_banned == False %}
+                                    <li class="{% if not notification.is_read %}unread{% endif %}">
+                                        <div class="message-noti">
+                                            <i class="fa-solid fa-circle"></i>
+                                            <p class="notification-text">{{ notification.message|safe }}</p>
+                                        </div>
+                                        <div class="button-action-noti">
+                                            {% with notification.related_request as event_request %}
+                                                {% if event_request %}
+                                                    {% if event_request.response_status == "pending" %}
+                                                        <div class="action-buttons">
+                                                            <button class="btn-yes" onclick="handleAction({{ event_request.id }}, 'accept')">อนุมัติ</button>
+                                                            <button class="btn-no" onclick="handleAction({{ event_request.id }}, 'reject')">ปฏิเสธ</button>
+                                                        </div>
+                                                    {% elif event_request.response_status == "accepted" %}
+                                                        <button class="btn-approved" disabled>อนุมัติแล้ว</button>
+                                                    {% elif event_request.response_status == "rejected" %}
+                                                        <button class="btn-rejected" disabled>ปฏิเสธแล้ว</button>
+                                                    {% endif %}
                                                 {% endif %}
-                                            {% endif %}
-                                        {% endwith %}
-                                    </div>
-                                </li>
-                            {% endif %}
-                        
-                        <!-- การแจ้งเตือนประเภท response -->
-                        {% elif notification.notification_type == "response" %}
-                            {% if notification.related_event and notification.related_event.is_active and notification.related_event.created_by.is_banned == False %}
+                                            {% endwith %}
+                                        </div>
+                                    </li>
+                                {% endif %}
+                            {% elif notification.notification_type == "response" %}
+                                <!-- การแจ้งเตือนประเภท response -->
+                                {% if notification.related_event and notification.related_event.is_active and notification.related_event.created_by.is_banned == False %}
+                                    <li class="{% if not notification.is_read %}unread{% endif %}">
+                                        <div class="message-noti">
+                                            <i class="fa-solid fa-circle"></i>
+                                            <p>{{ notification.message|safe }}</p>
+                                        </div>
+                                    </li>
+                                {% endif %}
+                            {% elif notification.notification_type == "system" %}
+                                <!-- การแจ้งเตือนประเภท system -->
                                 <li class="{% if not notification.is_read %}unread{% endif %}">
-                                    <div class="message-noti">
-                                        <i class="fa-solid fa-circle"></i>
-                                        <p>{{ notification.message|safe }}</p>
+                                    <div class="message-noti-system">
+                                        <i class="fa-solid fa-triangle-exclamation"></i>
+                                        <p>{{ notification.message|safe  }}</p>
                                     </div>
                                 </li>
+                            {% elif notification.notification_type == "อื่น ๆ" %}
+                                <!-- การแจ้งเตือนประเภท "อื่น ๆ" (รีวิวกิจกรรม) -->
+                                
+                                        <li class="{% if not notification.is_read %}unread{% endif %}">
+                                            <div class="message-noti">
+                                                <i class="fa-solid fa-circle"></i>
+                                                <p>{{ notification.message|safe }}</p>
+                                            </div>
+                                        </li>
+                                    
+                                {% endif %}
                             {% endif %}
-                        
-                        <!-- การแจ้งเตือนประเภท system -->
-                        {% elif notification.notification_type == "system" %}
-                            <li class="{% if not notification.is_read %}unread{% endif %}">
-                                <div class="message-noti-system">
-                                    <i class="fa-solid fa-triangle-exclamation"></i>
-                                    <p>{{ notification.message }}</p>
-                                </div>
-                            </li>
-        
-                        <!-- ✅ แจ้งเตือนประเภท "อื่น ๆ" (รีวิวกิจกรรม) -->
-                        {% elif notification.notification_type == "อื่น ๆ" %}
-                            <li class="{% if not notification.is_read %}unread{% endif %}">
-                                <div class="message-noti">
-                                    <i class="fa-solid fa-circle"></i>
-                                    <p>{{ notification.message|safe }}</p>
-                                </div>
-                            </li>
-                        {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        <li class="no-notifications">ไม่มีการแจ้งเตือน</li>
                     {% endif %}
-                {% endfor %}
-            {% else %}
-                <li class="no-notifications">ไม่มีการแจ้งเตือน</li>
-            {% endif %}
-        {% endwith %}
+                {% endwith %}
+        </ul>
         
 
     </div>
