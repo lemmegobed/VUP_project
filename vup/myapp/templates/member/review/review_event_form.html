@@ -9,7 +9,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
 
 
-    <link href="{% static 'css/css_member/review/review_event.css' %}" rel="stylesheet">
+    <link href="{% static 'css/css_member/review/review_events.css' %}" rel="stylesheet">
 
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -22,20 +22,22 @@
 </head>
 <body>
     <div class="outer-box"> 
+        <a href="{% url 'review_event' event.id %}" class="centered-link">
+            <i class="fa-solid fa-chevron-left"></i> กลับไปที่รายชื่อสมาชิก
+        </a>
         <div class="head-info">
             <p>
               <span class="icon-container">
-                <i class="fa-solid fa-star"></i> <!-- ตัวอย่างไอคอน -->
+                <i class="fa-solid fa-star"></i> 
               </span>
-              รีวิว {{ participant.username }} ในกิจกรรม <strong> {{ event.event_name }}</strong>
+              รีวิว <strong>{{ participant.username }}</strong> ในกิจกรรม <strong> {{ event.event_name }}</strong>
             </p>
-          </div>
+        </div>
           
         
         <div class="review-user-info">
             <div class="review-user-info-head">
                 <img src="{{ participant.profile.url }}" alt="{{ participant.username }}" class="profile-pic">
-                <!-- <p><strong>ชื่อ:</strong> {{ participant.username }}</p> -->
             </div>
 
             <div class="review-form">
@@ -60,11 +62,7 @@
            
             
         </div>
-    
 
-        
-
-        <a href="{% url 'review_event' event.id %}">🔙 กลับไปที่รายชื่อสมาชิก</a>
     </div>
 
 </body>

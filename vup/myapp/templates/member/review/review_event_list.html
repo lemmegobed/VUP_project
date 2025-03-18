@@ -9,7 +9,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
 
 
-    <link href="{% static 'css/css_member/review/review_list.css' %}" rel="stylesheet">
+    <link href="{% static 'css/css_member/review/review_event_list.css' %}" rel="stylesheet">
 
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -23,13 +23,26 @@
 
 <body>
     <div class="outer-box">
-        <h2><i class="fa-solid fa-star"></i> รีวิวสมาชิกในกิจกรรม: {{ event.event_name }}</h2>
+        <a href="{% url 'feed' %}" class="centered-link">
+            <i class="fa-solid fa-chevron-left"></i> กลับหน้าฟีด
+        </a>
+
+        <div class="head-info">
+            <p>
+              <span class="icon-container">
+                <i class="fa-solid fa-star"></i> 
+              </span>
+              รีวิวสมาชิกในกิจกรรม <strong> {{ event.event_name }}</strong>
+            </p>
+        </div>
+
+        <!-- <h2><i class="fa-solid fa-star"></i> รีวิวสมาชิกในกิจกรรม: {{ event.event_name }}</h2> -->
         <div class="event-review-content">
             <ul>
                 {% for member in members %}
                     {% if member != request.user %}
                         <li class="member-item">
-                            <div class="member-info">
+                            <div class="member-info-review">
                                 <img src="{{ member.profile.url }}" alt="{{ member.username }}'s profile picture" class="member-avatar">
                                 <div class="member-details">
                                     {% if member.id in reviewed_members %}
@@ -111,8 +124,6 @@
 
             </div>
         </div>
-
-        <a href="{% url 'feed' %}">กลับหน้าฟีด</a>
     </div>
 
 </body>

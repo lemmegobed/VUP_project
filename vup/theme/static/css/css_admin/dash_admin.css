@@ -1,347 +1,254 @@
-    body,html{
-        font-family:"Anuphan", sans-serif;
-        background-color: #f0eeee;
-        /* margin-left: 30%; */
-    }
+body,html{
+    font-family:"Anuphan", sans-serif;
+    background-color: #f0eeee;
+    /* margin-left: 30%; */
+}
 
-    .container {
-        display: flex;
-        flex-direction: row; /* จัดให้อยู่ในแนวนอน */
-        align-items: flex-start; /* จัดให้อยู่ด้านบน */
-    }
+.container {
+    display: flex;
+    flex-direction: row; 
+    align-items: flex-start; 
+}
 
-    .menu-container {
-        width: 200px;
-        background-color: #1d1d1d;
-        color: white;
-        height: 94vh;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between; 
-        align-items: center;
-        padding: 20px 0;
-        position: fixed;
-        top: 0;
-        left: 0;
-        border-radius: 0 40px 40px 0;
-    }
+.menu-container {
+    width: 200px;
+    background-color: #1d1d1d;
+    color: white;
+    height: 94vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; 
+    align-items: center;
+    padding: 20px 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    border-radius: 0 40px 40px 0;
+}
 
-    .profile-section {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
+.profile-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
-    .profile-image {
-        border-radius: 50%;
-        width: 70px;
-        height: 70px;
-        margin-bottom: 10px;
-        border: 2px solid #d1d1d1;
-        margin-top: 30px;
-    }
+.profile-image {
+    border-radius: 50%;
+    width: 70px;
+    height: 70px;
+    margin-bottom: 10px;
+    border: 2px solid #d1d1d1;
+    margin-top: 30px;
+}
 
-    .username {
-        font-weight: bold;
-        font-size: 16px;
-        text-align: center;
-        margin: 0;
-    }
-
-
-    .menu-items {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        width: 100%; 
-    }
-
-    .menu-item {
-        width: 80%; 
-        margin-left: 10px;
-        padding: 20px 15px;
-        color: white;
-        text-align: center;
-        text-decoration: none;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 16px;
-        transition: background 0.3s;
-        margin-bottom: 10px;
-        border-radius: 25px 0 0 25px;
-    }
+.username {
+    font-weight: bold;
+    font-size: 16px;
+    text-align: center;
+    margin: 0;
+}
 
 
-    .menu-item.active {
-        background-color: #ffffff;
-        font-weight: bolder;
-        color: #1b1b1b;
-        border-radius: 25px 0 0 25px;
-    }
+.menu-items {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%; 
+}
 
-    .menu-item:hover {
-        background-color: #f0eeee;
-        color: #1f1f20;
-        font-weight: bold;
-        border-radius: 25px 0 0 25px;
-        text-align: center;
-    }
-
-    i {
-        margin-right: 8px;
-    }
-
-    .profile-header {
-        display: flex;
-        align-items: center; /* จัดให้ไอเทมอยู่ตรงกลางในแนวตั้ง */
-        /* gap: 0px;  */
-        font-weight: bold;
-        font-size: 18px;
-    }
-
-    .profile-header i {
-        font-size: 20px; /* ปรับขนาดไอคอนตามที่ต้องการ */
-    }
-
-    .my_profile_head {
-        margin: 0; /* เอา margin เริ่มต้นออกจาก p tag */
-    }
+.menu-item {
+    width: 80%; 
+    margin-left: 10px;
+    padding: 20px 15px;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    transition: background 0.3s;
+    margin-bottom: 10px;
+    border-radius: 25px 0 0 25px;
+}
 
 
-    .logout {
-        padding: 10px 25px;
-        color: #ffffff;
-        font-weight: normal;
-        display: flex;
-        align-items: center;
-        border-radius: 20px;
-    }
+.menu-item.active {
+    background-color: #ffffff;
+    font-weight: bolder;
+    color: #1b1b1b;
+    border-radius: 25px 0 0 25px;
+}
 
-    .logout:hover {
-        background-color: #aa3129;
-        color: white;
-        border-radius: 20px;
-        padding: 10px 10px;
-        margin: 0;
-    }
+.menu-item:hover {
+    background-color: #f0eeee;
+    color: #1f1f20;
+    font-weight: bold;
+    border-radius: 25px 0 0 25px;
+    text-align: center;
+}
 
-    .outer-box {
-        /* display: flex; */
-        justify-content: center;
-        align-items: center;
-        padding: 20px;
-        background-color: #ffffff; 
-        width: 80%; 
-        margin: 0 auto; 
-        border-radius: 20px; 
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
-        margin-left: 16%;
-        /* margin-right: 29%; */
-        margin-top: 30px;
-        margin-bottom: 30px;
-    }
+i {
+    margin-right: 8px;
+}
+
+.profile-header {
+    display: flex;
+    align-items: center; 
+    /* gap: 0px;  */
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.profile-header i {
+    font-size: 20px;
+}
+
+.my_profile_head {
+    margin: 0; 
+}
 
 
+.logout {
+    padding: 10px 25px;
+    color: #ffffff;
+    font-weight: normal;
+    display: flex;
+    align-items: center;
+    border-radius: 20px;
+}
 
-    .content-box {
-        display: flex; 
-        flex-direction: row; 
-        flex-wrap: wrap;  /* ✅ ทำให้เนื้อหาเลื่อนไปล่างถ้าพื้นที่ไม่พอ */
-        gap: 10px; 
-        justify-content: flex-start; 
-        align-items: center;
-        width: 95%;
-        padding: 15px;
-        border-radius: 8px; 
-        background-color: #ede9fe; 
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
-        margin-top: 20px;
+.logout:hover {
+    background-color: #aa3129;
+    color: white;
+    border-radius: 20px;
+    padding: 10px 10px;
+    margin: 0;
+}
 
-    }
-    
+.outer-box {
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background-color: #ffffff; 
+    width: 80%; 
+    margin: 0 auto; 
+    border-radius: 20px; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+    margin-left: 16%;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
 
-    .total-members {
-        display: flex;  
-        flex-direction: column; 
-        align-items: center; 
-        justify-content: center; 
-        height: 100%; 
-        text-align: center; 
-        width: 10%;
-        padding: 10px;
-        border-radius: 8px; 
-        background-color: #ffffff; 
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
-        /* margin-top: 20px; */
-        margin: 5px;
-    }
+.profile-header {
+    display: flex;
+    align-items: center; 
+    /* gap: 0px;  */
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 25px;
+}
 
-    .total-members h1{
-        margin: 5px;
-        font-size: 24px; 
-        color: #181268;
-    }
+.content-box {
+    justify-content: flex-start; 
+    align-items: center;
+    padding: 15px;
+    border-radius: 8px; 
+    background-color: #5169a1; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 20px;
+}
 
-    .total-members p{
-        margin: 0;
-        font-size: 12px; 
-        color: #8a8a8a;
-    }
-    
-    .icon-total-member {
-        width: 50px; 
-        height: 50px; 
-        background-color: #b3c3e2; 
-        border-radius: 50%; 
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        position: relative; 
-    }
-    
-    .icon-total-member i {
-        font-size: 20px; 
-        color: #181268; 
-        position: absolute; 
-        top: 50%; 
-        left: 50%; 
-        transform: translate(-50%, -50%); /* ปรับให้ตำแหน่งอยู่กึ่งกลาง */
-    }
+.box-chart {
+    justify-content: flex-start; 
+    align-items: center;
+    padding: 15px;
+    border-radius: 8px; 
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 20px;
+}
 
-    .total-events {
-        display: flex; 
-        flex-direction: column; 
-        align-items: center; 
-        justify-content: center; 
-        height: 100%; 
-        text-align: center; 
-        width: 10%;
-        padding: 10px;
-        border-radius: 8px; 
-        background-color: #ffffff; 
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
-        /* margin-top: 20px; */
-        margin: 5px;
-    }
+.total-members {
+    display: flex;  
+    flex-direction: row;
+    align-items: center;  
+    justify-content: center; 
+    text-align: center; 
+    width: 200px; 
+    padding: 10px;
+    border-radius: 8px; 
+    border: 1px solid #b4b3b3;
+    background-color: #ffffff; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+    /* margin: 5px; */
+}
 
-    .total-events h1{
-        margin: 5px;
-        font-size: 24px; 
-        color: #5650ad;
-    }
+.total-members h1 {
+    margin: 5px;
+    font-size: 24px; 
+    color: #0f2188;
+}
 
-    .total-events p{
-        margin: 0;
-        font-size: 12px; 
-        color: #8a8a8a;
-    }
-    .icon-total-events {
-        width: 50px; 
-        height: 50px; 
-        background-color: #b3c3e2; 
-        border-radius: 50%; 
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        position: relative; 
-    }
-    
-    .icon-total-events i {
-        font-size: 20px; 
-        color: #181268; 
-        position: absolute; 
-        top: 50%; 
-        left: 50%; 
-        transform: translate(-50%, -50%); /* ปรับให้ตำแหน่งอยู่กึ่งกลาง */
-    }
+.total-members p {
+    margin: 0;
+    font-size: 12px; 
+    color: #8a8a8a;
+}
 
-    .member_year {
-        display: flex;
-        flex-direction: column; 
-        align-items: center; 
-        justify-content: center;  
-        background-color: #ffffff; 
-        border-radius: 12px; 
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
-        padding: 20px; 
-        margin: 10px auto; 
-        width: 500px;
-        height: 300px; 
-        text-align: center; 
-        padding: 20px;
-        /* margin: 10px; */
-    }
-    
-    #genderPieChart {
-        max-width: 70%; 
-        max-height: 70%; 
-    }
+.icon-total-member {
+    width: 50px; 
+    height: 50px; 
+    background-color: #b3c3e2; 
+    border-radius: 50%; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: relative; 
+    margin-right: 10px; 
+}
 
-    .genderBar {
-        display: flex;
-        flex-direction: column; 
-        align-items: center; 
-        justify-content: center;  
-        background-color: #ffffff; 
-        border-radius: 12px; 
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
-        padding: 20px; 
-        margin: 10px auto; 
-        width: 300px; 
-        height: 300px; 
-        text-align: center; 
-    }
-    
-    #genderBarChart,#genderPieChart {
-        max-width: 90%;
-        max-height: 90%; 
-        padding: 10px;
-    }
-    
-    .dashboard {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 15px;
-    }
-    .card {
-        background: white;
-        padding: 15px;
-        border-radius: 10px;
-        box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-        text-align: center;
-    }
-    .card h3 {
-        margin: 0;
-        font-size: 16px;
-        color: #555;
-    }
-    .card p {
-        font-size: 24px;
-        font-weight: bold;
-        color: #333;
-        margin: 10px 0;
-    }
-    .card p.small {
-        font-size: 14px;
-        color: #777;
-    }
-    .chart-container {
-        background: white;
-        padding: 15px;
-        border-radius: 10px;
-        box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-        grid-column: span 2;
-        text-align: center;
-    }
-    canvas {
-        width: 100%;
-        max-width: 500px;
-        height: auto;
-    }
-    @media (max-width: 900px) {
-        .dashboard {
-            grid-template-columns: repeat(2, 1fr);
-        }
-    }
-    @media (max-width: 600px) {
-        .dashboard {
-            grid-template-columns: 1fr;
-        }
-    }
+.icon-total-member i {
+    font-size: 20px; 
+    color: #181268; 
+    position: absolute; 
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%); 
+}
+
+.detail-incard {
+    display: flex;
+    flex-direction: column; 
+    justify-content: center;
+    text-align: left;
+}
+
+.graph-content {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap; 
+}
+
+.card {
+    border: 1px solid #b4b3b3;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 45%;
+    text-align: center;
+}
+
+.chart-container {
+    width: 100%;
+    margin-top: 20px;
+}
+
+canvas {
+    max-width: 100%;
+    height: auto;
+}

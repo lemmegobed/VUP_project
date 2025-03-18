@@ -1,5 +1,5 @@
 
-    body,html{
+body,html{
     font-family:"Anuphan", sans-serif;
     background-color: #f0eeee;
     /* margin-left: 30%; */
@@ -23,6 +23,11 @@
     top: 0;
     left: 0;
     border-radius: 0 40px 40px 0;
+}
+
+.event_head{
+    margin-left: 20px;
+    font-size: 16px;
 }
 
 .profile-section {
@@ -129,7 +134,6 @@ i {
 }
 
 
-
 .button-container {
     margin-top: 20px;
     display: flex;
@@ -138,222 +142,208 @@ i {
     gap: 10px; 
 }
 
-
 .btn {
-padding: 10px 20px;
-border-radius: 5px;
-border: none;
-cursor: pointer;
-font-size: 16px;
-font-weight: bold;
-transition: background-color 0.3s ease;
-gap: 0;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    gap: 0;
 }
-
-
 
 .outer-box-profile {
-/* display: flex; */
-justify-content: center;
-align-items: center;
-padding: 20px;
-background-color: #ffffff; 
-width: 50%; 
-margin: 0 auto; 
-border-radius: 20px; 
-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
-margin-right: 29%;
-margin-top: 30px;
-margin-bottom: 30px;
+    /* display: flex; */
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background-color: #ffffff; 
+    width: 50%; 
+    margin: 0 auto; 
+    border-radius: 20px; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+    margin-right: 29%;
+    margin-top: 30px;
+    margin-bottom: 30px;
 }
 
-
-
 .outer-rating-box {
-    border: 2px solid #d1d1d1;
+    border: 1px solid #d1d1d1;
     border-radius: 10px;
     padding: 20px;
     margin: auto;
     width: 85%;
-    background-color: #fdfdfd;
+    /* background-color: #eaf3fa; */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
     margin-bottom: 20px;
-    }
-
+}
 
 .event-statistics {
-display: flex;
-justify-content: space-between;
-flex-wrap: wrap;
-gap: 5px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 5px;
 }
 
 .event-summary {
-/* border: 1px solid #868686; */
-border-radius: 50%;
-width: 120px;
-height: 120px;
-background-color: #3d8db6;
-display: flex;
-align-items: center;
-justify-content: center;
-color: #ffffff;
-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    background-color: #3d8db6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .event-summary-number{
-font-weight: bold;
-font-size: 40px;
+    font-weight: bold;
+    font-size: 40px;
 }
 
 .event-summary-text{
-font-weight: normal;
-font-size: 10px;
-/* color: #ffffff; */
+    font-weight: normal;
+    font-size: 10px;
+    /* color: #ffffff; */
 }
 
-
-/* Event Join */
 .event-join {
-/* border: 3px solid #2ecc71; */
-border-radius: 50%;
-width: 120px;
-height: 120px;
-background-color: #d8bc3e;
-display: flex;
-align-items: center;
-justify-content: center;
-font-weight: bold;
-color: #ffffff;
-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* border: 3px solid #2ecc71; */
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    background-color: #d8bc3e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: #ffffff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .event-join-number{
-font-weight: bold;
-font-size: 40px;
+    font-weight: bold;
+    font-size: 40px;
 }
 
 .event-join-text{
-font-weight: normal;
-font-size: 10px;
-/* color: #ffffff; */
+    font-weight: normal;
+    font-size: 10px;
+    /* color: #ffffff; */
 }
 
-/* Event Rating */
 .event-rating {
-/* border: 3px solid #f1c40f; */
-border-radius: 50%;
-width: 120px;
-height: 120px;
-background-color: #4da55b;
-display: flex;
-align-items: center;
-justify-content: center;
-font-weight: bold;
-color: #ffffff;
-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* border: 3px solid #f1c40f; */
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    background-color: #4da55b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: #ffffff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .event-rating -number{
-font-weight: bold;
-font-size: 40px;
+    font-weight: bold;
+    font-size: 40px;
 }
 
 .event-rating -text{
-font-weight: normal;
-font-size: 12px;
-/* color: #ffffff; */
+    font-weight: normal;
+    font-size: 12px;
+    /* color: #ffffff; */
 }
 
-/* Event Default */
 .event-default {
-/* border: 3px solid #e74c3c; */
-border-radius: 50%;
-width: 120px;
-height: 120px;
-background-color: #c05a4f;
-display: flex;
-align-items: center;
-justify-content: center;
-font-weight: bold;
-color: #ffffff;
-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* border: 3px solid #e74c3c; */
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    background-color: #c05a4f;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: #ffffff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .event-default -number{
-font-weight: bold;
-font-size: 40px;
+    font-weight: bold;
+    font-size: 40px;
 }
 
 .event-default -text{
-font-weight: normal;
-font-size: 12px;
-/* color: #ffffff; */
+    font-weight: normal;
+    font-size: 12px;
+    /* color: #ffffff; */
 }
 
-/* กรอบครอบชั้นที่สอง */
 .content-box {
-width: 85%;
-margin-left: 30px;
-border: 2px solid #cfcfcf; 
-padding: 15px;
-border-radius: 8px; 
-background-color: #f7f7f7; 
-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+    width: 85%;
+    margin-left: 30px;
+    border: 1px solid #cfcfcf; 
+    padding: 15px;
+    border-radius: 8px; 
+    background-color: #ffffff; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
 }
 
-/* เนื้อหา */
+
 .box-profile-show {
-/* display: flex; */
-margin-top: 20px;
-display: flex;
-flex-direction: column;
-align-items: center;
-margin: 0;
+    /* display: flex; */
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
 }
 
 .in-box-profile-show {
-display: flex;
-/* background-color: #2d7e23; */
-margin-top: 10px;
+    display: flex;
+    /* background-color: #2d7e23; */
+    margin-top: 10px;
 }
 
 
 .profile-image-show {
-width: 200px; 
-height: 200px;
-border-radius: 50%; 
-border: 1px solid #adadad; 
-object-fit: cover; 
-box-shadow: 0 8px 4px rgba(0, 0, 0, 0.1);
+    width: 200px; 
+    height: 200px;
+    border-radius: 50%; 
+    border: 1px solid #adadad; 
+    object-fit: cover; 
+    box-shadow: 0 8px 4px rgba(0, 0, 0, 0.1);
 }
 
 .username-profile {
-margin-top: 10px;
-font-size: 18px;
-font-weight: bold;
-color: #000000; 
-
+    margin-top: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #000000; 
 }
 
 .box-age {
-display: flex;
-justify-content: center;
-align-items: center;
-width: 30px; 
-height: 30px;
-background-color: #425774;
-border-radius: 50%; 
-/* border: 2px solid #ffffff;  */
-object-fit: cover; 
-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-font-size: 12px;
-color: #ffffff;
-text-align: center;
-margin-top: 5px;
-margin-left: 10px;
-
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px; 
+    height: 30px;
+    background-color: #425774;
+    border-radius: 50%; 
+    /* border: 2px solid #ffffff;  */
+    object-fit: cover; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-size: 12px;
+    color: #ffffff;
+    text-align: center;
+    margin-top: 5px;
+    margin-left: 10px;
 }
 
 
@@ -368,7 +358,7 @@ margin-left: 10px;
 
 .head-info-user{
     display: flex;
-    justify-content: space-between; /* จัดตำแหน่งข้อความและปุ่มให้ห่างกัน */
+    justify-content: space-between; 
     align-items: center;
     font-size: 18px;
     color: #000000;
@@ -381,9 +371,9 @@ margin-left: 10px;
 }
 
 .rating-box {
-    border: 2px solid #cfcfcf; /* สีกรอบของกล่อง */
-    padding: 0px; /* ขนาด padding ภายในกล่อง */
-    border-radius: 8px; /* ทำมุมให้กล่องมน */
+    border: 1px solid #cfcfcf; 
+    padding: 0px; 
+    border-radius: 8px; 
     display: inline-flex;
     align-items: center;
     width: 90%;
@@ -401,21 +391,21 @@ margin-left: 10px;
 }
 
 .edit-button {
-    background-color: #47607a; /* สีพื้นหลัง */
+    background-color: #47607a; 
     border: 1px solid #a5a5a5; 
-    color: white; /* สีของไอคอน */
-    font-size: 12px; /* ขนาดของไอคอน */
+    color: white;
+    font-size: 12px;
     padding: 10px;
-    border-radius: 50px; /* ทำให้ปุ่มเป็นวงกลม */
+    border-radius: 50px; 
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s ease; /* เพิ่มเอฟเฟกต์เมื่อโฮเวอร์ */
+    transition: all 0.3s ease;
 }
 
 .edit-button i {
-    margin-left: 5px; /* เพิ่มช่องว่างระหว่างไอคอนและข้อความ */
+    margin-left: 5px; 
 }
 
 
@@ -423,17 +413,6 @@ margin-left: 10px;
     background-color: #477db6;
 }
 
-/* .modal {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%; 
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.5);
-} */
 
 .profile-header {
     display: flex;
@@ -591,8 +570,6 @@ margin-left: 10px;
     font-size: 12px;
 }
 
-
-
 .event-container {
     display: flex;
     flex-direction: column;
@@ -601,7 +578,6 @@ margin-left: 10px;
 }
 
 
-/* Left Section */
 .post-left {
     display: flex;
     flex-direction: column;
@@ -609,7 +585,7 @@ margin-left: 10px;
     width: 70%;
 }
 
-/* Profile and Username */
+
 .post_member {
     display: flex;
     align-items: center;
@@ -645,7 +621,6 @@ margin-left: 10px;
 }
 
 
-/* แสดงเวลาอยู่ด้านบนสุด */
 .time-since-created {
     font-size: 14px;
     color: #777;
@@ -683,7 +658,6 @@ margin-left: 10px;
     background-color: #24476d;
 }
 
-/* ปุ่มลบ (เฉพาะกิจกรรม) */
 .btn-delete-event {
     background-color: #c9c9c9; 
     color: white;
@@ -703,32 +677,12 @@ margin-left: 10px;
     background-color: #b33844;
 }
 
-/* ปรับขนาดไอคอน */
 .btn-edit-event i,
 .btn-delete-event i {
     font-size: 16px;
     margin-left: 7px;
 }
 
-/* Edit and Delete Buttons */
-/* .edit-button, .delete-button {
-    background-color: transparent;
-    border: none;
-    color: #666;
-    cursor: pointer;
-    font-size: 16px;
-    transition: color 0.3s;
-} */
-
-/* .edit-button:hover {
-    color: #4caf50; 
-}
-
-.delete-button:hover {
-    color: #f44336; 
-} */
-
-/* Position for post container */
 .event-box-post {
     width: 90%;
     background-color: #ffffff;
@@ -814,9 +768,9 @@ margin-left: 10px;
 .button-container {
     margin-top: 20px;
     display: flex;
-    justify-content: center; /* จัดให้อยู่กึ่งกลางแนวนอน */
-    align-items: center; /* จัดให้อยู่กึ่งกลางแนวตั้ง (ถ้าจำเป็น) */
-    gap: 10px; /* ระยะห่างระหว่างปุ่ม */
+    justify-content: center; 
+    align-items: center; 
+    gap: 10px; 
 }
 
 
@@ -832,7 +786,7 @@ margin-left: 10px;
     gap: 10px; 
 }
 
-/* modal.css */
+
 .modal {
     position: fixed;
     inset: 0;
@@ -907,7 +861,7 @@ margin-left: 10px;
     margin-bottom: 10px;
 }
 
-/* ปุ่มลบ */
+
 #deleteConfirmModal .btn-delete {
     background-color: #4CAF50;
     color: white;
@@ -919,7 +873,6 @@ margin-left: 10px;
     font-weight: normal;
 }
 
-/* ปุ่มยกเลิก */
 #deleteConfirmModal .btn-secondary {
     background-color: #f44336;
     color: white;
@@ -930,7 +883,6 @@ margin-left: 10px;
     font-size: 16px;
 }
 
-/* hover effect */
 #deleteConfirmModal .btn-delete:hover {
     background-color: #257c19;
 }
@@ -940,27 +892,25 @@ margin-left: 10px;
 }
 
 
-/* ปรับให้ label อยู่ด้านซ้าย input */
 #eventModal-{{ event.id }} .form-group {
     display: flex;
-    flex-direction: row; /* จัด label และ input ในแนวนอน */
+    flex-direction: row; /
     align-items: center;
     justify-content: space-between;
     width: 100%;
     margin-bottom: 15px;
 }
 
-/* ป้ายกำกับ (label) อยู่ด้านซ้าย */
 #eventModal-{{ event.id }} .edit-event-label {
     font-size: 14px;
     font-weight: bold;
     color: rgb(5, 5, 5);
-    min-width: 150px; /* ป้องกัน label บีบ */
+    min-width: 150px; 
     text-align: left;
     margin-right: 10px;
 }
 
-/* ปรับให้ Input และ Select เต็มพื้นที่ */
+
 #eventModal-{{ event.id }} .edit-event-input {
     flex: 1; /* ขยายเต็มที่ */
     width: 100%;
@@ -972,7 +922,7 @@ margin-left: 10px;
 }
 
 #eventModal-{{ event.id }} .edit-event-select {
-    flex: 1; /* ขยายเต็มที่ */
+    flex: 1; 
     width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
@@ -982,19 +932,18 @@ margin-left: 10px;
 }
 
 
-/* กำหนดให้ Select มีดีไซน์เหมือน Input */
 #eventModal-{{ event.id }} .edit-event-select {
     appearance: none;
 }
 
-/* เพิ่มเอฟเฟกต์เมื่อโฟกัส */
+
 #eventModal-{{ event.id }} .edit-event-input:focus,
 #eventModal-{{ event.id }} .edit-event-select:focus {
     border-color: #007bff;
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
-/* ปุ่มบันทึก */
+
 #eventModal-{{ event.id }} .btn-save-event {
     background-color: #003366;
     color: white;
@@ -1027,9 +976,9 @@ margin-left: 10px;
     color: #ff0000;
 }
 
-/* ปรับ modal-content ให้รองรับปุ่มปิด */
+
 .modal-content {
-    position: relative; /* เพื่อให้ปุ่ม X อยู่ในตำแหน่งที่ถูกต้อง */
+    position: relative; 
     background: white;
     padding: 20px;
     border-radius: 10px;
@@ -1039,9 +988,6 @@ margin-left: 10px;
 }
 
 
-
-
-//* ปรับ modal-content ให้รองรับปุ่มปิด */
 #profileModal .modal-content {
     position: relative;
     background: white;
@@ -1053,17 +999,16 @@ margin-left: 10px;
 }
 
 
-/* กล่องฟอร์ม */
 #profileModal .profile-group {
     display: flex;
-    flex-direction: row; /* จัด label และ input ในแนวนอน */
+    flex-direction: row; 
     align-items: center;
     justify-content: space-between;
     width: 100%;
     margin-bottom: 15px;
 }
 
-/* ป้ายกำกับ */
+
 #profileModal .profile-label {
     font-size: 14px;
     font-weight: bold;
@@ -1073,7 +1018,7 @@ margin-left: 10px;
     margin-right: 10px;
 }
 
-/* อินพุต */
+
 .profile-group input, .profile-group select, .profile-group textarea {
     width: 100%; 
 
@@ -1123,7 +1068,6 @@ margin-left: 10px;
     width: 100%; 
 }
 
-/* ปรับขนาด input ให้ยาวขึ้นและรองรับไอคอน */
 .username-check input {
     width: 100%; 
     padding-right: 40px; 
@@ -1135,46 +1079,45 @@ margin-left: 10px;
     height: 40px;
 }
 
-/* จัดตำแหน่งไอคอนให้อยู่ด้านใน input */
 #usernameStatusIcon {
     position: absolute;
     right: 12px;
-    display: none; /* ซ่อนเริ่มต้น */
+    display: none; 
     font-size: 18px;
-    pointer-events: none; /* ป้องกันการคลิกไอคอน */
+    pointer-events: none; 
 }
 
-/* ถ้า username ใช้ได้ */
+
 .username-valid {
     color: green !important;
     display: block !important;
 }
 
-/* ถ้า username ซ้ำ */
+
 .username-invalid {
     color: red !important;
     display: block !important;
 }
 
-/* กำลังตรวจสอบ */
+
 .username-loading {
     color: blue !important;
     display: block !important;
     animation: spin 1s infinite linear;
 }
 
-/* เอฟเฟกต์หมุน */
+
 @keyframes spin {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
 }
 
 
-/* ข้อความแจ้งเตือนเมื่อชื่อซ้ำ */
+
 .error-message {
     font-size: 14px;
     color: red;
     margin-top: 5px;
-    display: none; /* ซ่อนข้อความเป็นค่าเริ่มต้น */
+    display: none; 
 }
 

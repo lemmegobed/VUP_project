@@ -1,0 +1,352 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+
+
+    <link href="{% static 'css/css_admin/dash_admin.css' %}" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- <link rel="preconnect" href="https://fonts.googleapis.com"> -->
+    <!-- <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> -->
+    <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@100..700&display=swap" rel="stylesheet">
+   
+</head>
+<body>
+
+    <div class="menu-container">
+        <div class="profile-section">
+            <img src="{% static 'pic/profile.jpg' %}" alt="Profile Image" class="profile-image">
+            <p class="username">Admin</p>
+        </div>
+
+        <div class="menu-items">
+            <a class="menu-item home-btt active " href="{% url 'dashboard' %}">
+                <i class="fa-solid fa-chart-line"></i>แดชบอร์ด
+            </a>
+            <a class="menu-item profile-btt " href="{% url 'userdata' %}">
+                <i class="fa-regular fa-address-card"></i> ข้อมูลผู้ใช้
+            </a>
+            <a class="menu-item chat-btt " href="{% url 'report_admin' %}" >
+                <i class="fa-solid fa-circle-exclamation"></i> รายงานปัญหา
+            </a>
+        </div>
+
+
+        <a href="{% url 'logout' %}" class="logout">
+            ออกจากระบบ
+        </a>
+    </div>
+
+    <div class="outer-box">
+        <div class="profile-header" style="display: inline-flex; align-items: center; gap: 8px;">
+            <i class="fa-solid fa-chart-line"></i>
+            <p class="my_profile_head" style="margin: 0;">แดชบอร์ด</p>
+        </div>
+
+
+        <div class="content-box">
+
+            <div class="total-members">
+                <div class="icon-total-member">
+                    <i class="fa-solid fa-plus"></i>
+                </div>
+                <h1>{{ new_users_today }}</h1>
+                <p>ผู้ใช้ถูกสร้างวันนี้</p>
+            </div>
+            
+            <div class="total-members">
+                <div class="icon-total-member">
+                   <i class="fa-solid fa-users"></i> 
+                </div>
+                <h1>{{ total_users }}</h1>
+                <p>ผู้ใช้ทั้งหมด</p>
+            </div>
+
+            
+
+            <div class="total-members">
+                <div class="icon-total-member">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+                <h1>{{ total_members }}</h1>
+                <p>ผู้ใช้ปัจจุบัน</p>
+            </div>
+
+
+            <div class="total-members">
+                <div class="icon-total-events">
+                    <i class="fa-solid fa-ban"></i>
+                </div>
+                <h1>{{ total_delete_member }}</h1>
+                <p> บัญชีที่ถูกระงับแล้ว</p>
+            </div>
+
+            <div class="total-events">
+                <div class="icon-total-events">
+                    <i class="fa-solid fa-chart-pie"></i>
+                </div>
+                <h1>{{ total_events }}</h1>
+                <p>กิจกรรมทั้งหมด</p>
+
+                <!-- <ul>
+                    {% for category in events_by_category %}
+                        <li>{{ category.category }}: {{ category.event_count }}</li>
+                    {% endfor %}
+                </ul> -->
+            </div>
+
+            <div class="total-events">
+                <div class="icon-total-events">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                </div>
+                <h1>{{ total_warned_event }}</h1>
+                <p>กิจกรรมถูกเตือนแล้ว</p>
+            </div>
+
+            
+            <div class="total-events">
+                <div class="icon-total-events">
+                    <i class="fa-solid fa-circle-exclamation"></i>
+                </div>
+                <h1>{{ total_warned_event  }}</h1>
+                <p>การรายงานปัญหา</p>
+
+                <!-- <ul>
+                    {% for report in report_event_by_category %}
+                    <li>{{ report.report_type }}: {{ report.report_event_by_category }}</li>
+                    {% endfor %}
+                </ul> -->
+            </div>
+            <div class="member_year">
+                <p>กราฟการสมัครสมาชิก</p>
+                <canvas id="signupChart"></canvas> 
+            </div>
+
+            <div class="genderBar">
+                <p>สัดส่วนเพศ</p>
+                <canvas id="genderPieChart"></canvas>
+                <!-- <canvas id="genderBarChart"></canvas> -->
+            </div>
+
+    
+            
+
+        </div>
+       
+    </div>
+
+</body>
+
+<!-- กราฟการสมัครสมาชิก -->
+<script>
+    // ดึงข้อมูลจาก Django Context ที่แปลงเป็น JSON แล้ว
+    const months = JSON.parse('{{ months|safe }}');
+    const membersCount = JSON.parse('{{ members_count|safe }}');
+
+    // ค้นหา canvas ที่จะใช้แสดงกราฟ
+    const ctx = document.getElementById('signupChart').getContext('2d');
+
+    // สร้าง Line Chart
+    const signupChart = new Chart(ctx, {
+        type: 'line', // ใช้ Line Chart
+        data: {
+            labels: months, // ชื่อเดือน
+            datasets: [{
+                label: 'จำนวนสมาชิกที่สมัคร',
+                data: membersCount, // ข้อมูลสมาชิกที่สมัคร
+                borderColor: 'blue',
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderWidth: 2,
+                pointBackgroundColor: 'blue',
+                pointRadius: 5
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'จำนวนสมาชิก'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'เดือน'
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    position: 'top'
+                }
+            }
+        }
+    });
+</script>
+
+
+
+<!-- pie เพศ -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+    // รับค่าจาก input hidden (หรือ Context ของ Django)
+    const maleMembers = {{ male_members|safe }};
+    const femaleMembers = {{ female_members|safe }};
+
+    console.log("Male Members:", maleMembers);
+    console.log("Female Members:", femaleMembers);
+
+    // ข้อมูลที่ใช้ร่วมกัน
+    const labels = ['Male', 'Female'];
+    const data = [maleMembers, femaleMembers];
+    const backgroundColors = ['#36A2EB', '#FF6384'];
+
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+    // รับค่าจาก input hidden (หรือ Context ของ Django)
+    const maleMembers = {{ male_members|safe }};
+    const femaleMembers = {{ female_members|safe }};
+
+    console.log("Male Members:", maleMembers);
+    console.log("Female Members:", femaleMembers);
+
+    // ข้อมูลที่ใช้ร่วมกัน
+    const labels = ['Male', 'Female'];
+    const data = [maleMembers, femaleMembers];
+    const backgroundColors = ['#36A2EB', '#FF6384'];
+
+    // สร้าง Bar Chart
+    const barCtx = document.getElementById('genderBarChart').getContext('2d');
+    const genderBarChart = new Chart(barCtx, {
+        type: 'bar', // ประเภทของกราฟ
+        data: {
+            labels: labels, // ชื่อแกน X
+            datasets: [{
+                label: 'Number of Members', // ชื่อข้อมูล
+                data: data, // ข้อมูล
+                backgroundColor: backgroundColors, // สีของแท่ง
+                borderColor: ['#ffffff', '#ffffff'], // สีขอบของแท่ง
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true, // กราฟปรับขนาดอัตโนมัติ
+            maintainAspectRatio: false, // ให้ปรับขนาดตาม container
+            scales: {
+                y: {
+                    beginAtZero: true, // ให้แกน Y เริ่มที่ 0
+                    title: {
+                        display: true,
+                        // text: 'Number of Members'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Gender' // ชื่อแกน X
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: true, // แสดง Legend
+                    position: 'top', // ตำแหน่ง Legend
+                },
+                datalabels: {
+                    anchor: 'end', // จัดตำแหน่งตัวเลขด้านบนแท่ง
+                    align: 'top', // จัดให้อยู่ด้านบนแท่ง
+                    color: '#333', // สีตัวอักษร
+                    formatter: (value) => value, // แสดงค่าจริง
+                    font: {
+                        size: 14 // ขนาดฟอนต์
+                    }
+                }
+            }
+        },
+        plugins: [ChartDataLabels] // ใช้ Plugin สำหรับแสดงข้อมูลบนแท่ง
+    });
+});
+
+</script>
+        
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+    // รับค่าจาก input hidden (หรือ Context ของ Django)
+    const maleMembers = {{ male_members|safe }};
+    const femaleMembers = {{ female_members|safe }};
+
+    console.log("Male Members:", maleMembers);
+    console.log("Female Members:", femaleMembers);
+
+    // ข้อมูลที่ใช้ร่วมกัน
+    const labels = ['Male', 'Female'];
+    const data = [maleMembers, femaleMembers];
+    const backgroundColors = ['#36A2EB', '#FF6384'];
+
+    // สร้าง Bar Chart
+    const barCtx = document.getElementById('genderPieChart').getContext('2d');
+    const genderBarChart = new Chart(barCtx, {
+        type: 'pie', // ประเภทของกราฟ
+        data: {
+            labels: labels, // ชื่อแกน X
+            datasets: [{
+                label: 'Number of Members', // ชื่อข้อมูล
+                data: data, // ข้อมูล
+                backgroundColor: backgroundColors, // สีของแท่ง
+                borderColor: ['#ffffff', '#ffffff'], // สีขอบของแท่ง
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true, // กราฟปรับขนาดอัตโนมัติ
+            maintainAspectRatio: false, // ให้ปรับขนาดตาม container
+            scales: {
+                y: {
+                    beginAtZero: true, // ให้แกน Y เริ่มที่ 0
+                    title: {
+                        display: true,
+                        // text: 'Number of Members'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Gender' // ชื่อแกน X
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: true, // แสดง Legend
+                    position: 'top', // ตำแหน่ง Legend
+                },
+                datalabels: {
+                    anchor: 'end', // จัดตำแหน่งตัวเลขด้านบนแท่ง
+                    align: 'top', // จัดให้อยู่ด้านบนแท่ง
+                    color: '#333', // สีตัวอักษร
+                    formatter: (value) => value, // แสดงค่าจริง
+                    font: {
+                        size: 14 // ขนาดฟอนต์
+                    }
+                }
+            }
+        },
+        plugins: [ChartDataLabels] // ใช้ Plugin สำหรับแสดงข้อมูลบนแท่ง
+    });
+});
+
+</script>
+
+
+
+</html>

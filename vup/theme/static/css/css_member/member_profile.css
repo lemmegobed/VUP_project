@@ -298,54 +298,54 @@ font-size: 12px;
 
 /* เนื้อหา */
 .box-profile-show {
-/* display: flex; */
-margin-top: 20px;
-display: flex;
-flex-direction: column;
-align-items: center;
-margin: 0;
+    /* display: flex; */
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
 }
 
 .in-box-profile-show {
-display: flex;
-/* background-color: #2d7e23; */
-margin-top: 10px;
+    display: flex;
+    /* background-color: #2d7e23; */
+    margin-top: 10px;
 }
 
 
 .profile-image-show {
-width: 200px; 
-height: 200px;
-border-radius: 50%; 
-border: 1px solid #adadad; 
-object-fit: cover; 
-box-shadow: 0 8px 4px rgba(0, 0, 0, 0.1);
+    width: 200px; 
+    height: 200px;
+    border-radius: 50%; 
+    border: 1px solid #adadad; 
+    object-fit: cover; 
+    box-shadow: 0 8px 4px rgba(0, 0, 0, 0.1);
 }
 
 .username-profile {
-margin-top: 10px;
-font-size: 18px;
-font-weight: bold;
-color: #000000; 
+    margin-top: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #000000; 
 
 }
 
 .box-age {
-display: flex;
-justify-content: center;
-align-items: center;
-width: 30px; 
-height: 30px;
-background-color: #425774;
-border-radius: 50%; 
-/* border: 2px solid #ffffff;  */
-object-fit: cover; 
-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-font-size: 12px;
-color: #ffffff;
-text-align: center;
-margin-top: 5px;
-margin-left: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px; 
+    height: 30px;
+    background-color: #425774;
+    border-radius: 50%; 
+    /* border: 2px solid #ffffff;  */
+    object-fit: cover; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-size: 12px;
+    color: #ffffff;
+    text-align: center;
+    margin-top: 5px;
+    margin-left: 10px;
 
 }
 
@@ -361,7 +361,7 @@ margin-left: 10px;
 
 .head-info-user{
     display: flex;
-    justify-content: space-between; /* จัดตำแหน่งข้อความและปุ่มให้ห่างกัน */
+    justify-content: space-between; 
     align-items: center;
     font-size: 18px;
     color: #000000;
@@ -374,9 +374,9 @@ margin-left: 10px;
 }
 
 .rating-box {
-    border: 2px solid #cfcfcf; /* สีกรอบของกล่อง */
-    padding: 0px; /* ขนาด padding ภายในกล่อง */
-    border-radius: 8px; /* ทำมุมให้กล่องมน */
+    border: 2px solid #cfcfcf; 
+    padding: 0px; 
+    border-radius: 8px; 
     display: inline-flex;
     align-items: center;
     width: 90%;
@@ -388,33 +388,33 @@ margin-left: 10px;
 }
 
 
-.box-btn-edit {
+/* .box-btn-edit {
     display: flex;
     justify-content: flex-end;
 }
 
 .edit-button {
-    background-color: #47607a; /* สีพื้นหลัง */
+    background-color: #47607a; 
     border: 1px solid #a5a5a5; 
-    color: white; /* สีของไอคอน */
-    font-size: 12px; /* ขนาดของไอคอน */
+    color: white; 
+    font-size: 12px; 
     padding: 10px;
-    border-radius: 50px; /* ทำให้ปุ่มเป็นวงกลม */
+    border-radius: 50px; 
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s ease; /* เพิ่มเอฟเฟกต์เมื่อโฮเวอร์ */
+    transition: all 0.3s ease;
 }
 
 .edit-button i {
-    margin-left: 5px; /* เพิ่มช่องว่างระหว่างไอคอนและข้อความ */
+    margin-left: 5px; 
 }
 
 
 .edit-button:hover {
     background-color: #477db6;
-}
+} */
 
 .profile-header {
     display: flex;
@@ -546,19 +546,19 @@ margin-left: 10px;
     /* margin-left: 14px; */
 }
 
-.detail-post h2 {
+/* .detail-post h2 {
     font-size: 18px;
     font-weight: bolder;
     line-height: 5px;
     margin-top: 10px;
-}
+} */
 
-.detail-post p {
+/* .detail-post p {
     font-size: 13px;
     font-weight: normal;
     line-height: 15px;
     margin-top: 10px;
-}
+} */
 
 .filter-box-post {
     display: flex;
@@ -571,26 +571,17 @@ margin-left: 10px;
     
 }
 
-.filter-box-post > div {
-    display: flex;
-    align-items: center;
-    padding: 0px 0px; 
-    background-color: #ffffff;
-    /* border: 1px solid #646464; */
-    border-radius: 40px;
-    font-weight: bold;
-    font-size: 12px;
-}
+
 
 /* ไอคอนสำหรับแต่ละ dropdown */
-.filter-item i {
+/* .filter-item i {
     position: absolute;
     left: 10px;
     top: 50%;
     transform: translateY(-50%);
     color: #000;
     font-size: 18px;
-}
+} */
 
 
 .post-right {
@@ -604,22 +595,19 @@ margin-left: 10px;
     /* padding: 0px  0px  30px 0px;  */
 } 
 
+
 .time-since-created {
-    display: flex;
-    align-items: center;
-    width: 100%; 
-    margin-left: 130px;
+    text-align: right;  
+    padding-right: 40px; 
     padding-bottom: 10px;
-    margin-top: -5px;
 }
 
 .time-since-created .time-text {
     font-size: 12px; 
     color: #575757; 
     opacity: 0.8;
-    /* margin-left: 130px;
-    padding-bottom: 10px; */
 }
+
 
 .report-event {
     display: flex; 
@@ -635,34 +623,33 @@ margin-left: 10px;
     align-items: center;
     position: relative; 
     text-decoration: none; 
-    color: #9b9b9b; 
+    color: #333; 
     cursor: pointer; 
     transition: color 0.3s ease;
 }
 
 
 .btn-report:hover {
-    transform: scale(1.1); 
-    color: #e74c3c;
+    color: #cf4c3d; 
 }
 
 .btn-report i {
-    margin: 0; 
+    font-size: 18px; 
 }
 
-
 .tooltip-text {
-    visibility: hidden; /* ซ่อนข้อความ */
+    visibility: hidden; 
     width: auto;
-    background-color: #e74c3c; /* สีพื้นหลังของ Tooltip */
-    color: #fff; /* สีข้อความ */
+    background-color: #cf4c3d; 
+    color: #fff; 
     text-align: center;
     padding: 5px 10px;
     border-radius: 4px;
     font-size: 10px;
+    font-weight: normal;
     position: absolute;
     top: 50%; 
-    left: -100px;
+    left: -95px;
     transform: translateY(-50%);
     white-space: nowrap;
     z-index: 1000;
@@ -674,6 +661,7 @@ margin-left: 10px;
     visibility: visible;
     opacity: 1; 
 }
+
 .join-btn-container {
     display: flex;
     align-items: center;
@@ -686,26 +674,33 @@ margin-left: 10px;
 }
 
 .join-btn {
-    /* display: flex; */
-    /* flex-direction: column; */
-    /* align-items: center; */
-    /* justify-content: center; */
-    background-color: #4CAF50;
-    color: white;
-    /* padding: 10px; */
-    border: 1px solid #adadad;
+    font-family:"Anuphan", sans-serif;
+    background-image: url('/static/pic/btn2.jpg'); 
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat; 
+    height: 100vh; 
+    color: rgb(26, 26, 26);
+    border: 1px solid #d4aaaa;
     border-radius: 50%;
-    width: 140px;
-    height: 140px;
+    width: 120px;
+    height: 120px;
     cursor: pointer;
     /* text-align: center; */
     /* line-height: 5px; */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    /* font-size: 12px; */
+    /* font-size: 20px; */
+    font-weight: normal;
+    padding: 20px;
+    transition: transform 0.3s ease-in-out, background-size 0.3s ease-in-out;
+    background-blend-mode: overlay; 
+    background-color: rgba(0, 0, 0, 0.1);
 }
 
 .join-btn:hover {
-    background-color: #1d8522;
+    background-color: rgba(0, 0, 0, 0.5); 
+    transform: scale(1.1); 
+    background-size: 120%; 
 }
 
 .join-btn p{
@@ -794,83 +789,75 @@ margin-left: 10px;
     border: 1px solid #000000;
 }
 
-
-
-
 .no_event{
     text-align: center;
     color: #777777;
     font-size: 12px;
 }
 
-.button-container {
+/* .button-container {
     margin-top: 20px;
     display: flex;
-    justify-content: center; /* จัดให้อยู่กึ่งกลางแนวนอน */
-    align-items: center; /* จัดให้อยู่กึ่งกลางแนวตั้ง (ถ้าจำเป็น) */
-    gap: 10px; /* ระยะห่างระหว่างปุ่ม */
-}
+    justify-content: center;
+    align-items: center; 
+    gap: 10px; 
+} */
 
 
-.btn {
-padding: 10px 20px;
-border-radius: 5px;
-border: none;
-cursor: pointer;
-font-size: 16px;
-font-weight: bold;
-transition: background-color 0.3s ease;
-gap: 0;
-}
+/* .btn {
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    gap: 0;
+} */
 
-.btn-yes {
-background-color: #2d7e23;
-color: white;
-}
+/* .btn-yes {
+    background-color: #25b9c4;
+    color: white;
+} */
 
 /* .btn-yes:hover {
 background-color: #c0392b;
 } */
 
-.btn-no {
-background-color:  #c0392b;
-color: white;
-}
-/* 
-.btn-no:hover {
-background-color: #95a5a6;
+/* .btn-no {
+    background-color:  #2bb6c0;
+    color: white;
 } */
 
-/* สไตล์สำหรับ Join Modal */
 .join-modal {
-display: none;
-position: fixed;
-z-index: 1000;
-left: 0;
-top: 0;
-width: 100%;
-height: 100%;
-background-color: rgba(0, 0, 0, 0.5);
-justify-content: center;
-align-items: center;
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
 }
 
 .join-modal-content {
-background-color: #fff;
-padding: 20px;
-border-radius: 10px;
-width: 300px;
-text-align: center;
-box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    width: 300px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .join-modal-close {
-position: absolute;
-top: 10px;
-right: 15px;
-font-size: 18px;
-cursor: pointer;
-color: #aaa;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 18px;
+    cursor: pointer;
+    color: #aaa;
 }
 
 .modal-icon {
@@ -880,59 +867,57 @@ color: #aaa;
 }
 
 .popup-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: none; /* ค่าเริ่มต้นเป็น none */
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: none; /* ค่าเริ่มต้นเป็น none */
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
     }
     
-    
-    /* Popup content */
     .popup-content {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    width: 90%;
-    max-width: 400px;
-    text-align: center;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        width: 90%;
+        max-width: 400px;
+        text-align: center;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
     
     .popup-content h2 {
-    margin-top: 0;
+        margin-top: 0;
     }
     
     .popup-content p {
-    margin: 15px 0;
+        margin: 15px 0; 
     }
     
     .popup-actions {
-    display: flex; /* ใช้ flexbox */
-    justify-content: center; /* จัดให้อยู่ตรงกลางในแนวนอน */
-    gap: 10px; /* ระยะห่างระหว่างปุ่ม */
-    margin-top: 20px;
+        display: flex; 
+        justify-content: center;
+        gap: 10px; 
+        margin-top: 20px;
     }
     
     .popup-btn {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
     }
     
     .confirm-btn {
-    background-color: #4CAF50;
-    color: white;
+        background-color: #4CAF50;
+        color: white;
     }
     
     .cancel-btn {
-    background-color: #f44336;
-    color: white;
+        background-color: #f44336;
+        color: white;
     }
     

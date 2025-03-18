@@ -49,10 +49,6 @@
             <p class="my_profile_head" style="margin: 0;">รายงานปัญหา</p>
         </div>
 
-        <!-- <div class="button-container">
-            <a href="/upload-ads/" class="btn-upload">➕ อัปโหลดโฆษณา</a>
-        </div> -->
-
         <div class="content-box">
 
             <div class="total-members">
@@ -76,20 +72,6 @@
                 
             </div>
 
-            <!-- <div class="total-members">
-                <div class="icon-total-member">
-                    <i class="fa-solid fa-circle-exclamation"></i>
-                </div> -->
-                <!-- <h1> {{ total_reports }}</h1>
-                <p>Total Reports</p> -->
-
-                <!-- <div class="report-types">
-                    <p><i class="fa-solid fa-clock"></i> รอดำเนินการ: {{ total_waiting }}</p>
-                    <p><i class="fa-solid fa-check"></i> แจ้งเตือนแล้ว: {{ total_warned }}</p>
-                    <p><i class="fa-solid fa-times"></i> ปฏิเสธแล้ว: {{ total_rejected }}</p>
-                </div> -->
-                
-            <!-- </div> -->
 
             <div class="total-members">
                 <div class="icon-total-member">
@@ -133,8 +115,7 @@
                         <th>Description</th>
                         <th>Event Link</th>
                         <th>Reported At</th>
-                        <th>Status</th>
-                        <!-- <th>Actions</th> -->
+                        <th>Status</th>   
                     </tr>
                 </thead>
                 <tbody>
@@ -156,7 +137,7 @@
                     </tr>
                     {% empty %}
                     <tr>
-                        <td colspan="7">No reports found.</td>
+                        <td colspan="10">ยังไม่มีการรายงานตอนนี้</td>
                     </tr>
                     {% endfor %}
 
@@ -164,306 +145,8 @@
             </table>
         </div>
 
-    
-
-       
     </div>
   
 
-        <!-- Modal -->
-            <!-- <div id="deleteUserModal" style="display: none;">
-                <div class="modal-content">
-                    <p>ต้องการลบ <strong id="modalUsername"></strong> ใช่หรือไม่?</p>
-                    <button onclick="confirmDelete()">Yes</button>
-                    <button onclick="closeModal()">No</button>
-                </div>
-            </div>  -->
-
-                <!-- Modal สำหรับแสดงรายละเอียด -->
-                <div id="event-modal" class="custom-modal hidden">
-                    <div class="custom-modal-content">
-                        <span class="close-modal">&times;</span>
-                        <div id="modal-event-content">
-                            <!-- เนื้อหาของ Event จะถูกโหลดที่นี่ -->
-                        </div>
-                    </div>
-                </div>
-
-
-
-
-                
-
-        
-
-       
- 
-    
-    
-
 </body>
-
-<!-- pie เพศ -->
-<script>
-    const maleMembers = {{ male_members|safe }};
-    const femaleMembers = {{ female_members|safe }};
-
-    console.log("Male Members:", maleMembers);
-    console.log("Female Members:", femaleMembers);
-
-    const ctx = document.getElementById('genderPieChart').getContext('2d');
-    const genderPieChart = new Chart(ctx, {
-        type: 'pie', // ประเภทของกราฟ
-        data: {
-            labels: ['Male', 'Female'], // ชื่อกลุ่ม
-            datasets: [{
-                data: [maleMembers, femaleMembers], // ข้อมูล
-                backgroundColor: ['#36A2EB', '#FF6384'], // สีของแต่ละกลุ่ม
-                borderColor: ['#ffffff', '#ffffff'],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    position: 'top',
-                },
-                datalabels: {
-                    color: '#fff',
-                    formatter: (value, context) => {
-                        const total = context.chart.data.datasets[0].data.reduce((acc, cur) => acc + cur, 0);
-                        const percentage = ((value / total) * 100).toFixed(1) + '%';
-                        return percentage;
-                    },
-                    font: {
-                        weight: 'normal',
-                        size: 18
-                    }
-                }
-            }
-        },
-        plugins: [ChartDataLabels] // เพิ่ม Plugin
-    });
-
-    
-</script>
-
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-    // รับค่าจาก input hidden (หรือ Context ของ Django)
-    const maleMembers = {{ male_members|safe }};
-    const femaleMembers = {{ female_members|safe }};
-
-    console.log("Male Members:", maleMembers);
-    console.log("Female Members:", femaleMembers);
-
-    // ข้อมูลที่ใช้ร่วมกัน
-    const labels = ['Male', 'Female'];
-    const data = [maleMembers, femaleMembers];
-    const backgroundColors = ['#36A2EB', '#FF6384'];
-
-    // สร้าง Bar Chart
-    const barCtx = document.getElementById('genderBarChart').getContext('2d');
-    const genderBarChart = new Chart(barCtx, {
-        type: 'bar', // ประเภทของกราฟ
-        data: {
-            labels: labels, // ชื่อแกน X
-            datasets: [{
-                label: 'Number of Members', // ชื่อข้อมูล
-                data: data, // ข้อมูล
-                backgroundColor: backgroundColors, // สีของแท่ง
-                borderColor: ['#ffffff', '#ffffff'], // สีขอบของแท่ง
-                borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: true, // กราฟปรับขนาดอัตโนมัติ
-            maintainAspectRatio: false, // ให้ปรับขนาดตาม container
-            scales: {
-                y: {
-                    beginAtZero: true, // ให้แกน Y เริ่มที่ 0
-                    title: {
-                        display: true,
-                        // text: 'Number of Members'
-                    }
-                },
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Gender' // ชื่อแกน X
-                    }
-                }
-            },
-            plugins: {
-                legend: {
-                    display: true, // แสดง Legend
-                    position: 'top', // ตำแหน่ง Legend
-                },
-                datalabels: {
-                    anchor: 'end', // จัดตำแหน่งตัวเลขด้านบนแท่ง
-                    align: 'top', // จัดให้อยู่ด้านบนแท่ง
-                    color: '#333', // สีตัวอักษร
-                    formatter: (value) => value, // แสดงค่าจริง
-                    font: {
-                        size: 14 // ขนาดฟอนต์
-                    }
-                }
-            }
-        },
-        plugins: [ChartDataLabels] // ใช้ Plugin สำหรับแสดงข้อมูลบนแท่ง
-    });
-});
-
-</script>
-        
-
-<script>
-    let deleteUrl = '';
-
-function openConfirmDeleteModal(url) {
-    deleteUrl = url; // เก็บ URL ที่จะลบ
-    document.getElementById('confirmDeleteModal').style.display = 'block';
-}
-
-function closeConfirmDeleteModal() {
-    document.getElementById('confirmDeleteModal').style.display = 'none';
-}
-
-document.getElementById('confirmDeleteBtn').addEventListener('click', function () {
-    if (deleteUrl) {
-        window.location.href = deleteUrl; // ไปยัง URL สำหรับลบ
-    }
-});
-
-</script>
-
-<script>
- let memberIdToDelete = null;
-
-function openDeleteUserModal(memberId, username) {
-    memberIdToDelete = memberId;
-    document.getElementById('modalUsername').innerText = username;
-    document.getElementById('deleteUserModal').style.display = 'block';
-}
-
-function closeModal() {
-    memberIdToDelete = null;
-    document.getElementById('deleteUserModal').style.display = 'none';
-}
-
-function confirmDelete() {
-    if (memberIdToDelete) {
-        fetch(`/delete-member/${memberIdToDelete}/`, {
-            method: 'POST',
-            headers: {
-                'X-CSRFToken': '{{ csrf_token }}'
-            }
-        })
-        .then(response => {
-            if (response.ok) {
-                localStorage.setItem('deleteSuccess', 'true'); // เก็บสถานะ
-                window.location.reload(); // รีหน้า
-            } else {
-                alert('เกิดข้อผิดพลาดในการลบ');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('เกิดข้อผิดพลาด');
-        });
-    }
-    closeModal(); // ปิด Modal
-}
-
-// ตรวจสอบสถานะใน Local Storage
-const deleteSuccess = localStorage.getItem('deleteSuccess');
-if (deleteSuccess === 'true') {
-    const successMessage = document.getElementById('successMessage');
-    successMessage.style.display = 'block';
-
-    // ลบสถานะออกจาก Local Storage
-    localStorage.removeItem('deleteSuccess');
-
-    // ซ่อนข้อความหลัง 3 วินาที
-    setTimeout(() => {
-        successMessage.style.display = 'none';
-    }, 3000);
-}
-</script> 
-
-<script>
-    // ตรวจสอบสถานะใน Local Storage
-    const deleteSuccess = localStorage.getItem('deleteSuccess');
-    if (deleteSuccess === 'true') {
-        // แสดงข้อความ
-        const successMessage = document.getElementById('successMessage');
-        successMessage.style.display = 'block';
-
-        // ลบสถานะออกจาก Local Storage
-        localStorage.removeItem('deleteSuccess');
-
-        // ซ่อนข้อความหลัง 3 วินาที (ถ้าต้องการ)
-        setTimeout(() => {
-            successMessage.style.display = 'none';
-        }, 3000);
-    }
-</script>
-
-<script>
-    function updateUserCount() {
-        fetch('/user-update-count/')
-            .then(response => response.json())
-            .then(data => {
-                // อัปเดตยอดเพิ่ม/ลบผู้ใช้ใน HTML
-                document.getElementById('usersAddedToday').innerText = data.users_added_today;
-                document.getElementById('usersDeletedToday').innerText = data.users_deleted_today;
-            })
-            .catch(error => console.error('Error:', error));
-    }
-
-    // ดึงข้อมูลทุก ๆ 5 วินาที
-    setInterval(updateUserCount, 5000);
-
-    // เรียกใช้ครั้งแรกเมื่อหน้าโหลด
-    updateUserCount();
-</script>
-
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    // เปิด Modal เมื่อกดปุ่ม
-    document.querySelectorAll('.btn-view-event').forEach(function (button) {
-        button.addEventListener('click', function () {
-            const eventId = this.getAttribute('data-event-id');
-
-            // เรียก AJAX เพื่อดึงรายละเอียด Event
-            fetch(`/event-detail/${eventId}/`)
-                .then(response => response.text())
-                .then(data => {
-                    // ใส่ข้อมูลใน Modal
-                    document.getElementById('modal-event-content').innerHTML = data;
-                    document.getElementById('event-modal').style.display = 'block';
-                })
-                .catch(error => console.error('Error:', error));
-        });
-    });
-
-    // ปิด Modal เมื่อกดปุ่มปิด
-    document.querySelector('.close-modal').addEventListener('click', function () {
-        document.getElementById('event-modal').style.display = 'none';
-    });
-
-    // ปิด Modal เมื่อคลิกนอก Content
-    window.addEventListener('click', function (event) {
-        const modal = document.getElementById('event-modal');
-        if (event.target === modal) {
-            modal.style.display = 'none';
-        }
-    });
-});
-
-
-</script>
-
 </html>

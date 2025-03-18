@@ -1,0 +1,222 @@
+body {
+    /* background-color: #1c2b4a; */
+    background-image: url('/static/pic/bg10.png'); 
+    font-family: "Anuphan", sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px;
+    padding: 20px;
+
+}
+
+.container {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+    animation: slideIn 0.5s ease-out;
+    margin-top: 40px;
+    margin: auto;
+    
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+h2 {
+    text-align: center;
+    font-size: 28px;
+    margin-bottom: 30px;
+    color: #08204b;
+    font-weight: bold;
+    letter-spacing: 1.2px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.form-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.form-group label {
+    width: 120px; 
+    font-weight: bold;
+    font-size: 14px;
+    color: #333;
+}
+
+.form-group input, 
+.form-group select {
+    flex: 1;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+    /* width: 50%; */
+    background-color: #f3f3f3;
+
+}
+
+input:focus, select:focus {
+    border-color: #08204b;
+    outline: none;
+}
+
+button {
+    font-family:"Anuphan", sans-serif;
+    display: block;           
+    background-color: #08204b;
+    color: #fff;
+    padding: 14px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 16px;
+    text-transform: uppercase;
+    font-weight: normal;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 50%;            
+    margin: 20px auto;       
+}
+
+
+button:hover {
+    background-color: #06406a;
+}
+
+p {
+    text-align: center;
+    font-size: 14px;
+    color: #666;
+}
+
+p a {
+    color: #08204b;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+p a:hover {
+    text-decoration: underline;
+}
+
+input[type="file"] {
+    padding: 5px;
+    font-size: 14px;
+    background-color: #f9f9f9;
+}
+
+.pic {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    border: 1px solid #949494;
+    margin: auto;
+    overflow: hidden; 
+    margin-bottom: 20px;
+    margin-top: 0px; 
+}
+
+.pic img {
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; 
+}
+.form-group div {
+    display: flex; 
+    align-items: center; 
+}
+
+.Create-Account {
+    display: flex;             
+    align-items: center;       
+    justify-content: center;    
+    /* margin: 20px 0;   */
+    margin-bottom: 0;         
+}
+
+.Create-Account h2 {
+    margin-right: 10px;        
+    font-size: 24px;          
+    color: #08204b;           
+}
+
+.Create-Account i {
+    justify-content: center; 
+    align-items: center; 
+    font-size: 18px;          
+    color: #08204b;  
+    margin-right: 10px;  
+    margin-top: -10px;      
+}
+
+.username-check {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 75%; 
+}
+
+.username-check input {
+    width: 100%;
+    padding-right: 35px; 
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f0f0f0;
+}
+
+#usernameStatusIcon {
+    position: absolute;
+    right: 10px;
+    display: none; 
+    color: gray;
+}
+
+.username-valid {
+    color: green !important;
+    display: block !important;
+}
+
+.username-invalid {
+    color: red !important;
+    display: block !important;
+}
+
+.username-loading {
+    color: blue !important;
+    display: block !important;
+    animation: spin 1s infinite linear;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.error-message {
+    font-size: 14px;
+    color: red;
+    margin-top: 5px;
+    display: none; 
+}

@@ -27,8 +27,6 @@
         <div class="profile-section">
             <img src="{{ member_data.profile.url }}" alt="Profile Image" class="profile-image">
             <p class="username">{{ member_data.username }}</p>
-            <!-- <button id="openModal" class="new-event-btn">+ New Event</button> -->
-            <!-- <p>{{ user.first_name }} {{ user.last_name }}</p> -->
         </div>
 
         <div class="menu-items">
@@ -73,7 +71,6 @@
             </div>
 
             <div class="outer-rating-box">
-                <!-- <p class="rating-title">Rating</p> -->
                 <div class="event-statistics">
                     <div class="event-summary">
                         <h3>
@@ -87,15 +84,16 @@
                             <span class="event-summary-text">จำนวนการเข้าร่วม</span>
                         </h3>
                     </div>
+
                     <div class="event-rating">
                         <h3>
-                            <span class="event-summary-number">0</span><br>
+                            <span class="event-summary-number">{{ total_on_time_reviews }}</span><br>
                             <span class="event-summary-text">ไปตามนัด</span>
                         </h3>
                     </div>
                     <div class="event-default">
                         <h3>
-                            <span class="event-summary-number">0</span><br>
+                            <span class="event-summary-number">{{ total_not_on_time_reviews }}</span><br>
                             <span class="event-summary-text">ผิดนัด</span>
                         </h3>
                     </div>
@@ -120,15 +118,13 @@
                         <p><strong>นามสกุล :</strong> {{ user.last_name }}</p>
                         <p><strong>เพศ :</strong> {{ user.sex }}</p>
                         <p><strong>วันเกิด :</strong> {{ user.birthdate }}</p>
-                        <!-- <p><strong>คำอธิบาย:</strong> {{ user.description|default:"ยังไม่มีคำอธิบาย" }}</p> -->
                     </div>
     
                 </div>
             </div>
 
-            <!-- <h2 class="text-xl font-semibold text-gray-700 mt-6">กิจกรรมทั้งหมด ({{ total_events }})</h2> -->
             <div>
-                <p>กิจกรรมทั้งหมด : </p>
+                <p class="event_head">กิจกรรมทั้งหมด : </p>
             </div>
 
                 <div class="event-container">
@@ -150,8 +146,7 @@
                             </div>
                             
                         </div>
-    
-                        
+        
                   
                         <div class="detail-post">
                             <h2>{{ event.event_name }}</h2>
@@ -177,32 +172,21 @@
                             </div>
                         </div>
 
-                        
-                        
-                        
-                        
-
+                
                         <div class="post-actions">
                             <button onclick="openModal('eventModal-{{ event.id }}')" class="btn-edit-event">
-                                <i class="fas fa-edit"></i> <!-- ไอคอนแก้ไข -->
+                                <i class="fas fa-edit"></i> 
                             </button>
                             <button class="btn-delete-event" onclick="openConfirmDeleteModal('{{ event.id }}')">
-                                <i class="fas fa-trash"></i> <!-- ไอคอนลบ -->
+                                <i class="fas fa-trash"></i> 
                             </button>
     
-                            <!-- ฟอร์มลบกิจกรรม -->
+                            <!-- ลบกิจกรรม -->
                             <form id="deleteForm-{{ event.id }}" method="POST" action="{% url 'delete_event' event.id %}">
                                 {% csrf_token %}
                             </form>
                         </div>
-
-                        <!-- <div class="time-since-created">
-                            <span class="time-text">{{ event.time_since }}</span>
-                        </div>
-                     -->
                     
-                        <!-- ปุ่มแก้ไขและลบ -->
-                        
                     </div>
                     {% empty %}
                     <p>คุณยังไม่มีโพสต์</p>
@@ -211,7 +195,7 @@
     </div> 
         </div>
 
-   <!-- ✅ MODAL ฟอร์มแก้ไขโปรไฟล์ -->
+   <!-- ฟอร์มแก้ไขโปรไฟล์ -->
    <div id="profileModal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal('profileModal')">&times;</span>
@@ -219,28 +203,13 @@
 
             <form method="post" enctype="multipart/form-data" class="profile-form">
                 {% csrf_token %}
-                <!-- <div class="profile-group">
-                    <label class="profile-label">รูปโปรไฟล์</label>
-                    <div class="profile-image-container">
-                        <img src="{{ member_data.profile.url }}" alt="Profile Image" class="profile-image">
-                    </div>
-                    <input type="file" name="profile" class="form-control" accept="image/*">
-                </div> -->
-                
-            <!-- <form method="post" enctype="multipart/form-data" class="profile-form">
-                <!-- {% csrf_token %} -->
+
               <div class="profile-group">
                     <label class="profile-label">รูปโปรไฟล์</label>
                     <input type="file" name="profile" class="form-control" accept="image/*">
                 </div> 
 
-                <!-- <div class="profile-group">
-                    <label class="profile-label">รูปโปรไฟล์</label>
-                    {{ form.profile }}
-                </div> -->
                 
-    
-                <!-- ชื่อผู้ใช้ -->
                 <div class="profile-group">
                     <label class="profile-label">ชื่อผู้ใช้</label>
                     <div class="username-check">
@@ -250,25 +219,21 @@
                 </div>
                 <p id="usernameErrorMessage" class="error-message"></p>
     
-                <!-- อีเมล -->
                 <div class="profile-group">
                     <label class="profile-label">อีเมล</label>
                     <input type="email" name="email" class="form-control" value="{{ form.email.value }}" required>
                 </div>
     
-                <!-- ชื่อ -->
                 <div class="profile-group">
                     <label class="profile-label">ชื่อ</label>
                     <input type="text" name="first_name" class="form-control" value="{{ form.first_name.value }}" required>
                 </div>
     
-                <!-- นามสกุล -->
                 <div class="profile-group">
                     <label class="profile-label">นามสกุล</label>
                     <input type="text" name="last_name" class="form-control" value="{{ form.last_name.value }}" required>
                 </div>
     
-                <!-- เพศ -->
                 <div class="profile-group">
                     <label class="profile-label">เพศ</label>
                     <select name="sex" class="form-control">
@@ -277,13 +242,11 @@
                     </select>
                 </div>
     
-                <!-- วันเกิด -->
                 <div class="profile-group">
                     <label class="profile-label">วันเกิด</label>
                     <input class="form-control" type="date" name="birthdate" value="{{ user.birthdate|date:'Y-m-d' }}" required>
                 </div>
     
-                <!-- คำอธิบาย -->
                 <div class="profile-group">
                     <label class="profile-label">คำอธิบาย</label>
                     <input name="description" class="form-control" type="text" value="{{ form.description.value }}">
@@ -291,7 +254,6 @@
     
                 <input type="hidden" name="update_profile" value="true">
                 <div class="profile-footer">
-                    <!-- <button type="button" onclick="closeModal('profileModal')" class="profile-btn profile-btn-secondary">ยกเลิก</button> -->
                     <button type="submit" class="profile-btn profile-btn-primary">บันทึก</button>
                 </div>
             </form>
@@ -301,7 +263,7 @@
 
 
 
-    <!-- ✅ MODAL ฟอร์มแก้ไขกิจกรรม -->
+    <!-- ฟอร์มแก้ไขกิจกรรม -->
     {% for event in events %}
     <div id="eventModal-{{ event.id }}" class="modal">
         <div class="modal-content">
@@ -368,7 +330,7 @@
         
     {% endfor %}
 
-     <!-- ✅ MODAL ยืนยันการลบ -->
+     <!-- ยืนยันการลบ -->
      <div id="deleteConfirmModal" class="modal">
         <div class="modal-content">
             <div class="modal-icon">
@@ -397,7 +359,7 @@
         </div>
 </body>
 
-<!-- ✅ SCRIPT เปิด-ปิด Modal -->
+<!--  เปิด-ปิด Modal -->
     <script>
         function openModal(id) {
             document.getElementById(id).classList.add("active");
@@ -407,27 +369,27 @@
         }
     </script>
 
-        <!-- ลบ-->
-        <script>
-            let currentDeleteEventId = null;
-    
-            function openConfirmDeleteModal(eventId) {
-                currentDeleteEventId = eventId;
-                document.getElementById('deleteConfirmModal').classList.add("active");
-            }
-    
-            document.getElementById("confirmDeleteButton").addEventListener("click", function () {
-                if (currentDeleteEventId) {
-                    document.getElementById(`deleteForm-${currentDeleteEventId}`).submit();
-                }
-            });
-    
-            function closeModal(id) {
-                document.getElementById(id).classList.remove("active");
-            }
-        </script> 
+<!-- ลบกิจกรรม-->
+<script>
+    let currentDeleteEventId = null;
 
+    function openConfirmDeleteModal(eventId) {
+        currentDeleteEventId = eventId;
+        document.getElementById('deleteConfirmModal').classList.add("active");
+    }
 
+    document.getElementById("confirmDeleteButton").addEventListener("click", function () {
+        if (currentDeleteEventId) {
+            document.getElementById(`deleteForm-${currentDeleteEventId}`).submit();
+        }
+    });
+
+    function closeModal(id) {
+        document.getElementById(id).classList.remove("active");
+    }
+</script> 
+
+<!-- ตรวจชื่อผู้ใช้ซ้ำ -->
 <script>
     document.getElementById("id_username").addEventListener("input", function() {
         let username = this.value;
@@ -436,41 +398,38 @@
     
         if (username.length < 3) {
             statusIcon.className = "fa-solid fa-circle-check username-default";
-            errorMessage.style.display = "none"; // ซ่อนข้อความ
+            errorMessage.style.display = "none"; 
             return;
         }
     
-        statusIcon.className = "fa-solid fa-spinner username-loading"; // แสดงไอคอนโหลด
+        statusIcon.className = "fa-solid fa-spinner username-loading"; 
     
         fetch(`/check-username/?username=${username}`)
             .then(response => response.json())
             .then(data => {
                 if (data.exists) {
-                    statusIcon.className = "fa-solid fa-circle-xmark username-invalid"; // ❌
+                    statusIcon.className = "fa-solid fa-circle-xmark username-invalid"; 
                     errorMessage.innerText = "ชื่อผู้ใช้นี้ถูกใช้แล้ว กรุณาเปลี่ยนชื่อใหม่";
                     errorMessage.style.display = "block";
                 } else {
-                    statusIcon.className = "fa-solid fa-circle-check username-valid"; // ✅
-                    errorMessage.style.display = "none"; // ซ่อนข้อความ
+                    statusIcon.className = "fa-solid fa-circle-check username-valid"; 
+                    errorMessage.style.display = "none"; 
                 }
             })
             .catch(error => console.error("Error checking username:", error));
     });
     
-    /* ป้องกันการบันทึกถ้า username ยังใช้ไม่ได้ */
     document.querySelector(".profile-form").addEventListener("submit", function(event) {
         let statusIcon = document.getElementById("usernameStatusIcon");
         let errorMessage = document.getElementById("usernameErrorMessage");
     
         if (statusIcon.classList.contains("username-invalid")) {
-            event.preventDefault(); // ป้องกันการ submit
+            event.preventDefault(); 
             errorMessage.innerText = "ชื่อผู้ใช้นี้ไม่สามารถใช้ได้ กรุณาเปลี่ยนชื่อใหม่";
             errorMessage.style.display = "block";
         }
     });
     </script>
-    
-    
     
     
 </html>

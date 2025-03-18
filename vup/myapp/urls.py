@@ -20,11 +20,6 @@ urlpatterns = [
     # path('warn_event/<int:event_id>/', warn_event, name='warn_event'),
     path('event/report/<int:event_id>/', event_detail_report, name='event_detail_report'),
     
-    
-
-
-
-    
     path("feed/", home_view,name='feed'),
     path('report/<int:event_id>/', submit_report, name='submit_report'),
 
@@ -33,9 +28,7 @@ urlpatterns = [
 
     path("check-username/", check_username, name="check_username"),
     path("check-username/register/", check_username_register, name="check_username_register"),
-    path('check-email-register/', check_email_register, name='check_email_register'),
     
-    # path('my-activity/', my_activity, name='my_activity'),
     path('chat/', chat_rooms_list, name='chat'),
 
     path('chat/<int:chat_room_id>/', chat_room_detail, name='chat_room'),
@@ -51,7 +44,7 @@ urlpatterns = [
 
     path('new_event/', new_event_view, name='new_event'),
     
-    path('notifications/<int:notification_id>/mark-as-read/',mark_notification_as_read, name='mark_notification_as_read'),
+    # path('notifications/<int:notification_id>/mark-as-read/',mark_notification_as_read, name='mark_notification_as_read'),
     
     path('events/<int:event_id>/send-request/', send_join_request, name='send_join_request'),
     path('events/requests/<int:event_request_id>/handle-request/', handle_event_request, name='handle_event_request'),

@@ -136,13 +136,6 @@ class Notification(models.Model):
         null=True,
         blank=True
     )
-
-    # def schedule_notification(self):
-    #     """ ตั้งค่าให้แจ้งเตือนถูกส่งหลังจากกิจกรรมจบ """
-    #     if self.related_event and self.related_event.event_datetime:
-    #         self.scheduled_time = self.related_event.event_datetime + timezone.timedelta(hours=1)  # แจ้งเตือน 1 ชม. หลังจบ
-    #         self.is_scheduled = True
-    #         self.save()
             
     def __str__(self):
         return f"การแจ้งเตือนสำหรับ {self.user.username} - {self.notification_type}"
@@ -151,10 +144,6 @@ class Notification(models.Model):
     class Meta:
         ordering = ['-created_at']
 
-    # def mark_as_read(self):
-    #     """เปลี่ยนสถานะการแจ้งเตือนเป็นอ่านแล้ว"""
-    #     self.is_read = True
-    #     self.save()
 
     @property
     def is_event_active(self):
