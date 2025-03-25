@@ -107,6 +107,21 @@
                 <p>กิจกรรมทั้งหมด : </p>
             </div>
 
+            <!-- <div class="review" id="reviewContent" style="display:none;">
+                <h4><i class="fa-solid fa-star"></i>การรีวิว</h4>
+                <div id="onTimeComments" style="display:none;">
+                    {% for review in total_on_time_reviews %}
+                        <p><strong>{{ review.reviewer.username }}</strong> : '{{ review.comment }}' </p>
+                    {% endfor %}
+                </div>
+            
+                <div id="notOnTimeComments" style="display:none;">
+                    {% for review in total_not_on_time_reviews %}
+                        <p><strong>{{ review.reviewer.username }}</strong> : '{{ review.comment }}' </p>
+                    {% endfor %}
+                </div>
+            </div>
+             -->
             <div class="content-box">
 
                 <div class="event-container">
@@ -260,4 +275,29 @@
     }
 </script>
 
+<!-- <script>
+    // เมื่อคลิกที่ "ไปตามนัด"
+    document.getElementById('onTimeToggle').addEventListener('click', function() {
+        const reviewContent = document.getElementById('reviewContent');
+        const onTimeComments = document.getElementById('onTimeComments');
+        const notOnTimeComments = document.getElementById('notOnTimeComments');
+        
+        // แสดง div.review และแสดงแค่ความคิดเห็นที่ไปตามนัด
+        reviewContent.style.display = 'block';  // แสดง div.review
+        onTimeComments.style.display = 'block';  // แสดงความคิดเห็นที่ไปตามนัด
+        notOnTimeComments.style.display = 'none';  // ซ่อนความคิดเห็นที่ผิดนัด
+    });
+
+    // เมื่อคลิกที่ "ผิดนัด"
+    document.getElementById('notOnTimeToggle').addEventListener('click', function() {
+        const reviewContent = document.getElementById('reviewContent');
+        const notOnTimeComments = document.getElementById('notOnTimeComments');
+        const onTimeComments = document.getElementById('onTimeComments');
+        
+        // แสดง div.review และแสดงแค่ความคิดเห็นที่ผิดนัด
+        reviewContent.style.display = 'block';  // แสดง div.review
+        notOnTimeComments.style.display = 'block';  // แสดงความคิดเห็นที่ผิดนัด
+        onTimeComments.style.display = 'none';  // ซ่อนความคิดเห็นที่ไปตามนัด
+    });
+</script> -->
 </html>

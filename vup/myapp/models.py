@@ -195,7 +195,7 @@ class ChatRoom(models.Model):
 
     
 class Chat_Message(models.Model):
-    chatroom = models.ForeignKey(ChatRoom, on_delete=models.CASCADE, related_name="messages")
+    chatroom = models.ForeignKey(ChatRoom, on_delete=models.CASCADE, related_name="messages") 
     sender = models.ForeignKey(Member, on_delete=models.CASCADE, null=True, blank=True)
     message = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)

@@ -53,7 +53,7 @@ def register_view(request):
         form = MemberRegistrationForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return redirect('login') 
+            return redirect('login')
     else:
         form = MemberRegistrationForm()
     return render(request, 'registration/register.html', {'form': form})
@@ -348,8 +348,8 @@ def profile_view(request):
 
     total_joined_events = Event_Request.objects.filter(sender=member_data, response_status='accepted').count()
 
-    total_on_time_reviews = Event_Review.objects.filter(participant=member_data, attendance_status='มาตามนัด').count()
-    total_not_on_time_reviews = Event_Review.objects.filter(participant=member_data, attendance_status='ผิดนัด').count()
+    total_on_time_reviews = Event_Review.objects.filter(participant=member_data, attendance_status='มาตามนัด')
+    total_not_on_time_reviews = Event_Review.objects.filter(participant=member_data, attendance_status='ผิดนัด')
 
 
     # ฟอร์มแก้ไขโปรไฟล์
@@ -365,9 +365,7 @@ def profile_view(request):
             if event_id:  
                 event = get_object_or_404(Event, id=event_id, created_by=request.user)
                 event_form = EventForm(request.POST, instance=event)
-            # else:  # ตรวจสอบว่ามาจากการสร้างหรือแก้ไขกิจกรรม
-            #     event_form = EventForm(request.POST)
-            #     event_form.instance.created_by = request.user
+
 
             if event_form.is_valid():
                 event_form.save()
@@ -406,6 +404,8 @@ def member_profile(request, member_id):
     total_on_time_reviews = Event_Review.objects.filter(participant=member, attendance_status='มาตามนัด').count()
     total_not_on_time_reviews = Event_Review.objects.filter(participant=member, attendance_status='ผิดนัด').count()
 
+    # total_on_time_reviews = Event_Review.objects.filter(participant=member, attendance_status='มาตามนัด')
+    # total_not_on_time_reviews = Event_Review.objects.filter(participant=member, attendance_status='ผิดนัด')
     context = {
         'user_login':user_login,
         'member': member,
@@ -434,7 +434,6 @@ def check_username(request):
 
     exists = Member.objects.filter(username=username).exists()
     return JsonResponse({"exists": exists})
-
 
 
 @login_required    
@@ -619,7 +618,6 @@ def handle_event_request(request, event_request_id):
                     notification_type='response',
                 )
 
-                # chat_room, created = ChatRoom.objects.get_or_create(event=event_request_instance.event)
                 
                 # แสดงว่าใครเขาร่วม
                 Chat_Message.objects.create(
@@ -669,11 +667,12 @@ def event_review_list(request, event_id):
     # ดึงข้อมูลรีวิวที่มีอยู่แล้ว
     reviewed_members = Event_Review.objects.filter(event=event, reviewer=request.user).values_list('participant_id', flat=True)
 
-    return render(request, 'member/review/review_event_list.html', {
+    context = {
         'event': event,
         'members': members,
         'reviewed_members': reviewed_members
-    })
+    }
+    return render(request, 'member/review/review_event_list.html',context)
 
 @login_required
 def event_review_form(request, event_id, member_id):
@@ -693,11 +692,12 @@ def event_review_form(request, event_id, member_id):
     else:
         form = EventReviewForm()
 
-    return render(request, 'member/review/review_event_form.html', {
+    context = {
         'form': form,
         'event': event,
         'participant': participant
-    })
+    }
+    return render(request, 'member/review/review_event_form.html', context)
 
 
 
@@ -741,4 +741,3 @@ def user_events_api(request):
 def logout_view(request):
     logout(request) 
     return redirect('login')  
-

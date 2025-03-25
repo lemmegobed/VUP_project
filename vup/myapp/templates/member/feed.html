@@ -70,68 +70,7 @@
                 </form>
             </div>
         </div>
-
-        <!-- <h1>rrrrr</h1>
-        <div class="slider-container">
-            <div class="slides">
-                {% for ad in advertisements %}
-                    <a href="{{ 'chat' }}" class="slide" onclick="filterEvents('{{ ad.keyword }}')">
-                        <img src="{{ ad.image.url }}" alt="โฆษณา {{ ad.keyword }}">
-                    </a>
-                {% endfor %}
-            </div>
-        </div> -->
         
-    
-<!-- 
-        <div class="filter-box">
-             
-            <div class="filter-item">
-                <select name="province" class="filter-dropdown location-dropdown">
-                    <option value="" selected disabled>เลือกจังหวัด</option>
-                    {% for value, label in province_choices %}
-                        <option value="{{ value }}" {% if request.GET.province == value %}selected{% endif %}>
-                            {{ label }}
-                        </option>
-                    {% endfor %}
-                </select>
-            </div>
-        
-            
-            <div class="filter-item">
-                <select name="max_participants" class="filter-dropdown people-dropdown">
-                    <option value="" selected disabled>จำนวนคน</option>
-                    {% for i in max_participants_range %}
-                        <option value="{{ i }}" {% if request.GET.max_participants == i|stringformat:"s" %}selected{% endif %}>
-                            {{ i }} คน
-                        </option>
-                    {% endfor %}
-                </select>
-            </div>
-        
-            
-            <div class="filter-item">
-                <select name="category" class="filter-dropdown category-dropdown">
-                    <option value="" selected disabled>เลือกหมวด</option>
-                    {% for value, label in category_choices %}
-                        <option value="{{ value }}" {% if request.GET.category == value %}selected{% endif %}>
-                            {{ label }}
-                        </option>
-                    {% endfor %}
-                </select>
-            </div>
-        
-            
-            <div class="search-btn-container">
-                <button type="submit" class="search-btn">
-                    <i class="fas fa-search"></i>
-                </button>
-            </div>
-        </div>
-         -->
-        
-        
-
         <p class="feed">ฟีดตอนนี้</p>
 
         <!-- post event -->
@@ -209,10 +148,10 @@
                         </button>
                     </div>
                     {% endif %}
+                    
                     <!-- ป๊อปอัป -->
                     <div class="popup-container" id="join-popup" style="display: none;">
                         <div class="popup-content">
-                            <!-- <h2>Confirm Joining</h2> -->
                             <div class="modal-icon">
                                 <i class="fa-solid fa-exclamation-circle"></i>
                             </div>

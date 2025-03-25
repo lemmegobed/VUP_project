@@ -7,7 +7,7 @@
     <title>ห้อง : {{ chat_room.name }}</title>
     
     {% load static %}
-    <!-- <link rel="stylesheet" href="{% static 'css\css_member\chat\chat_room_detail.css' %}"> -->
+    <link rel="stylesheet" href="{% static 'css\css_member\chat\chat_room_detail.css' %}">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places"></script>
@@ -17,451 +17,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@100..700&display=swap" rel="stylesheet">
 </head>
-<style>
-    /* ใช้ฟอนต์ Anuphan */
-body,html{
-    font-family:"Anuphan", sans-serif;
-    background-color: #f0eeee;
-    /* margin-left: 30%; */
-}
 
-.menu-container {
-    width: 200px;
-    background-image: url('/static/pic/bg4.jpg'); 
-    background-size: cover; 
-    background-position: center; 
-    background-repeat: no-repeat; 
-    height: 100vh; 
-    color: white;
-    height: 94vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between; 
-    align-items: center;
-    padding: 20px 0;
-    position: fixed;
-    top: 0;
-    left: 0;
-    border-radius: 0 40px 40px 0;
-}
-
-.profile-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.profile-image {
-    border-radius: 50%;
-    width: 70px;
-    height: 70px;
-    margin-bottom: 10px;
-    border: 2px solid #d1d1d1;
-    margin-top: 30px;
-}
-
-.username {
-    font-weight: bold;
-    font-size: 16px;
-    text-align: center;
-    margin: 0;
-}
-
-.menu-items {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    width: 100%; 
-}
-
-.menu-item {
-    width: 80%; 
-    margin-left: 10px;
-    padding: 20px 15px;
-    color: white;
-    text-align: center;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 16px;
-    transition: background 0.3s;
-    margin-bottom: 10px;
-    border-radius: 25px 0 0 25px;
-}
-
-
-.menu-item.active {
-    background-color: #ffffff;
-    font-weight: bolder;
-    color: #2b3f65;
-    border-radius: 25px 0 0 25px;
-}
-
-.menu-item:hover {
-    background-color: #f0eeee;
-    color: #1c2b4a;
-    font-weight: bold;
-    border-radius: 25px 0 0 25px;
-    text-align: center;
-}
-
-i {
-    margin-right: 8px;
-}
-
-.profile-header {
-    display: flex;
-    align-items: center; /* จัดให้ไอเทมอยู่ตรงกลางในแนวตั้ง */
-    /* gap: 0px;  */
-    font-weight: bold;
-    font-size: 18px;
-}
-
-.profile-header i {
-    font-size: 20px; /* ปรับขนาดไอคอนตามที่ต้องการ */
-}
-
-.my_profile_head {
-    margin: 0; /* เอา margin เริ่มต้นออกจาก p tag */
-}
-
-
-.logout {
-    padding: 10px 25px;
-    color: #ffffff;
-    font-weight: normal;
-    display: flex;
-    align-items: center;
-    border-radius: 20px;
-}
-
-.logout:hover {
-    background-color: #aa3129;
-    color: white;
-    border-radius: 20px;
-    padding: 10px 10px;
-    margin: 0;
-}
-
-
-    .outer-box {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        padding: 20px;
-        background-color: #ffffff; 
-        width: 50%; 
-        height: 550px;  /* กำหนดความสูง */
-        margin: 0 auto; 
-        border-radius: 20px; 
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
-        margin-right: 29%;
-        margin-top: 30px;
-        margin-bottom: 30px;
-        overflow: hidden; /* ป้องกัน content ล้นออกมา */
-    }
-    
-/* Head Chatroom */
-.head-chatroom {
-    display: flex;
-    align-items: center;
-    /* gap: 10px; */
-    /* padding: 10px; */
-    /* border-bottom: 1px solid #ddd; */
-    margin-bottom: 5px;
-}
-
-/* ปุ่มย้อนกลับ */
-.back-button {
-    font-size: 18px;
-    cursor: pointer;
-}
-
-/* กรอบไอคอนกิจกรรม */
-.chat-room-info {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-
-
-/* วงกลมสีชมพู */
-.chat-room-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-color: #abd5f8;  /* สีชมพู */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
-}
-
-/* ไอคอนกิจกรรม */
-.chat-room-icon i {
-    font-size: 16px; 
-    color: black;
-    /* display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;  
-    height: 100%;  */
-    margin-left: 5px;
-}
-
-
-.chat-room-details {
-    text-align: left; 
-    width: 480px; 
-    /* background-color: #333; */
-}
-
-.chat-room-name {
-    font-size: 16px;
-    font-weight: bold;
-    display: block;
-}
-
-.chat-room-members {
-    /* display: block; */
-    /* margin-top: 5px;  */
-
-    font-weight: normal;
-    font-size: 12px;
-    color: #7e7e7e;
-    display: flex;
-}
-
-
-
-.leave-chat-btn {
-    font-family:"Anuphan", sans-serif;
-    background-color: #cacaca;
-    color: rgb(61, 61, 61);
-    padding: 5px 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 12px;
-    /* margin-left: 20px;  */
-}
-
-.leave-chat-btn:hover {
-    background-color: #dd4848;
-}
-
-
-.chat-container {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    overflow: hidden; 
-    border: 1px solid #d3d3d3;
-    /* background-color: #f5f4f4; */
-    border-radius: 10px; 
-}
-
-#chat-log {
-    flex-grow: 1;
-    max-height: 400px;  /* ป้องกันกล่องข้อความไม่ให้เกินขนาด */
-    overflow-y: auto;   /* ให้เลื่อนลงได้ */
-    display: flex;
-    flex-direction: column;
-    padding: 10px;
-}
-
-
-/* รูปแบบข้อความ */
-.chat-message {
-    display: flex;
-    flex-direction: column;
-    width: fit-content;
-    margin-bottom: 10px;
-    max-width: 80%;
-}
-/* ข้อความที่เราส่ง */
-.chat-message.sent {
-    align-items: flex-end;
-    text-align: right;
-    max-width: 60%; /* ลดขนาดของข้อความเราให้ไม่กว้างเกินไป */
-    margin-left: auto; /* บังคับให้ข้อความดันไปชิดขวา */
-}
-/* ข้อความที่เราได้รับ */
-.chat-message.received {
-    align-items: flex-start;
-    text-align: left;
-}
-
-/* รูปโปรไฟล์ */
-.profile-pic {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 1px solid #a3a3a3;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-/* ส่วนที่รวมชื่อและรูป */
-.message-header {
-    display: flex;
-    align-items: center;
-    gap: 8px; /* ระยะห่างระหว่างรูปและชื่อ */
-    font-weight: bold;
-    font-size: 14px;
-    color: #333;
-}
-
-/* ทำให้รูปอยู่ขวาของชื่อเมื่อเป็นข้อความของเรา */
-.sent-header {
-    flex-direction: row-reverse;
-}
-
-/* กล่องข้อความ */
-.message-body {
-    display: flex;
-    flex-direction: column;
-    max-width: 100%;
-    margin-top: 5px;
-}
-
-/* กล่องข้อความจริง */
-.message-content {
-    background: #c1d7ff;
-    padding: 0px 15px;
-    border-radius: 12px;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-    display: inline-block;
-    max-width: 100%;
-    position: relative;
-}
-
-/* ข้อความที่เราส่ง */
-.chat-message.sent .message-content {
-    background: #c1d7ff;
-    color: rgb(0, 0, 0);
-}
-
-
-.message-text {
-    margin-bottom: 2px; 
-    line-height: 1.2;
-}
-
-.message-time {
-    font-size: 10px;
-    color: #555454;
-    margin-top: 0px; 
-    line-height: 1.1;
-}
-
-/* ข้อความ */
-/* .message-text {
-    margin-top: 2px;
-} */
-
-/* เวลาส่งข้อความ */
-/* .message-time {
-    font-size: 10px;
-    color: #555454;
-    text-align: right;
-    margin-top: 5px;
-} */
-
-/* ข้อความระบบ */
-.system-message {
-    display: inline-block;  /* ให้ขนาดของกล่องเท่ากับข้อความ */
-    text-align: center;
-    font-size: 12px;
-    color: #5c5b5b;
-    background: #e9e7e7;
-    padding: 0px 10px;  /* padding บน-ล่าง 5px, ซ้าย-ขวา 10px */
-    border-radius: 20px;
-    margin: 10px 0;
-}
-
-
-/* ฟอร์มส่งข้อความ */
-.chat-input-form {
-    display: flex;
-    padding: 10px;
-    background: #fff;
-    border-top: 1px solid #ddd;
-}
-
-.chat-input {
-    font-family:"Anuphan", sans-serif;
-    flex-grow: 1;
-    padding: 10px;
-    border: none;
-    border-radius: 20px;
-    background: #e9f0ff;
-    border: 1px solid #b9b8b8;
-    outline: none;
-}
-
-/* ปุ่มส่งข้อความ */
-.send-button {
-    background: #4762ac;
-    color: white;
-    border: none;
-    padding: 15px 10px;
-    margin-left: 10px;
-    border-radius: 50%;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-}
-
-.send-button:hover {
-    background-color: #1b3785;
-}
-
-
-/* Modal */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    justify-content: center;
-    align-items: center;
-}
-
-.modal-content {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    text-align: center;
-}
-
-.confirm-leave, .cancel-leave {
-    margin: 10px;
-    padding: 10px 15px;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-}
-
-.confirm-leave {
-    background-color: #ff4d4d;
-    color: white;
-}
-
-.cancel-leave {
-    background-color: gray;
-    color: white;
-}
-
-</style>
 <body>
     <div class="menu-container">
         <div class="profile-section">
@@ -527,21 +83,6 @@ i {
                 </div>
             </div>
         </div>
-
-        <!-- <div class="leave_chat">
-            {% if request.user != chat_room.created_by_id %}
-                <button id="openLeaveChatModal" class="leave-chat-btn">
-                    <i class="fas fa-sign-out-alt"></i> ออกจากแชท
-                </button>
-            {% endif %}
-        </div> -->
-
-   
-    
-    
-        
-        
-
         
 
         <div class="chat-container">
@@ -582,10 +123,17 @@ i {
 
         <div id="leaveChatModal" class="modal">
             <div class="modal-content">
+                <div class="modal-icon">
+                    <i class="fa-solid fa-exclamation-circle"></i>
+                </div>
                 <p>คุณต้องการออกจากกิจกรรมนี้จริงหรือไม่?</p>
                 <div class="modal-buttons">
-                    <button id="confirmLeaveChat" class="confirm-btn">ออกจากแชท</button>
-                    <button id="cancelLeaveChat" class="cancel-btn">ยกเลิก</button>
+                    <button id="confirmLeaveChat" class="confirm-btn">
+                        <i class="fa-solid fa-check"></i>ใช่
+                    </button>
+                    <button id="cancelLeaveChat" class="cancel-btn">
+                        <i class="fa-solid fa-times"></i>ไม่
+                    </button>
                 </div>
             </div>
         </div>
@@ -606,6 +154,7 @@ i {
     </div>
         
 </div>  
+
 </body>
 
 <!-- ย้อยกลับ -->
@@ -650,193 +199,44 @@ i {
     };
 </script>
 
-<!-- เลื่อนลงล่างตอนมีข้อความ-->
+<!-- ออกจากแชท -->
 <script>
-    function scrollToBottom() {
-        let chatLog = document.getElementById("chat-log");
-        if (chatLog) {
-            requestAnimationFrame(() => {
-                chatLog.scrollTop = chatLog.scrollHeight;
-            });
-        }
-    }
+    document.addEventListener("DOMContentLoaded", function () {
+        const modal = document.getElementById("leaveChatModal");
+        const openModalBtn = document.getElementById("openLeaveChatModal");
+        const cancelModalBtn = document.getElementById("cancelLeaveChat");
+        const confirmModalBtn = document.getElementById("confirmLeaveChat");
 
-    let chatSocket = new WebSocket(`ws://${window.location.host}/ws/chat/{{ chat_room.id }}/`);
-
-    chatSocket.onmessage = function(event) {
-        let data = JSON.parse(event.data);
-        let chatLog = document.getElementById("chat-log");
-
-        let messageHTML = `
-            <div class="chat-message ${data.sender === "{{ request.user.username }}" ? "sent" : "received"}">
-                <div class="message-header ${data.sender === "{{ request.user.username }}" ? 'sent-header' : ''}">
-                    <img src="${data.sender_profile}" alt="Profile Picture" class="profile-pic">
-                    <p class="sender-name">${data.sender}</p>
-                </div>
-                <div class="message-body">
-                    <div class="message-content">
-                        <p class="message-text">${data.message}</p>
-                        <p class="message-time">${data.created_at}</p>
-                    </div>
-                </div>
-            </div>
-        `;
-        chatLog.innerHTML += messageHTML;
-        scrollToBottom();  // เรียกใช้ฟังก์ชันให้เลื่อนลงล่างสุด
-    };
-
-    document.querySelector(".chat-input-form").onsubmit = function(event) {
-        event.preventDefault();
-        let messageInput = document.querySelector(".chat-input");
-        let message = messageInput.value;
-
-        chatSocket.send(JSON.stringify({"message": message}));
-        messageInput.value = "";
-        scrollToBottom();  // ให้เลื่อนลงหลังจากส่งข้อความ
-    };
-
-    // เลื่อนลงล่างสุดเมื่อโหลดหน้า
-    window.onload = function() {
-        scrollToBottom();
-    };
-</script>
-
-
-
-<script>
-    document.getElementById("openLeaveChatModal").onclick = function() {
-        document.getElementById("leaveChatModal").style.display = "block";
-    };
-
-    document.getElementById("cancelLeaveChat").onclick = function() {
-        document.getElementById("leaveChatModal").style.display = "none";
-    };
-
-    document.getElementById("confirmLeaveChat").onclick = function() {
-        fetch("{% url 'leave_chat' chat_room.id %}", {
-            method: "POST",
-            headers: {
-                "X-CSRFToken": "{{ csrf_token }}",
-                "Content-Type": "application/json"
-            }
-        })
-        .then(response => {
-            if (response.ok) {
-                window.location.href = "{% url 'chat' %}";
-            }
+        // เปิด Modal
+        openModalBtn.addEventListener("click", function () {
+            modal.classList.add("show");
         });
-    };
-</script>
 
-
-
-<!-- เรียลไทม์แบบ ajax -->
-<!-- <script>
-    // ฟังก์ชันโหลดข้อความใหม่ทุก 2 วินาที
-    function fetchMessages() {
-        $.ajax({
-            url: window.location.href, // ดึง URL ของหน้านี้
-            type: "GET",
-            headers: { "X-Requested-With": "XMLHttpRequest" }, // เช็คว่าเป็น AJAX Request
-            success: function(data) {
-                let chatLog = $("#chat-log");
-                chatLog.empty();  // ล้างข้อความเก่า
-
-                data.messages.forEach(function(message) {
-                    let messageClass = message.is_sender ? "sent" : "received";
-
-                    let messageHTML = `
-                        <div class="chat-message ${messageClass}">
-                            <div class="message-header ${message.is_sender ? 'sent-header' : ''}">
-                                <img src="${message.sender_profile}" alt="Profile Picture" class="profile-pic">
-                                <p class="sender-name">${message.sender}</p>
-                            </div>
-                            <div class="message-body">
-                                <div class="message-content">
-                                    <p class="message-text">${message.message}</p>
-                                    <p class="message-time">${message.created_at}</p>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                    chatLog.append(messageHTML);
-                });
-            }
+        // ปิด Modal
+        cancelModalBtn.addEventListener("click", function () {
+            modal.classList.remove("show");
         });
-    }
 
-    // โหลดข้อความใหม่ทุก 2 วินาที
-    setInterval(fetchMessages, 2000);
-
-    // ฟังก์ชันส่งข้อความโดยไม่ต้องโหลดหน้าใหม่
-    $(document).ready(function() {
-        $(".chat-input-form").submit(function(event) {
-            event.preventDefault();  // ป้องกันการโหลดหน้าใหม่
-            let form = $(this);
-            let messageInput = $(".chat-input");
-
-            $.ajax({
-                url: form.attr("action"),
-                type: "POST",
-                data: form.serialize(),
-                headers: { "X-Requested-With": "XMLHttpRequest" },
-                success: function(response) {
-                    messageInput.val("");  // เคลียร์ช่องข้อความ
-                    fetchMessages();  // โหลดข้อความใหม่ทันที
+        // ดำเนินการออกจากห้องแชท
+        confirmModalBtn.addEventListener("click", function () {
+            fetch("{% url 'leave_chat' chat_room.id %}", {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": "{{ csrf_token }}",
+                    "Content-Type": "application/json"
                 }
-            });
+            })
+            .then(response => {
+                if (response.ok) {
+                    window.location.href = "{% url 'chat' %}";
+                } else {
+                    console.error("Error leaving chat.");
+                }
+            })
+            .catch(error => console.error("Fetch error:", error));
         });
     });
-</script> -->
 
-
-<!-- 
-<script>
-    const roomId = "{{ chat_room.id }}";  // ดึง chat_room_id จาก template
-    const username = "{{ request.user.username }}";  
-
-    // สร้าง WebSocket Connection
-    const chatSocket = new WebSocket(
-        'ws://' + window.location.host + '/ws/chat/' + roomId + '/'
-    );
-
-    // รับข้อความจาก WebSocket
-    chatSocket.onmessage = function(e) {
-        const data = JSON.parse(e.data);
-        const message = data.message;
-        const sender = data.sender;
-        const createdAt = data.created_at;  // รับเวลาจาก WebSocket
-
-        const chatLog = document.getElementById('chat-log');
-        chatLog.innerHTML += `<b>${sender}:</b> ${message} <span class="timestamp">(${createdAt})</span><br>`;
-        chatLog.scrollTop = chatLog.scrollHeight;  // เลื่อนลงไปที่ข้อความล่าสุด
-    };
-
-    // เมื่อ WebSocket ปิด
-    chatSocket.onclose = function(e) {
-        console.error('Chat socket closed unexpectedly');
-    };
-
-    // ส่งข้อความเมื่อกดปุ่ม Send
-    document.getElementById('chat-message-submit').onclick = function() {
-        const messageInputDom = document.getElementById('chat-message-input');
-        const message = messageInputDom.value;
-
-        // ส่งข้อความไปที่ WebSocket
-        chatSocket.send(JSON.stringify({
-            'message': message,
-            'username': username
-        }));
-
-        messageInputDom.value = '';  // ล้างข้อความหลังส่ง
-    };
-
-    // ส่งข้อความเมื่อกด Enter
-    document.getElementById('chat-message-input').onkeyup = function(e) {
-        if (e.keyCode === 13) {  // ตรวจสอบว่าเป็นปุ่ม Enter
-            document.getElementById('chat-message-submit').click();
-        }
-    };
-</script>  -->
+</script>
 
 </html>

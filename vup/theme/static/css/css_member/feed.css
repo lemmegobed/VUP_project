@@ -597,7 +597,7 @@ align-items: center;
     left: -95px;
     transform: translateY(-50%);
     white-space: nowrap;
-    z-index: 1000;
+    z-index: 9999;
     opacity: 0; 
     transition: opacity 0.3s ease-in-out;
 }
@@ -719,7 +719,6 @@ align-items: center;
     font-weight: bold;
 }
 
-
 .province {
     width:auto; 
     padding-right: 30px;
@@ -733,83 +732,10 @@ align-items: center;
     border: 1px solid #000000;
 }
 
-
-
-
 .no_event{
     text-align: center;
     color: #777777;
     font-size: 12px;
-}
-
-.button-container {
-    margin-top: 20px;
-    display: flex;
-    justify-content: center; /* จัดให้อยู่กึ่งกลางแนวนอน */
-    align-items: center; /* จัดให้อยู่กึ่งกลางแนวตั้ง (ถ้าจำเป็น) */
-    gap: 10px; /* ระยะห่างระหว่างปุ่ม */
-}
-
-
-.btn {
-    padding: 10px 20px;
-    border-radius: 5px;
-    border: none;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
-    gap: 0;
-}
-
-.btn-yes {
-    background-color: #67a05f;
-    color: white;
-}
-
-/* .btn-yes:hover {
-background-color: #c0392b;
-} */
-
-.btn-no {
-background-color:  #c0392b;
-color: white;
-}
-/* 
-.btn-no:hover {
-background-color: #95a5a6;
-} */
-
-/* สไตล์สำหรับ Join Modal */
-.join-modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    justify-content: center;
-    align-items: center;
-}
-
-.join-modal-content {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    width: 300px;
-    text-align: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.join-modal-close {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    font-size: 18px;
-    cursor: pointer;
-    color: #aaa;
 }
 
 .btn-report {
@@ -817,86 +743,27 @@ background-color: #95a5a6;
     color: #aaaaaa; 
     border: 0px solid #f5cba7; 
     /* border-radius: 50%;  */
-    width: 30px; /* ความกว้าง */
-    height: 30px; /* ความสูง */
+    width: 30px;
+    height: 30px; 
     display: flex;
     /* align-items: center;  */
     justify-content: center;  
-    font-size: 14px; /* ขนาดไอคอน */
-    cursor: pointer; /* เปลี่ยนเมาส์เป็นแบบคลิกได้ */
-    transition: all 0.3s ease; /* เพิ่มเอฟเฟกต์การเปลี่ยนแปลง */
+    font-size: 14px;
+    cursor: pointer; 
+    transition: all 0.3s ease; 
 }
 
 .btn-report:hover {
-/* background-color: #f4d03f; */
-/* color: #c0392b;  */
-/* border-color: #f0b27a;  */
-transform: scale(1.1); /* ขยายปุ่มเล็กน้อย */
+    transform: scale(1.1); 
 }
 
 .btn-report i {
-margin: 0; /* จัดให้ไอคอนชิดกึ่งกลาง */
+    margin: 0; 
 }
-
-/* CSS สำหรับ Modal เฉพาะ */
-.modal-report {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
-    width: 400px;
-}
-
-/* .modal-report-content {
-position: relative;
-padding: 20px;
-}
-
-.modal-report-close-btn {
-position: absolute;
-top: 10px;
-right: 10px;
-font-size: 20px;
-cursor: pointer;
-} */
-
-/* .form-report {
-display: flex;
-flex-direction: column;
-gap: 15px;
-}
-
-.form-report-label {
-font-weight: bold;
-margin-bottom: 5px;
-}
-
-.form-report-select,
-.form-report-textarea {
-width: 100%;
-padding: 10px;
-border: 1px solid #ccc;
-border-radius: 5px;
-} */
-
-/* .form-report-submit-btn {
-background-color: #007bff;
-color: white;
-border: none;
-padding: 10px 20px;
-border-radius: 5px;
-cursor: pointer;
-} */
 
 .modal-icon {
     font-size: 50px;
-    color: #969696; /* สีส้ม */
+    color: #969696; 
     margin-bottom: 10px;
 }
 
@@ -907,14 +774,12 @@ cursor: pointer;
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
-    display: none; /* ค่าเริ่มต้นเป็น none */
+    display: none; 
     justify-content: center;
     align-items: center;
-    z-index: 1000;
-    }
+    z-index: 9999;
+}
 
-
-/* Popup content */
 .popup-content {
     background: white;
     padding: 20px;
@@ -926,17 +791,17 @@ cursor: pointer;
 }
 
 .popup-content h2 {
-margin-top: 0;
+    margin-top: 0;
 }
 
 .popup-content p {
-margin: 15px 0;
+    margin: 15px 0;
 }
 
 .popup-actions {
-    display: flex; /* ใช้ flexbox */
-    justify-content: center; /* จัดให้อยู่ตรงกลางในแนวนอน */
-    gap: 10px; /* ระยะห่างระหว่างปุ่ม */
+    display: flex; 
+    justify-content: center; 
+    gap: 10px; 
     margin-top: 20px;
 }
 
@@ -945,7 +810,7 @@ margin: 15px 0;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    }
+}
 
 .confirm-btn {
     font-family:"Anuphan", sans-serif;
@@ -960,30 +825,28 @@ margin: 15px 0;
 }
 
 
-/* สไตล์สำหรับแถบแจ้งเตือน */
-.notification-bar {
+
+/* .notification-bar {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    background-color: #4caf50; /* สีเขียว */
+    background-color: #4caf50; 
     color: white;
     text-align: center;
     padding: 15px 0;
     font-size: 16px;
-    z-index: 1000;
+    z-index: 9999;
     transition: top 0.5s ease-in-out, opacity 0.5s ease-in-out;
-    opacity: 0; /* เริ่มต้นซ่อน */
+    opacity: 0; 
+} */
+
+/* .notification-bar.show {
+    opacity: 1;
+    top: 0;
 }
 
-/* แสดงแจ้งเตือน */
-.notification-bar.show {
-opacity: 1;
-top: 0;
-}
-
-/* ซ่อนแจ้งเตือน */
 .notification-bar.hide {
-opacity: 0;
-top: -50px; /* เลื่อนออกจากหน้าจอ */
-}
+    opacity: 0;
+    top: -50px; 
+} */
