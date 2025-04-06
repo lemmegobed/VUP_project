@@ -404,8 +404,6 @@ def member_profile(request, member_id):
     total_on_time_reviews = Event_Review.objects.filter(participant=member, attendance_status='มาตามนัด').count()
     total_not_on_time_reviews = Event_Review.objects.filter(participant=member, attendance_status='ผิดนัด').count()
 
-    # total_on_time_reviews = Event_Review.objects.filter(participant=member, attendance_status='มาตามนัด')
-    # total_not_on_time_reviews = Event_Review.objects.filter(participant=member, attendance_status='ผิดนัด')
     context = {
         'user_login':user_login,
         'member': member,
